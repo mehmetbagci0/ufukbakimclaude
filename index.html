@@ -3,50 +3,221 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Asansör Bakım Konum Uygulaması</title>
+  <title>Ufuk Bakım – Asansör Bakım Sistemi</title>
   <style>
     :root {
-      --bg: #f5f8ff;
+      --bg: #f0f4ff;
       --card: #ffffff;
-      --primary: #123f8f;
-      --primary-2: #0f2f69;
+      --primary: #1a56db;
+      --primary-dark: #0f2f69;
+      --primary-light: #e8efff;
       --text: #10233f;
-      --muted: #61708b;
-      --danger: #b42318;
-      --danger-bg: #fee4e2;
-      --border: #d6def0;
+      --muted: #5a6b87;
+      --success: #16a34a;
+      --success-dark: #166534;
+      --danger: #dc2626;
+      --danger-bg: #fee2e2;
+      --border: #d1daf0;
+      --shadow-sm: 0 1px 4px rgba(15,47,105,.10);
+      --shadow-md: 0 4px 16px rgba(15,47,105,.13);
+      --radius: 14px;
+      --radius-sm: 10px;
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       font-size: 16px;
-      line-height: 1.45;
+      line-height: 1.5;
+      min-height: 100dvh;
     }
 
-    .container {
+    .hidden { display: none !important; }
+
+    /* ── Login ─────────────────────────────────────── */
+    #loginView {
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: linear-gradient(145deg, #0f2f69 0%, #1a56db 100%);
+    }
+
+    .login-card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 36px 28px 32px;
       width: 100%;
+      max-width: 400px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .login-icon {
+      font-size: 52px;
+      text-align: center;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .login-title {
+      font-size: 28px;
+      font-weight: 800;
+      text-align: center;
+      color: var(--primary-dark);
+      margin-bottom: 4px;
+    }
+
+    .login-sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 28px;
+    }
+
+    /* ── Topbar ────────────────────────────────────── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: linear-gradient(90deg, #0f2f69 0%, #1a56db 100%);
+      color: #fff;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 58px;
+      gap: 10px;
+      box-shadow: 0 2px 8px rgba(15,47,105,.25);
+    }
+
+    .topbar-left { display: flex; align-items: center; gap: 10px; }
+
+    .topbar-icon { font-size: 24px; line-height: 1; }
+
+    .topbar-title { font-size: 18px; font-weight: 700; }
+
+    .topbar-sub { font-size: 13px; opacity: .75; }
+
+    /* ── Container ─────────────────────────────────── */
+    .container {
       max-width: 980px;
       margin: 0 auto;
-      padding: 14px;
+      padding: 16px;
     }
 
+    /* ── Cards ─────────────────────────────────────── */
     .card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
-      margin-bottom: 12px;
-      box-shadow: 0 1px 3px rgba(16, 35, 63, 0.08);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
     }
 
-    h1, h2, h3, h4 { margin: 0 0 12px; }
-    p { margin: 6px 0; }
+    h2 { font-size: 18px; font-weight: 700; margin-bottom: 14px; }
+    h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+    p { margin: 5px 0; }
 
+    .muted { color: var(--muted); font-size: 14px; }
+
+    /* ── Form elements ─────────────────────────────── */
+    .field { margin-bottom: 12px; }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    input, select, textarea {
+      font-size: 16px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border);
+      min-height: 48px;
+      width: 100%;
+      padding: 10px 14px;
+      background: #fff;
+      color: var(--text);
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(26,86,219,.15);
+    }
+
+    textarea { min-height: 88px; resize: vertical; }
+
+    /* ── Buttons ───────────────────────────────────── */
+    button {
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid transparent;
+      min-height: 48px;
+      padding: 10px 18px;
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background .2s, box-shadow .2s, transform .1s;
+      background: var(--primary);
+      color: #fff;
+    }
+
+    button:hover { background: var(--primary-dark); }
+    button:active { transform: scale(.98); }
+
+    button.btn-success {
+      background: var(--success);
+      border-color: var(--success);
+    }
+    button.btn-success:hover { background: var(--success-dark); }
+
+    button.secondary {
+      background: #fff;
+      color: var(--primary);
+      border-color: var(--border);
+    }
+    button.secondary:hover { background: var(--primary-light); border-color: var(--primary); }
+
+    button.btn-edit {
+      background: #f1f5f9;
+      color: #475569;
+      border-color: #cbd5e1;
+    }
+    button.btn-edit:hover { background: #e2e8f0; }
+
+    button.danger {
+      background: var(--danger);
+      border-color: var(--danger);
+      color: #fff;
+    }
+    button.danger:hover { background: #b91c1c; }
+
+    button.topbar-btn {
+      background: rgba(255,255,255,.15);
+      border-color: rgba(255,255,255,.35);
+      color: #fff;
+      min-height: 40px;
+      width: auto;
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+    button.topbar-btn:hover { background: rgba(255,255,255,.28); }
+
+    /* ── Row ───────────────────────────────────────── */
     .row {
       display: flex;
       gap: 8px;
@@ -54,165 +225,309 @@
       align-items: center;
     }
 
-    .field { margin-bottom: 10px; }
+    .row > button { width: auto; flex: 1; min-width: 100px; }
 
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 6px;
+    /* ── Tabs ──────────────────────────────────────── */
+    .tabs-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 14px;
+      padding-bottom: 2px;
     }
-
-    input, select, textarea, button {
-      font-size: 16px;
-      border-radius: 10px;
-      border: 1px solid #bdc9e2;
-      min-height: 48px;
-      width: 100%;
-      padding: 10px 12px;
-      background: #fff;
-      color: var(--text);
-    }
-
-    textarea {
-      min-height: 88px;
-      resize: vertical;
-    }
-
-    button {
-      cursor: pointer;
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--primary);
-      font-weight: 700;
-    }
-
-    button:hover { background: var(--primary-2); }
-    button.secondary {
-      background: #fff;
-      color: var(--primary);
-      border-color: var(--primary);
-    }
-
-    button.danger {
-      background: var(--danger);
-      border-color: var(--danger);
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .topbar-title { font-size: 20px; font-weight: 700; }
-
-    .hidden { display: none !important; }
-
-    .list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .item {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px;
-      background: #fff;
-    }
-
-    .item .title { font-weight: 700; margin-bottom: 6px; }
-    .muted { color: var(--muted); }
 
     .tabs {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-      margin-bottom: 12px;
+      display: flex;
+      gap: 4px;
+      min-width: max-content;
     }
+
+    .tab-btn {
+      background: transparent;
+      color: rgba(255,255,255,.7);
+      border: none;
+      border-bottom: 3px solid transparent;
+      border-radius: 0;
+      min-height: 44px;
+      padding: 10px 18px;
+      font-size: 14px;
+      width: auto;
+      white-space: nowrap;
+      transition: color .2s, border-color .2s;
+    }
+
+    .tab-btn:hover { color: #fff; background: transparent; }
 
     .tab-btn.active {
-      background: var(--primary-2);
-      border-color: var(--primary-2);
+      color: #fff;
+      border-bottom-color: #fff;
+      font-weight: 700;
+      background: transparent;
     }
 
-    .password-wrap {
-      display: flex;
-      gap: 8px;
+    .tabs-bar {
+      background: linear-gradient(90deg, #0f2f69 0%, #1a56db 100%);
+      padding: 0 16px;
+      position: sticky;
+      top: 58px;
+      z-index: 90;
+      box-shadow: 0 2px 6px rgba(15,47,105,.18);
     }
 
+    /* ── Password wrap ─────────────────────────────── */
+    .password-wrap { display: flex; gap: 8px; }
     .password-wrap input { flex: 1; }
     .password-wrap .toggle-pass {
       width: auto;
-      min-width: 88px;
-      padding: 10px;
-      background: #fff;
+      min-width: 72px;
+      padding: 10px 12px;
+      font-size: 14px;
+      background: var(--primary-light);
       color: var(--primary);
-      border-color: var(--primary);
+      border-color: var(--border);
+    }
+    .password-wrap .toggle-pass:hover { background: #d1e0ff; }
+
+    /* ── List / Item ───────────────────────────────── */
+    .list { display: grid; gap: 10px; }
+
+    .item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      background: #fff;
+      transition: box-shadow .2s;
     }
 
+    .item:hover { box-shadow: var(--shadow-sm); }
+    .item .title { font-weight: 700; margin-bottom: 4px; }
+
+    /* ── Pill ──────────────────────────────────────── */
     .pill {
       display: inline-block;
-      padding: 4px 8px;
+      padding: 3px 10px;
       border-radius: 999px;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 14px;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
     }
 
+    /* ── Warn ──────────────────────────────────────── */
     .warn {
       color: var(--danger);
       font-weight: 600;
       background: var(--danger-bg);
-      border: 1px solid #fdb7b2;
-      padding: 10px;
-      border-radius: 10px;
+      border: 1px solid #fca5a5;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
     }
 
-    @media (min-width: 768px) {
-      .tabs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-      .grid-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-      }
+    /* ── Grid ──────────────────────────────────────── */
+    @media (min-width: 560px) {
+      .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     }
+
+    /* ── Worker panel ──────────────────────────────── */
+    .welcome-bar {
+      padding: 16px;
+      background: var(--primary-light);
+      border-radius: var(--radius);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .welcome-icon { font-size: 28px; }
+
+    .welcome-name { font-size: 17px; font-weight: 700; color: var(--primary-dark); }
+
+    /* ── Search box ────────────────────────────────── */
+    .search-wrap {
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      pointer-events: none;
+      color: var(--muted);
+    }
+
+    #buildingSearch {
+      min-height: 52px;
+      padding-left: 46px;
+      padding-right: 40px;
+      font-size: 16px;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+    }
+
+    #buildingSearch:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(26,86,219,.15);
+    }
+
+    .search-clear {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 20px;
+      min-height: unset;
+      width: auto;
+      padding: 4px 6px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .search-clear:hover { color: var(--danger); background: none; }
+
+    /* ── Group grid ────────────────────────────────── */
+    .group-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    @media (min-width: 640px) {
+      .group-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .group-card {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .group-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-sm);
+      background: var(--primary-light);
+    }
+
+    .group-card-icon { font-size: 28px; line-height: 1; }
+    .group-card-name { font-weight: 700; font-size: 15px; }
+    .group-card-count { font-size: 13px; color: var(--muted); }
+
+    /* ── Building card ─────────────────────────────── */
+    .building-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-bottom: 10px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .2s;
+    }
+
+    .building-card:hover { box-shadow: var(--shadow-md); }
+
+    .building-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .building-card-name { font-weight: 700; font-size: 16px; }
+
+    .building-card-addr {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 10px;
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+    }
+
+    .building-card-addr-icon { flex-shrink: 0; }
+
+    .no-results {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    /* ── Back button ───────────────────────────────── */
+    .back-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .back-row button { width: auto; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <section id="loginView" class="card">
-      <h1>Asansör Bakım Konum</h1>
-      <p class="muted">Giriş yaparak devam edin.</p>
+
+  <!-- LOGIN VIEW -->
+  <section id="loginView">
+    <div class="login-card">
+      <div class="login-icon">🛗</div>
+      <div class="login-title">Ufuk Bakım</div>
+      <div class="login-sub">Asansör Bakım Sistemi</div>
+
       <div class="field">
         <label for="loginUsername">Kullanıcı Adı</label>
-        <input id="loginUsername" autocomplete="username" />
+        <input id="loginUsername" autocomplete="username" placeholder="Kullanıcı adınızı girin" />
       </div>
       <div class="field">
         <label for="loginPassword">Şifre</label>
         <div class="password-wrap">
-          <input id="loginPassword" type="password" autocomplete="current-password" />
+          <input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••" />
           <button type="button" class="toggle-pass" data-target="loginPassword">Göster</button>
         </div>
       </div>
-      <button id="loginBtn" type="button">Giriş Yap</button>
-      <p id="loginError" class="warn hidden" aria-live="polite"></p>
-    </section>
+      <button id="loginBtn" type="button" style="background:linear-gradient(90deg,#0f2f69,#1a56db);border:none;margin-top:4px;">Giriş Yap →</button>
+      <p id="loginError" class="warn hidden" style="margin-top:12px;" aria-live="polite"></p>
+    </div>
+  </section>
 
-    <section id="adminView" class="hidden">
-      <div class="topbar">
-        <div class="topbar-title">Admin Paneli</div>
-        <button id="logoutAdmin" class="secondary" type="button">Çıkış</button>
+  <!-- ADMIN VIEW -->
+  <section id="adminView" class="hidden">
+    <div class="topbar">
+      <div class="topbar-left">
+        <span class="topbar-icon">🛗</span>
+        <div>
+          <div class="topbar-title">Ufuk Bakım</div>
+          <div class="topbar-sub">Admin Paneli</div>
+        </div>
       </div>
+      <button id="logoutAdmin" class="topbar-btn" type="button">Çıkış</button>
+    </div>
 
-      <div class="tabs">
-        <button class="tab-btn active" data-tab="groupsTab" type="button">Gruplar</button>
-        <button class="tab-btn" data-tab="buildingsTab" type="button">Binalar</button>
-        <button class="tab-btn" data-tab="workersTab" type="button">Elemanlar</button>
-        <button class="tab-btn" data-tab="settingsTab" type="button">Ayarlar</button>
+    <div class="tabs-bar">
+      <div class="tabs-wrap">
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="groupsTab" type="button">Gruplar</button>
+          <button class="tab-btn" data-tab="buildingsTab" type="button">Binalar</button>
+          <button class="tab-btn" data-tab="workersTab" type="button">Elemanlar</button>
+          <button class="tab-btn" data-tab="settingsTab" type="button">Ayarlar</button>
+        </div>
       </div>
+    </div>
 
+    <div class="container">
       <div id="groupsTab" class="card tab-panel">
         <h2>Gruplar</h2>
         <div class="field">
@@ -223,7 +538,7 @@
           <button id="saveGroupBtn" type="button">Grup Ekle</button>
           <button id="cancelGroupEdit" type="button" class="secondary hidden">İptal</button>
         </div>
-        <div id="groupsList" class="list" style="margin-top:12px;"></div>
+        <div id="groupsList" class="list" style="margin-top:14px;"></div>
       </div>
 
       <div id="buildingsTab" class="card tab-panel hidden">
@@ -248,10 +563,10 @@
           <textarea id="buildingAddress" placeholder="Açık adres girin"></textarea>
         </div>
         <div class="row">
-          <button id="saveBuildingBtn" type="button">Bina Ekle</button>
+          <button id="saveBuildingBtn" class="btn-success" type="button">Bina Ekle</button>
           <button id="cancelBuildingEdit" type="button" class="secondary hidden">İptal</button>
         </div>
-        <div id="buildingsList" class="list" style="margin-top:12px;"></div>
+        <div id="buildingsList" class="list" style="margin-top:14px;"></div>
       </div>
 
       <div id="workersTab" class="card tab-panel hidden">
@@ -259,17 +574,17 @@
         <div class="grid-2">
           <div class="field">
             <label for="workerName">Ad Soyad</label>
-            <input id="workerName" />
+            <input id="workerName" placeholder="Ad Soyad" />
           </div>
           <div class="field">
             <label for="workerUsername">Kullanıcı Adı</label>
-            <input id="workerUsername" autocomplete="off" />
+            <input id="workerUsername" autocomplete="off" placeholder="kullanici_adi" />
           </div>
         </div>
         <div class="field">
           <label for="workerPassword">Şifre</label>
           <div class="password-wrap">
-            <input id="workerPassword" type="password" autocomplete="new-password" />
+            <input id="workerPassword" type="password" autocomplete="new-password" placeholder="••••••••" />
             <button type="button" class="toggle-pass" data-target="workerPassword">Göster</button>
           </div>
         </div>
@@ -277,8 +592,8 @@
           <button id="saveWorkerBtn" type="button">Eleman Ekle</button>
           <button id="cancelWorkerEdit" type="button" class="secondary hidden">İptal</button>
         </div>
-        <p class="muted">Not: Admin kullanıcısı silinemez.</p>
-        <div id="workersList" class="list" style="margin-top:12px;"></div>
+        <p class="muted" style="margin-top:8px;">Not: Admin kullanıcısı silinemez.</p>
+        <div id="workersList" class="list" style="margin-top:14px;"></div>
       </div>
 
       <div id="settingsTab" class="card tab-panel hidden">
@@ -307,31 +622,50 @@
         </div>
         <button id="changeAdminPasswordBtn" type="button">Şifreyi Güncelle</button>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="workerView" class="hidden">
-      <div class="topbar">
+  <!-- WORKER VIEW -->
+  <section id="workerView" class="hidden">
+    <div class="topbar">
+      <div class="topbar-left">
+        <span class="topbar-icon">🛗</span>
         <div>
-          <div class="topbar-title">Eleman Paneli</div>
-          <div id="workerWelcome" class="muted"></div>
+          <div class="topbar-title">Ufuk Bakım</div>
+          <div class="topbar-sub" id="workerWelcome"></div>
         </div>
-        <button id="logoutWorker" class="secondary" type="button">Çıkış</button>
+      </div>
+      <button id="logoutWorker" class="topbar-btn" type="button">Çıkış</button>
+    </div>
+
+    <div class="container">
+      <!-- Search box (always visible in worker panel) -->
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input id="buildingSearch" type="search" placeholder="Bina adı veya adres ara..." autocomplete="off" />
+        <button type="button" class="search-clear hidden" id="searchClearBtn" aria-label="Aramayı temizle">✕</button>
       </div>
 
-      <div id="workerGroupsPanel" class="card">
-        <h2>Gruplar</h2>
-        <div id="workerGroupsList" class="list"></div>
+      <!-- Search results panel -->
+      <div id="searchResultsPanel" class="hidden">
+        <div id="searchResultsList"></div>
       </div>
 
-      <div id="workerBuildingsPanel" class="card hidden">
-        <div class="row" style="margin-bottom:10px;">
-          <button id="backToGroupsBtn" class="secondary" type="button">Geri</button>
-          <span id="workerSelectedGroup" class="pill"></span>
-        </div>
-        <div id="workerBuildingsList" class="list"></div>
+      <!-- Groups panel -->
+      <div id="workerGroupsPanel">
+        <div id="workerGroupsList" class="group-grid"></div>
       </div>
-    </section>
-  </div>
+
+      <!-- Buildings panel (when a group is selected) -->
+      <div id="workerBuildingsPanel" class="hidden">
+        <div class="back-row">
+          <button id="backToGroupsBtn" class="secondary" type="button" style="min-width:80px;">← Geri</button>
+          <span id="workerSelectedGroup" class="pill" style="font-size:14px;"></span>
+        </div>
+        <div id="workerBuildingsList"></div>
+      </div>
+    </div>
+  </section>
 
   <script>
     const STORAGE_KEY = "asansorBakimData_v1";
@@ -386,9 +720,7 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
     }
 
-    function $(id) {
-      return document.getElementById(id);
-    }
+    function $(id) { return document.getElementById(id); }
 
     function clearInputs(...ids) {
       ids.forEach((id) => { $(id).value = ""; });
@@ -412,6 +744,89 @@
       return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
     }
 
+    /* ── Building card builder (shared between search results and group view) ── */
+    function buildBuildingCard(building, groupName, showGroupPill) {
+      const card = document.createElement("div");
+      card.className = "building-card";
+
+      const header = document.createElement("div");
+      header.className = "building-card-header";
+
+      const nameEl = document.createElement("div");
+      nameEl.className = "building-card-name";
+      nameEl.textContent = `🏢 ${building.name}`;
+
+      header.appendChild(nameEl);
+
+      if (showGroupPill && groupName) {
+        const pill = document.createElement("span");
+        pill.className = "pill";
+        pill.textContent = groupName;
+        header.appendChild(pill);
+      }
+
+      const addrEl = document.createElement("div");
+      addrEl.className = "building-card-addr";
+      addrEl.innerHTML = `<span class="building-card-addr-icon">📍</span><span>${building.address}</span>`;
+
+      const mapBtn = buildActionButton("🗺️ Haritada Aç", "btn-success", () => {
+        window.open(mapsUrl(building.address), "_blank", "noopener");
+      });
+
+      card.append(header, addrEl, mapBtn);
+      return card;
+    }
+
+    /* ── Search ──────────────────────────────────────────────────────────────── */
+    function handleSearch() {
+      const query = $("buildingSearch").value.trim().toLowerCase();
+      const clearBtn = $("searchClearBtn");
+
+      clearBtn.classList.toggle("hidden", query === "");
+
+      if (query === "") {
+        $("searchResultsPanel").classList.add("hidden");
+        $("workerGroupsPanel").classList.remove("hidden");
+        $("workerBuildingsPanel").classList.add("hidden");
+        state.selectedWorkerGroupId = null;
+        return;
+      }
+
+      $("workerGroupsPanel").classList.add("hidden");
+      $("workerBuildingsPanel").classList.add("hidden");
+      $("searchResultsPanel").classList.remove("hidden");
+
+      const matches = state.data.buildings.filter((b) =>
+        b.name.toLowerCase().includes(query) || b.address.toLowerCase().includes(query)
+      );
+
+      const wrap = $("searchResultsList");
+      wrap.innerHTML = "";
+
+      if (matches.length === 0) {
+        const msg = document.createElement("div");
+        msg.className = "no-results";
+        msg.textContent = "Bina bulunamadı 🔍";
+        wrap.appendChild(msg);
+        return;
+      }
+
+      matches.forEach((building) => {
+        const group = state.data.groups.find((g) => g.id === building.groupId);
+        wrap.appendChild(buildBuildingCard(building, group ? group.name : null, true));
+      });
+    }
+
+    function clearSearch() {
+      $("buildingSearch").value = "";
+      $("searchClearBtn").classList.add("hidden");
+      $("searchResultsPanel").classList.add("hidden");
+      $("workerGroupsPanel").classList.remove("hidden");
+      $("workerBuildingsPanel").classList.add("hidden");
+      state.selectedWorkerGroupId = null;
+    }
+
+    /* ── Render ──────────────────────────────────────────────────────────────── */
     function renderGroupSelects() {
       const groupSelect = $("buildingGroup");
       const filterSelect = $("buildingFilter");
@@ -476,7 +891,8 @@
 
         const row = document.createElement("div");
         row.className = "row";
-        row.appendChild(buildActionButton("Düzenle", "secondary", () => startEditGroup(group.id)));
+        row.style.marginTop = "8px";
+        row.appendChild(buildActionButton("Düzenle", "btn-edit", () => startEditGroup(group.id)));
         row.appendChild(buildActionButton("Sil", "danger", () => deleteGroup(group.id)));
 
         item.append(title, subtitle, row);
@@ -514,12 +930,14 @@
 
         const grp = document.createElement("p");
         grp.className = "muted";
+        grp.style.marginTop = "4px";
         grp.textContent = `Grup: ${group ? group.name : "-"}`;
 
         const row = document.createElement("div");
         row.className = "row";
+        row.style.marginTop = "8px";
         row.appendChild(buildActionButton("Haritada Aç", "secondary", () => window.open(mapsUrl(building.address), "_blank", "noopener")));
-        row.appendChild(buildActionButton("Düzenle", "secondary", () => startEditBuilding(building.id)));
+        row.appendChild(buildActionButton("Düzenle", "btn-edit", () => startEditBuilding(building.id)));
         row.appendChild(buildActionButton("Sil", "danger", () => deleteBuilding(building.id)));
 
         item.append(title, addr, grp, row);
@@ -553,7 +971,8 @@
 
         const row = document.createElement("div");
         row.className = "row";
-        row.appendChild(buildActionButton("Düzenle", "secondary", () => startEditWorker(worker.id)));
+        row.style.marginTop = "8px";
+        row.appendChild(buildActionButton("Düzenle", "btn-edit", () => startEditWorker(worker.id)));
         row.appendChild(buildActionButton("Sil", "danger", () => deleteWorker(worker.id)));
 
         item.append(title, user, row);
@@ -567,7 +986,9 @@
 
       if (state.data.groups.length === 0) {
         const empty = document.createElement("div");
-        empty.className = "item muted";
+        empty.className = "muted";
+        empty.style.padding = "24px 0";
+        empty.style.textAlign = "center";
         empty.textContent = "Gösterilecek grup yok.";
         wrap.appendChild(empty);
         return;
@@ -575,20 +996,18 @@
 
       state.data.groups.forEach((group) => {
         const count = state.data.buildings.filter((b) => b.groupId === group.id).length;
-        const item = document.createElement("div");
-        item.className = "item";
-
-        const title = document.createElement("div");
-        title.className = "title";
-        title.textContent = group.name;
-
-        const countText = document.createElement("p");
-        countText.className = "muted";
-        countText.textContent = `${count} bina`;
-
-        const openBtn = buildActionButton("Binaları Gör", "", () => openWorkerGroup(group.id));
-        item.append(title, countText, openBtn);
-        wrap.appendChild(item);
+        const card = document.createElement("div");
+        card.className = "group-card";
+        card.setAttribute("role", "button");
+        card.setAttribute("tabindex", "0");
+        card.innerHTML = `
+          <div class="group-card-icon">🏢</div>
+          <div class="group-card-name">${group.name}</div>
+          <div class="group-card-count">${count} bina</div>
+        `;
+        card.addEventListener("click", () => openWorkerGroup(group.id));
+        card.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") openWorkerGroup(group.id); });
+        wrap.appendChild(card);
       });
     }
 
@@ -601,29 +1020,14 @@
       const buildings = state.data.buildings.filter((b) => b.groupId === groupId);
       if (buildings.length === 0) {
         const empty = document.createElement("div");
-        empty.className = "item muted";
+        empty.className = "no-results";
         empty.textContent = "Bu grupta bina yok.";
         wrap.appendChild(empty);
         return;
       }
 
       buildings.forEach((building) => {
-        const item = document.createElement("div");
-        item.className = "item";
-
-        const title = document.createElement("div");
-        title.className = "title";
-        title.textContent = `🏢 ${building.name}`;
-
-        const addr = document.createElement("p");
-        addr.textContent = `📍 ${building.address}`;
-
-        const mapBtn = buildActionButton("🗺️ Haritada Aç", "secondary", () => {
-          window.open(mapsUrl(building.address), "_blank", "noopener");
-        });
-
-        item.append(title, addr, mapBtn);
-        wrap.appendChild(item);
+        wrap.appendChild(buildBuildingCard(building, null, false));
       });
     }
 
@@ -642,6 +1046,7 @@
       });
     }
 
+    /* ── Auth ────────────────────────────────────────────────────────────────── */
     function login() {
       const username = $("loginUsername").value.trim();
       const password = $("loginPassword").value;
@@ -667,9 +1072,8 @@
       if (worker) {
         state.currentUser = { role: "worker", id: worker.id, username: worker.username, fullName: worker.fullName };
         clearInputs("loginUsername", "loginPassword");
-        $("workerWelcome").textContent = `Hoşgeldin ${worker.fullName}`;
-        $("workerGroupsPanel").classList.remove("hidden");
-        $("workerBuildingsPanel").classList.add("hidden");
+        $("workerWelcome").textContent = `Hoşgeldin, ${worker.fullName}`;
+        clearSearch();
         renderWorkerGroups();
         show("workerView");
         return;
@@ -685,6 +1089,7 @@
       show("loginView");
     }
 
+    /* ── Group CRUD ──────────────────────────────────────────────────────────── */
     function startEditGroup(id) {
       const group = state.data.groups.find((g) => g.id === id);
       if (!group) return;
@@ -743,6 +1148,7 @@
       renderWorkerGroups();
     }
 
+    /* ── Building CRUD ───────────────────────────────────────────────────────── */
     function startEditBuilding(id) {
       const b = state.data.buildings.find((x) => x.id === id);
       if (!b) return;
@@ -798,6 +1204,7 @@
       if (state.selectedWorkerGroupId) renderWorkerBuildings(state.selectedWorkerGroupId);
     }
 
+    /* ── Worker CRUD ─────────────────────────────────────────────────────────── */
     function startEditWorker(id) {
       const w = state.data.workers.find((x) => x.id === id);
       if (!w) return;
@@ -854,6 +1261,7 @@
       refreshAdminUI();
     }
 
+    /* ── Settings ────────────────────────────────────────────────────────────── */
     function changeAdminPassword() {
       const current = $("currentAdminPassword").value;
       const next = $("newAdminPassword").value;
@@ -870,19 +1278,25 @@
       alert("Admin şifresi güncellendi.");
     }
 
+    /* ── Worker nav ──────────────────────────────────────────────────────────── */
     function openWorkerGroup(groupId) {
       state.selectedWorkerGroupId = groupId;
       renderWorkerBuildings(groupId);
       $("workerGroupsPanel").classList.add("hidden");
       $("workerBuildingsPanel").classList.remove("hidden");
+      $("searchResultsPanel").classList.add("hidden");
     }
 
     function backToGroups() {
       state.selectedWorkerGroupId = null;
       $("workerGroupsPanel").classList.remove("hidden");
       $("workerBuildingsPanel").classList.add("hidden");
+      if ($("buildingSearch").value.trim()) {
+        handleSearch();
+      }
     }
 
+    /* ── Events ──────────────────────────────────────────────────────────────── */
     function bindEvents() {
       $("loginBtn").addEventListener("click", login);
       $("logoutAdmin").addEventListener("click", logout);
@@ -896,6 +1310,8 @@
       $("cancelWorkerEdit").addEventListener("click", cancelEditWorker);
       $("changeAdminPasswordBtn").addEventListener("click", changeAdminPassword);
       $("backToGroupsBtn").addEventListener("click", backToGroups);
+      $("buildingSearch").addEventListener("input", handleSearch);
+      $("searchClearBtn").addEventListener("click", clearSearch);
 
       $("loginPassword").addEventListener("keydown", (e) => {
         if (e.key === "Enter") login();
