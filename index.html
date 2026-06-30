@@ -453,9 +453,68 @@
     .toast.show { opacity: 1; transform: translateY(0); }
     .toast.success { background: var(--success); }
     .toast.error { background: var(--accent); }
+
+    #loadingView {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      background: var(--bg);
+    }
+
+    .loading-spinner {
+      width: 52px;
+      height: 52px;
+      border: 5px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.85s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text {
+      font-size: 18px;
+      color: var(--primary);
+      font-weight: 700;
+      letter-spacing: .3px;
+    }
+
+    .loading-error {
+      color: var(--accent);
+      font-size: 15px;
+      text-align: center;
+      padding: 0 24px;
+      max-width: 320px;
+      line-height: 1.6;
+    }
+
+    .btn-retry {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 28px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
+  <section id="loadingView">
+    <div class="logo" aria-label="ufuk asansör logosu">
+      <div class="logo-square"><span class="n2">02</span><span class="uf">UFUK</span></div>
+      <div class="logo-text"><span class="ufuk">ufuk</span> <span class="asansor">asansör</span></div>
+    </div>
+    <div class="loading-spinner" id="loadingSpinner"></div>
+    <p class="loading-text">Yükleniyor...</p>
+    <p class="loading-error hidden" id="loadingError">Bağlantı hatası. İnternet bağlantınızı kontrol edin ve sayfayı yenileyin.</p>
+    <button class="btn-retry hidden" id="retryBtn" type="button" onclick="location.reload()">Tekrar Dene</button>
+  </section>
+
   <div id="toastArea" class="toast-area" aria-live="polite" aria-atomic="true"></div>
 
   <section id="loginView">
@@ -650,11 +709,25 @@
     </div>
   </section>
 
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
   <script>
-    const STORAGE_KEY = "asansorBakimData_v1";
+    const firebaseConfig = {
+      apiKey: "AIzaSyAQpC32gQo0CpU5K1ycvN0P0j_dTqvq_x4",
+      authDomain: "ufukasansor-deb86.firebaseapp.com",
+      databaseURL: "https://ufukasansor-deb86-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "ufukasansor-deb86",
+      storageBucket: "ufukasansor-deb86.firebasestorage.app",
+      messagingSenderId: "370336745437",
+      appId: "1:370336745437:web:e0e4f9ca586ae994c61834",
+      measurementId: "G-97DC3609KY"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
     const state = {
-      data: null,
+      data: { admin: null, groups: [], buildings: [], workers: [] },
       currentUser: null,
       editGroupId: null,
       editBuildingId: null,
@@ -662,13 +735,7 @@
       selectedWorkerGroupId: null
     };
 
-    let idCounter = 0;
-
-    function uid() {
-      if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") return crypto.randomUUID();
-      idCounter += 1;
-      return `${Date.now().toString(36)}-${idCounter.toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
-    }
+    let initDone = false;
 
     function $(id) { return document.getElementById(id); }
 
@@ -696,40 +763,82 @@
       return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
     }
 
-    function saveData() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
-    }
-
-    function loadData() {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        state.data = JSON.parse(raw);
-        return;
-      }
-
-      const g1 = { id: uid(), name: "1. Bölge" };
-      const g2 = { id: uid(), name: "2. Bölge" };
-
-      state.data = {
-        admin: { username: "admin", password: "admin123", fullName: "Patron" },
-        groups: [g1, g2],
-        buildings: [
-          { id: uid(), groupId: g1.id, name: "Mavi Konak", address: "Caferağa Mah. Moda Cad. No:22 Kadıköy/İstanbul" },
-          { id: uid(), groupId: g1.id, name: "Yıldız Apartmanı", address: "Koşuyolu Mah. Lambacı Sok. No:14 Kadıköy/İstanbul" },
-          { id: uid(), groupId: g2.id, name: "İnci Plaza", address: "Mecidiyeköy Mah. Büyükdere Cad. No:91 Şişli/İstanbul" },
-          { id: uid(), groupId: g2.id, name: "Güneş Sitesi", address: "Gayrettepe Mah. Yıldız Posta Cad. No:37 Beşiktaş/İstanbul" }
-        ],
-        workers: [
-          { id: uid(), fullName: "Örnek Eleman", username: "eleman1", password: "1234" }
-        ]
-      };
-
-      saveData();
-    }
-
     function show(viewId) {
-      ["loginView", "adminView", "workerView"].forEach((id) => $(id).classList.add("hidden"));
+      ["loadingView", "loginView", "adminView", "workerView"].forEach((id) => {
+        const el = $(id);
+        if (el) el.classList.add("hidden");
+      });
       $(viewId).classList.remove("hidden");
+    }
+
+    // Convert Firebase snapshot value to local arrays
+    function snapshotToState(val) {
+      return {
+        admin: val.admin,
+        groups: val.groups ? Object.entries(val.groups).map(([id, v]) => ({ id, ...v })) : [],
+        buildings: val.buildings ? Object.entries(val.buildings).map(([id, v]) => ({ id, ...v })) : [],
+        workers: val.workers ? Object.entries(val.workers).map(([id, v]) => ({ id, ...v })) : []
+      };
+    }
+
+    // Write default seed data to Firebase (first run)
+    function writeDefaultData() {
+      const g1ref = db.ref("groups").push();
+      const g2ref = db.ref("groups").push();
+      const b1ref = db.ref("buildings").push();
+      const b2ref = db.ref("buildings").push();
+      const b3ref = db.ref("buildings").push();
+      const b4ref = db.ref("buildings").push();
+      const w1ref = db.ref("workers").push();
+      const updates = {};
+      updates["admin"] = { username: "admin", password: "admin123", fullName: "Patron" };
+      updates[`groups/${g1ref.key}`] = { name: "1. Bölge" };
+      updates[`groups/${g2ref.key}`] = { name: "2. Bölge" };
+      updates[`buildings/${b1ref.key}`] = { name: "Mavi Konak", address: "Caferağa Mah. Moda Cad. No:22 Kadıköy/İstanbul", groupId: g1ref.key };
+      updates[`buildings/${b2ref.key}`] = { name: "Yıldız Apartmanı", address: "Koşuyolu Mah. Lambacı Sok. No:14 Kadıköy/İstanbul", groupId: g1ref.key };
+      updates[`buildings/${b3ref.key}`] = { name: "İnci Plaza", address: "Mecidiyeköy Mah. Büyükdere Cad. No:91 Şişli/İstanbul", groupId: g2ref.key };
+      updates[`buildings/${b4ref.key}`] = { name: "Güneş Sitesi", address: "Gayrettepe Mah. Yıldız Posta Cad. No:37 Beşiktaş/İstanbul", groupId: g2ref.key };
+      updates[`workers/${w1ref.key}`] = { fullName: "Örnek Eleman", username: "eleman1", password: "1234" };
+      db.ref("/").update(updates);
+    }
+
+    // Refresh relevant UI for currently logged-in user
+    function refreshIfLoggedIn() {
+      if (!state.currentUser) return;
+      if (state.currentUser.role === "admin") {
+        refreshAdminUI();
+        renderGroupSelects();
+      } else {
+        renderWorkerGroups();
+        if (state.selectedWorkerGroupId) renderWorkerBuildings(state.selectedWorkerGroupId);
+        if ($("buildingSearch").value.trim()) handleSearch();
+      }
+    }
+
+    // Start Firebase realtime listener
+    function startFirebaseListener() {
+      db.ref("/").on("value", (snapshot) => {
+        const val = snapshot.val();
+
+        if (!val || !val.admin) {
+          writeDefaultData();
+          return;
+        }
+
+        state.data = snapshotToState(val);
+
+        if (!initDone) {
+          initDone = true;
+          bindEvents();
+          show("loginView");
+        } else {
+          refreshIfLoggedIn();
+        }
+      }, () => {
+        $("loadingSpinner").classList.add("hidden");
+        $("loadingError").classList.remove("hidden");
+        $("retryBtn").classList.remove("hidden");
+      });
     }
 
     function buildEmpty(text) {
@@ -1123,18 +1232,14 @@
       }
 
       if (state.editGroupId) {
-        const g = state.data.groups.find((x) => x.id === state.editGroupId);
-        if (g) g.name = name;
+        db.ref("groups/" + state.editGroupId).update({ name });
         showToast("Grup güncellendi.", "success");
       } else {
-        state.data.groups.push({ id: uid(), name });
+        db.ref("groups").push({ name });
         showToast("Grup eklendi.", "success");
       }
 
-      saveData();
       resetGroupForm();
-      refreshAdminUI();
-      renderWorkerGroups();
     }
 
     function deleteGroup(id) {
@@ -1142,14 +1247,14 @@
       if (!group) return;
       if (!confirm(`"${group.name}" grubu silinsin mi? Bu gruptaki binalar da silinecek.`)) return;
 
-      state.data.groups = state.data.groups.filter((g) => g.id !== id);
-      state.data.buildings = state.data.buildings.filter((b) => b.groupId !== id);
-      if (state.selectedWorkerGroupId === id) state.selectedWorkerGroupId = null;
+      const updates = {};
+      updates["groups/" + id] = null;
+      state.data.buildings.filter((b) => b.groupId === id).forEach((b) => {
+        updates["buildings/" + b.id] = null;
+      });
+      db.ref("/").update(updates);
 
-      saveData();
-      refreshAdminUI();
-      renderWorkerGroups();
-      clearSearch();
+      if (state.selectedWorkerGroupId === id) state.selectedWorkerGroupId = null;
       showToast("Grup ve bağlı binalar silindi.", "success");
     }
 
@@ -1181,24 +1286,14 @@
       }
 
       if (state.editBuildingId) {
-        const b = state.data.buildings.find((x) => x.id === state.editBuildingId);
-        if (b) {
-          b.name = name;
-          b.address = address;
-          b.groupId = groupId;
-        }
+        db.ref("buildings/" + state.editBuildingId).update({ name, address, groupId });
         showToast("Bina güncellendi.", "success");
       } else {
-        state.data.buildings.push({ id: uid(), name, address, groupId });
+        db.ref("buildings").push({ name, address, groupId });
         showToast("Bina eklendi.", "success");
       }
 
-      saveData();
       resetBuildingForm();
-      refreshAdminUI();
-      renderWorkerGroups();
-      if (state.selectedWorkerGroupId) renderWorkerBuildings(state.selectedWorkerGroupId);
-      handleSearch();
     }
 
     function deleteBuilding(id) {
@@ -1206,12 +1301,7 @@
       if (!building) return;
       if (!confirm(`"${building.name}" binası silinsin mi?`)) return;
 
-      state.data.buildings = state.data.buildings.filter((b) => b.id !== id);
-      saveData();
-      refreshAdminUI();
-      renderWorkerGroups();
-      if (state.selectedWorkerGroupId) renderWorkerBuildings(state.selectedWorkerGroupId);
-      handleSearch();
+      db.ref("buildings/" + id).remove();
       showToast("Bina silindi.", "success");
     }
 
@@ -1253,21 +1343,16 @@
       }
 
       if (state.editWorkerId) {
-        const w = state.data.workers.find((x) => x.id === state.editWorkerId);
-        if (w) {
-          w.fullName = fullName;
-          w.username = username;
-          if (password) w.password = password;
-        }
+        const updates = { fullName, username };
+        if (password) updates.password = password;
+        db.ref("workers/" + state.editWorkerId).update(updates);
         showToast("Eleman güncellendi.", "success");
       } else {
-        state.data.workers.push({ id: uid(), fullName, username, password });
+        db.ref("workers").push({ fullName, username, password });
         showToast("Eleman eklendi.", "success");
       }
 
-      saveData();
       resetWorkerForm();
-      refreshAdminUI();
     }
 
     function deleteWorker(id) {
@@ -1275,9 +1360,7 @@
       if (!worker) return;
       if (!confirm(`${worker.fullName} silinsin mi?`)) return;
 
-      state.data.workers = state.data.workers.filter((w) => w.id !== id);
-      saveData();
-      refreshAdminUI();
+      db.ref("workers/" + id).remove();
       showToast("Eleman silindi.", "success");
     }
 
@@ -1306,8 +1389,7 @@
         return;
       }
 
-      state.data.admin.password = next;
-      saveData();
+      db.ref("admin").update({ password: next });
       resetSettingsForm();
       showToast("Admin şifresi güncellendi.", "success");
     }
@@ -1367,14 +1449,7 @@
       });
     }
 
-    function init() {
-      loadData();
-      bindEvents();
-      renderGroupSelects();
-      show("loginView");
-    }
-
-    init();
+    startFirebaseListener();
   </script>
 </body>
 </html>
