@@ -476,6 +476,20 @@
     }
 
     .back-row button { width: auto; }
+
+    /* ── Utility ───────────────────────────────────── */
+    .mt-8 { margin-top: 8px; }
+    .mt-14 { margin-top: 14px; }
+    .mt-4 { margin-top: 4px; }
+    .btn-login {
+      background: linear-gradient(90deg, #0f2f69, #1a56db);
+      border: none;
+      margin-top: 4px;
+    }
+    .btn-login:hover { background: linear-gradient(90deg, #0a1f47, #1245b8); }
+    .warn-mt { margin-top: 12px; }
+    .back-pill { font-size: 14px; }
+    .back-btn { min-width: 80px; }
   </style>
 </head>
 <body>
@@ -498,8 +512,8 @@
           <button type="button" class="toggle-pass" data-target="loginPassword">Göster</button>
         </div>
       </div>
-      <button id="loginBtn" type="button" style="background:linear-gradient(90deg,#0f2f69,#1a56db);border:none;margin-top:4px;">Giriş Yap →</button>
-      <p id="loginError" class="warn hidden" style="margin-top:12px;" aria-live="polite"></p>
+      <button id="loginBtn" type="button" class="btn-login">Giriş Yap →</button>
+      <p id="loginError" class="warn hidden warn-mt" aria-live="polite"></p>
     </div>
   </section>
 
@@ -538,7 +552,7 @@
           <button id="saveGroupBtn" type="button">Grup Ekle</button>
           <button id="cancelGroupEdit" type="button" class="secondary hidden">İptal</button>
         </div>
-        <div id="groupsList" class="list" style="margin-top:14px;"></div>
+        <div id="groupsList" class="list mt-14"></div>
       </div>
 
       <div id="buildingsTab" class="card tab-panel hidden">
@@ -566,7 +580,7 @@
           <button id="saveBuildingBtn" class="btn-success" type="button">Bina Ekle</button>
           <button id="cancelBuildingEdit" type="button" class="secondary hidden">İptal</button>
         </div>
-        <div id="buildingsList" class="list" style="margin-top:14px;"></div>
+        <div id="buildingsList" class="list mt-14"></div>
       </div>
 
       <div id="workersTab" class="card tab-panel hidden">
@@ -592,8 +606,8 @@
           <button id="saveWorkerBtn" type="button">Eleman Ekle</button>
           <button id="cancelWorkerEdit" type="button" class="secondary hidden">İptal</button>
         </div>
-        <p class="muted" style="margin-top:8px;">Not: Admin kullanıcısı silinemez.</p>
-        <div id="workersList" class="list" style="margin-top:14px;"></div>
+        <p class="muted mt-8">Not: Admin kullanıcısı silinemez.</p>
+        <div id="workersList" class="list mt-14"></div>
       </div>
 
       <div id="settingsTab" class="card tab-panel hidden">
@@ -659,8 +673,8 @@
       <!-- Buildings panel (when a group is selected) -->
       <div id="workerBuildingsPanel" class="hidden">
         <div class="back-row">
-          <button id="backToGroupsBtn" class="secondary" type="button" style="min-width:80px;">← Geri</button>
-          <span id="workerSelectedGroup" class="pill" style="font-size:14px;"></span>
+          <button id="backToGroupsBtn" class="secondary back-btn" type="button">← Geri</button>
+          <span id="workerSelectedGroup" class="pill back-pill"></span>
         </div>
         <div id="workerBuildingsList"></div>
       </div>
@@ -890,8 +904,7 @@
         subtitle.textContent = `${buildingCount} bina`;
 
         const row = document.createElement("div");
-        row.className = "row";
-        row.style.marginTop = "8px";
+        row.className = "row mt-8";
         row.appendChild(buildActionButton("Düzenle", "btn-edit", () => startEditGroup(group.id)));
         row.appendChild(buildActionButton("Sil", "danger", () => deleteGroup(group.id)));
 
@@ -929,13 +942,11 @@
         addr.textContent = `📍 ${building.address}`;
 
         const grp = document.createElement("p");
-        grp.className = "muted";
-        grp.style.marginTop = "4px";
+        grp.className = "muted mt-4";
         grp.textContent = `Grup: ${group ? group.name : "-"}`;
 
         const row = document.createElement("div");
-        row.className = "row";
-        row.style.marginTop = "8px";
+        row.className = "row mt-8";
         row.appendChild(buildActionButton("Haritada Aç", "secondary", () => window.open(mapsUrl(building.address), "_blank", "noopener")));
         row.appendChild(buildActionButton("Düzenle", "btn-edit", () => startEditBuilding(building.id)));
         row.appendChild(buildActionButton("Sil", "danger", () => deleteBuilding(building.id)));
@@ -970,8 +981,7 @@
         user.textContent = `Kullanıcı adı: ${worker.username}`;
 
         const row = document.createElement("div");
-        row.className = "row";
-        row.style.marginTop = "8px";
+        row.className = "row mt-8";
         row.appendChild(buildActionButton("Düzenle", "btn-edit", () => startEditWorker(worker.id)));
         row.appendChild(buildActionButton("Sil", "danger", () => deleteWorker(worker.id)));
 
@@ -986,9 +996,7 @@
 
       if (state.data.groups.length === 0) {
         const empty = document.createElement("div");
-        empty.className = "muted";
-        empty.style.padding = "24px 0";
-        empty.style.textAlign = "center";
+        empty.className = "muted no-results";
         empty.textContent = "Gösterilecek grup yok.";
         wrap.appendChild(empty);
         return;
@@ -1006,7 +1014,12 @@
           <div class="group-card-count">${count} bina</div>
         `;
         card.addEventListener("click", () => openWorkerGroup(group.id));
-        card.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") openWorkerGroup(group.id); });
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openWorkerGroup(group.id);
+          }
+        });
         wrap.appendChild(card);
       });
     }
