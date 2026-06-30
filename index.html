@@ -3,375 +3,364 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ufuk Bakım – Asansör Bakım Sistemi</title>
+  <title>Ufuk Asansör - Bakım Takip</title>
   <style>
     :root {
-      --bg: #f0f4ff;
-      --card: #ffffff;
-      --primary: #1a56db;
-      --primary-dark: #0f2f69;
-      --primary-light: #e8efff;
-      --text: #10233f;
-      --muted: #5a6b87;
-      --success: #16a34a;
-      --success-dark: #166534;
-      --danger: #dc2626;
-      --danger-bg: #fee2e2;
-      --border: #d1daf0;
-      --shadow-sm: 0 1px 4px rgba(15,47,105,.10);
-      --shadow-md: 0 4px 16px rgba(15,47,105,.13);
-      --radius: 14px;
-      --radius-sm: 10px;
+      --primary: #1B2B5E;
+      --accent: #E8112D;
+      --bg: #F4F6FB;
+      --card: #FFFFFF;
+      --text: #1f2a44;
+      --muted: #6b7280;
+      --border: #d8dfef;
+      --success: #1f9d55;
+      --radius: 12px;
+      --shadow: 0 6px 20px rgba(27, 43, 94, 0.08);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-family: system-ui, Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
-      font-size: 16px;
-      line-height: 1.5;
+      line-height: 1.4;
       min-height: 100dvh;
     }
 
     .hidden { display: none !important; }
 
-    /* ── Login ─────────────────────────────────────── */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      border-bottom: 2px solid var(--primary);
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-square {
+      width: 56px;
+      height: 56px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      font-weight: 700;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15);
+    }
+
+    .logo-square .n2 { font-size: 18px; letter-spacing: .5px; }
+    .logo-square .uf { font-size: 11px; letter-spacing: 1.4px; margin-top: 3px; }
+
+    .logo-text {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+
+    .logo-text .ufuk { color: var(--primary); }
+    .logo-text .asansor { color: var(--accent); }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .section-title { font-size: 18px; margin-bottom: 10px; color: var(--primary); }
+
+    .field { margin-bottom: 10px; }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 16px;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+    }
+
+    select {
+      font-size: 16px;
+      font-weight: 500;
+      background-image: linear-gradient(45deg, transparent 50%, var(--primary) 50%), linear-gradient(135deg, var(--primary) 50%, transparent 50%);
+      background-position: calc(100% - 18px) calc(50% - 2px), calc(100% - 12px) calc(50% - 2px);
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+      appearance: none;
+      padding-right: 34px;
+    }
+
+    textarea { min-height: 90px; resize: vertical; }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(27, 43, 94, 0.15);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    button {
+      min-height: 48px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      padding: 10px 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1 1 130px;
+    }
+
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: #132148; }
+
+    .btn-danger { background: var(--accent); color: #fff; }
+    .btn-danger:hover { background: #bf0d25; }
+
+    .btn-edit {
+      background: #fff;
+      color: #4b5563;
+      border-color: #9ca3af;
+    }
+
+    .btn-edit:hover { background: #f9fafb; }
+
+    .btn-link {
+      background: #fff;
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .btn-login {
+      width: 100%;
+      margin-top: 8px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+    }
+
+    .btn-login:hover { background: #bf0d25; }
+
+    .header-right { display: flex; gap: 8px; align-items: center; }
+
+    .logout-btn {
+      min-height: 44px;
+      padding: 8px 12px;
+      background: #fff;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      width: auto;
+      flex: 0 0 auto;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .tab-btn {
+      min-height: 44px;
+      background: var(--primary);
+      color: #fff;
+      border: 0;
+      border-bottom: 3px solid transparent;
+      flex: 1 1 110px;
+    }
+
+    .tab-btn.active {
+      background: #fff;
+      color: var(--primary);
+      border: 1px solid var(--border);
+      border-bottom: 3px solid var(--accent);
+    }
+
+    .muted { color: var(--muted); font-size: 13px; }
+    .mt-8 { margin-top: 8px; }
+    .mt-10 { margin-top: 10px; }
+    .mb-12 { margin-bottom: 12px; }
+    .text-14 { font-size: 14px; }
+
+    .item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 8px;
+      background: #fff;
+    }
+
+    .item .title { font-weight: 700; font-size: 16px; color: var(--primary); }
+
+    .empty {
+      text-align: center;
+      padding: 24px 10px;
+      color: var(--muted);
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+    }
+
+    .empty .icon { font-size: 26px; margin-bottom: 6px; display: block; }
+
     #loginView {
       min-height: 100dvh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      background: linear-gradient(145deg, #0f2f69 0%, #1a56db 100%);
+      padding: 14px;
     }
 
-    .login-card {
-      background: var(--card);
-      border-radius: 20px;
-      padding: 36px 28px 32px;
+    .login-box {
       width: 100%;
-      max-width: 400px;
-      box-shadow: var(--shadow-md);
+      max-width: 420px;
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 18px;
     }
 
-    .login-icon {
-      font-size: 52px;
+    .login-logo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
       text-align: center;
-      line-height: 1;
-      margin-bottom: 12px;
     }
 
-    .login-title {
-      font-size: 28px;
-      font-weight: 800;
-      text-align: center;
-      color: var(--primary-dark);
-      margin-bottom: 4px;
+    .login-msg { color: var(--muted); font-size: 14px; }
+
+    .password-wrap { display: flex; gap: 8px; }
+    .password-wrap input { flex: 1; }
+    .toggle-pass {
+      min-height: 48px;
+      width: auto;
+      flex: 0 0 auto;
+      background: #fff;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      padding: 10px 12px;
     }
 
-    .login-sub {
-      text-align: center;
-      color: var(--muted);
-      font-size: 15px;
-      margin-bottom: 28px;
+    .toolbar-grid {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 1fr;
     }
 
-    /* ── Topbar ────────────────────────────────────── */
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: linear-gradient(90deg, #0f2f69 0%, #1a56db 100%);
-      color: #fff;
-      padding: 0 16px;
+    @media (min-width: 680px) {
+      .toolbar-grid { grid-template-columns: 1fr 1fr; }
+      .split-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    }
+
+    .group-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    @media (min-width: 620px) {
+      .group-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .group-card {
+      border: 1px solid var(--border);
+      border-left: 6px solid var(--primary);
+      border-radius: 12px;
+      padding: 14px;
+      background: #fff;
+      box-shadow: var(--shadow);
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      min-height: 58px;
       gap: 10px;
-      box-shadow: 0 2px 8px rgba(15,47,105,.25);
+      min-height: 72px;
     }
 
-    .topbar-left { display: flex; align-items: center; gap: 10px; }
+    .group-card-main { display: flex; align-items: center; gap: 10px; }
+    .group-card-icon { font-size: 22px; }
+    .group-card-name { font-weight: 700; color: var(--primary); }
 
-    .topbar-icon { font-size: 24px; line-height: 1; }
-
-    .topbar-title { font-size: 18px; font-weight: 700; }
-
-    .topbar-sub { font-size: 13px; opacity: .75; }
-
-    /* ── Container ─────────────────────────────────── */
-    .container {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-
-    /* ── Cards ─────────────────────────────────────── */
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    h2 { font-size: 18px; font-weight: 700; margin-bottom: 14px; }
-    h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
-    p { margin: 5px 0; }
-
-    .muted { color: var(--muted); font-size: 14px; }
-
-    /* ── Form elements ─────────────────────────────── */
-    .field { margin-bottom: 12px; }
-
-    label {
-      display: block;
-      font-weight: 600;
-      font-size: 14px;
-      margin-bottom: 6px;
-      color: var(--text);
-    }
-
-    input, select, textarea {
-      font-size: 16px;
-      border-radius: var(--radius-sm);
-      border: 1.5px solid var(--border);
-      min-height: 48px;
-      width: 100%;
-      padding: 10px 14px;
-      background: #fff;
-      color: var(--text);
-      transition: border-color .2s, box-shadow .2s;
-      outline: none;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(26,86,219,.15);
-    }
-
-    textarea { min-height: 88px; resize: vertical; }
-
-    /* ── Buttons ───────────────────────────────────── */
-    button {
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 16px;
-      font-weight: 600;
-      border-radius: var(--radius-sm);
-      border: 1.5px solid transparent;
-      min-height: 48px;
-      padding: 10px 18px;
-      width: 100%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: background .2s, box-shadow .2s, transform .1s;
+    .count-badge {
+      min-width: 32px;
+      height: 32px;
+      border-radius: 999px;
       background: var(--primary);
       color: #fff;
-    }
-
-    button:hover { background: var(--primary-dark); }
-    button:active { transform: scale(.98); }
-
-    button.btn-success {
-      background: var(--success);
-      border-color: var(--success);
-    }
-    button.btn-success:hover { background: var(--success-dark); }
-
-    button.secondary {
-      background: #fff;
-      color: var(--primary);
-      border-color: var(--border);
-    }
-    button.secondary:hover { background: var(--primary-light); border-color: var(--primary); }
-
-    button.btn-edit {
-      background: #f1f5f9;
-      color: #475569;
-      border-color: #cbd5e1;
-    }
-    button.btn-edit:hover { background: #e2e8f0; }
-
-    button.danger {
-      background: var(--danger);
-      border-color: var(--danger);
-      color: #fff;
-    }
-    button.danger:hover { background: #b91c1c; }
-
-    button.topbar-btn {
-      background: rgba(255,255,255,.15);
-      border-color: rgba(255,255,255,.35);
-      color: #fff;
-      min-height: 40px;
-      width: auto;
-      padding: 8px 16px;
-      font-size: 14px;
-    }
-    button.topbar-btn:hover { background: rgba(255,255,255,.28); }
-
-    /* ── Row ───────────────────────────────────────── */
-    .row {
       display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
       align-items: center;
-    }
-
-    .row > button { width: auto; flex: 1; min-width: 100px; }
-
-    /* ── Tabs ──────────────────────────────────────── */
-    .tabs-wrap {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      margin-bottom: 14px;
-      padding-bottom: 2px;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 4px;
-      min-width: max-content;
-    }
-
-    .tab-btn {
-      background: transparent;
-      color: rgba(255,255,255,.7);
-      border: none;
-      border-bottom: 3px solid transparent;
-      border-radius: 0;
-      min-height: 44px;
-      padding: 10px 18px;
-      font-size: 14px;
-      width: auto;
-      white-space: nowrap;
-      transition: color .2s, border-color .2s;
-    }
-
-    .tab-btn:hover { color: #fff; background: transparent; }
-
-    .tab-btn.active {
-      color: #fff;
-      border-bottom-color: #fff;
+      justify-content: center;
+      font-size: 13px;
       font-weight: 700;
-      background: transparent;
+      padding: 0 8px;
+      flex: 0 0 auto;
     }
 
-    .tabs-bar {
-      background: linear-gradient(90deg, #0f2f69 0%, #1a56db 100%);
-      padding: 0 16px;
-      position: sticky;
-      top: 58px;
-      z-index: 90;
-      box-shadow: 0 2px 6px rgba(15,47,105,.18);
-    }
-
-    /* ── Password wrap ─────────────────────────────── */
-    .password-wrap { display: flex; gap: 8px; }
-    .password-wrap input { flex: 1; }
-    .password-wrap .toggle-pass {
-      width: auto;
-      min-width: 72px;
-      padding: 10px 12px;
-      font-size: 14px;
-      background: var(--primary-light);
-      color: var(--primary);
-      border-color: var(--border);
-    }
-    .password-wrap .toggle-pass:hover { background: #d1e0ff; }
-
-    /* ── List / Item ───────────────────────────────── */
-    .list { display: grid; gap: 10px; }
-
-    .item {
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 12px 14px;
-      background: #fff;
-      transition: box-shadow .2s;
-    }
-
-    .item:hover { box-shadow: var(--shadow-sm); }
-    .item .title { font-weight: 700; margin-bottom: 4px; }
-
-    /* ── Pill ──────────────────────────────────────── */
-    .pill {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 999px;
-      background: var(--primary-light);
-      color: var(--primary);
-      font-size: 12px;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    /* ── Warn ──────────────────────────────────────── */
-    .warn {
-      color: var(--danger);
-      font-weight: 600;
-      background: var(--danger-bg);
-      border: 1px solid #fca5a5;
-      padding: 10px 14px;
-      border-radius: var(--radius-sm);
-      font-size: 14px;
-    }
-
-    /* ── Grid ──────────────────────────────────────── */
-    @media (min-width: 560px) {
-      .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    }
-
-    /* ── Worker panel ──────────────────────────────── */
-    .welcome-bar {
-      padding: 16px;
-      background: var(--primary-light);
-      border-radius: var(--radius);
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .welcome-icon { font-size: 28px; }
-
-    .welcome-name { font-size: 17px; font-weight: 700; color: var(--primary-dark); }
-
-    /* ── Search box ────────────────────────────────── */
     .search-wrap {
       position: relative;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
+    }
+
+    .search-wrap input {
+      min-height: 54px;
+      padding-left: 42px;
+      padding-right: 40px;
+      font-size: 17px;
     }
 
     .search-icon {
       position: absolute;
-      left: 16px;
+      left: 14px;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 20px;
-      pointer-events: none;
+      font-size: 18px;
       color: var(--muted);
-    }
-
-    #buildingSearch {
-      min-height: 52px;
-      padding-left: 46px;
-      padding-right: 40px;
-      font-size: 16px;
-      border-radius: 12px;
-      border: 2px solid var(--border);
-    }
-
-    #buildingSearch:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(26,86,219,.15);
+      pointer-events: none;
     }
 
     .search-clear {
@@ -379,190 +368,169 @@
       right: 10px;
       top: 50%;
       transform: translateY(-50%);
+      border: 0;
       background: none;
-      border: none;
       color: var(--muted);
-      font-size: 20px;
-      min-height: unset;
+      font-size: 22px;
       width: auto;
-      padding: 4px 6px;
-      cursor: pointer;
-      line-height: 1;
-    }
-    .search-clear:hover { color: var(--danger); background: none; }
-
-    /* ── Group grid ────────────────────────────────── */
-    .group-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      min-height: 40px;
+      flex: 0 0 auto;
+      padding: 4px 8px;
     }
 
-    @media (min-width: 640px) {
-      .group-grid { grid-template-columns: repeat(3, 1fr); }
+    .search-result-head {
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-size: 15px;
     }
 
-    .group-card {
+    .building-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
       background: #fff;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px 12px;
-      text-align: center;
-      cursor: pointer;
-      transition: border-color .2s, box-shadow .2s, background .2s;
+      box-shadow: var(--shadow);
+      margin-bottom: 10px;
+    }
+
+    .building-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .building-address {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .group-pill {
+      display: inline-block;
+      background: #e9eefb;
+      color: var(--primary);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      margin-bottom: 8px;
+    }
+
+    .back-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toast-area {
+      position: fixed;
+      top: 12px;
+      right: 12px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .group-card:hover {
-      border-color: var(--primary);
-      box-shadow: var(--shadow-sm);
-      background: var(--primary-light);
-    }
-
-    .group-card-icon { font-size: 28px; line-height: 1; }
-    .group-card-name { font-weight: 700; font-size: 15px; }
-    .group-card-count { font-size: 13px; color: var(--muted); }
-
-    /* ── Building card ─────────────────────────────── */
-    .building-card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px;
-      margin-bottom: 10px;
-      box-shadow: var(--shadow-sm);
-      transition: box-shadow .2s;
-    }
-
-    .building-card:hover { box-shadow: var(--shadow-md); }
-
-    .building-card-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
       gap: 8px;
-      margin-bottom: 6px;
+      z-index: 999;
+      pointer-events: none;
     }
 
-    .building-card-name { font-weight: 700; font-size: 16px; }
-
-    .building-card-addr {
-      color: var(--muted);
-      font-size: 14px;
-      margin-bottom: 10px;
-      display: flex;
-      gap: 6px;
-      align-items: flex-start;
+    .toast {
+      min-width: 220px;
+      max-width: 330px;
+      padding: 11px 12px;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: 700;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: .2s;
     }
 
-    .building-card-addr-icon { flex-shrink: 0; }
-
-    .no-results {
-      text-align: center;
-      padding: 32px 16px;
-      color: var(--muted);
-      font-size: 16px;
-    }
-
-    /* ── Back button ───────────────────────────────── */
-    .back-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .back-row button { width: auto; }
-
-    /* ── Utility ───────────────────────────────────── */
-    .mt-8 { margin-top: 8px; }
-    .mt-14 { margin-top: 14px; }
-    .mt-4 { margin-top: 4px; }
-    .btn-login {
-      background: linear-gradient(90deg, #0f2f69, #1a56db);
-      border: none;
-      margin-top: 4px;
-    }
-    .btn-login:hover { background: linear-gradient(90deg, #0a1f47, #1245b8); }
-    .warn-mt { margin-top: 12px; }
-    .back-pill { font-size: 14px; }
-    .back-btn { min-width: 80px; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.success { background: var(--success); }
+    .toast.error { background: var(--accent); }
   </style>
 </head>
 <body>
+  <div id="toastArea" class="toast-area" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- LOGIN VIEW -->
   <section id="loginView">
-    <div class="login-card">
-      <div class="login-icon">🛗</div>
-      <div class="login-title">Ufuk Bakım</div>
-      <div class="login-sub">Asansör Bakım Sistemi</div>
-
-      <div class="field">
-        <label for="loginUsername">Kullanıcı Adı</label>
-        <input id="loginUsername" autocomplete="username" placeholder="Kullanıcı adınızı girin" />
-      </div>
-      <div class="field">
-        <label for="loginPassword">Şifre</label>
-        <div class="password-wrap">
-          <input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••" />
-          <button type="button" class="toggle-pass" data-target="loginPassword">Göster</button>
+    <div class="login-box">
+      <div class="login-logo-wrap">
+        <div class="logo" aria-label="ufuk asansör logosu">
+          <div class="logo-square"><span class="n2">02</span><span class="uf">UFUK</span></div>
+          <div class="logo-text"><span class="ufuk">ufuk</span> <span class="asansor">asansör</span></div>
         </div>
+        <p class="login-msg">Ufuk Asansör bakım takip sistemine hoş geldiniz.</p>
       </div>
-      <button id="loginBtn" type="button" class="btn-login">Giriş Yap →</button>
-      <p id="loginError" class="warn hidden warn-mt" aria-live="polite"></p>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="loginUsername">Kullanıcı Adı</label>
+          <input id="loginUsername" autocomplete="username" placeholder="Kullanıcı adınız" />
+        </div>
+        <div class="field">
+          <label for="loginPassword">Şifre</label>
+          <div class="password-wrap">
+            <input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••" />
+            <button type="button" class="toggle-pass" data-target="loginPassword">Göster</button>
+          </div>
+        </div>
+        <button id="loginBtn" type="submit" class="btn-login">Giriş Yap</button>
+      </form>
     </div>
   </section>
 
-  <!-- ADMIN VIEW -->
   <section id="adminView" class="hidden">
-    <div class="topbar">
-      <div class="topbar-left">
-        <span class="topbar-icon">🛗</span>
-        <div>
-          <div class="topbar-title">Ufuk Bakım</div>
-          <div class="topbar-sub">Admin Paneli</div>
-        </div>
+    <header class="app-header">
+      <div class="logo" aria-label="ufuk asansör logosu">
+        <div class="logo-square"><span class="n2">02</span><span class="uf">UFUK</span></div>
+        <div class="logo-text"><span class="ufuk">ufuk</span> <span class="asansor">asansör</span></div>
       </div>
-      <button id="logoutAdmin" class="topbar-btn" type="button">Çıkış</button>
-    </div>
-
-    <div class="tabs-bar">
-      <div class="tabs-wrap">
-        <div class="tabs">
-          <button class="tab-btn active" data-tab="groupsTab" type="button">Gruplar</button>
-          <button class="tab-btn" data-tab="buildingsTab" type="button">Binalar</button>
-          <button class="tab-btn" data-tab="workersTab" type="button">Elemanlar</button>
-          <button class="tab-btn" data-tab="settingsTab" type="button">Ayarlar</button>
-        </div>
+      <div class="header-right">
+        <button id="logoutAdmin" class="logout-btn" type="button">Çıkış</button>
       </div>
-    </div>
+    </header>
 
     <div class="container">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="groupsTab" type="button">Gruplar</button>
+        <button class="tab-btn" data-tab="buildingsTab" type="button">Binalar</button>
+        <button class="tab-btn" data-tab="workersTab" type="button">Elemanlar</button>
+        <button class="tab-btn" data-tab="settingsTab" type="button">Ayarlar</button>
+      </div>
+
       <div id="groupsTab" class="card tab-panel">
-        <h2>Gruplar</h2>
+        <h2 class="section-title">Grup Yönetimi</h2>
         <div class="field">
           <label for="groupName">Grup Adı</label>
           <input id="groupName" placeholder="Örn: 3. Bölge" />
         </div>
-        <div class="row">
-          <button id="saveGroupBtn" type="button">Grup Ekle</button>
-          <button id="cancelGroupEdit" type="button" class="secondary hidden">İptal</button>
+        <div class="actions">
+          <button id="saveGroupBtn" class="btn-primary" type="button">Grup Ekle</button>
+          <button id="cancelGroupEdit" class="btn-edit hidden" type="button">İptal</button>
         </div>
-        <div id="groupsList" class="list mt-14"></div>
+        <div id="groupsList" class="mt-10"></div>
       </div>
 
       <div id="buildingsTab" class="card tab-panel hidden">
-        <h2>Binalar</h2>
-        <div class="field">
-          <label for="buildingFilter">Gruba Göre Filtre</label>
-          <select id="buildingFilter"></select>
+        <h2 class="section-title">Bina Yönetimi</h2>
+        <div class="toolbar-grid">
+          <div class="field">
+            <label for="buildingFilter">Gruba Göre Filtre</label>
+            <select id="buildingFilter"></select>
+          </div>
+          <div class="field">
+            <label for="buildingTextFilter">Metin Ara</label>
+            <input id="buildingTextFilter" placeholder="Bina adı veya adres" />
+          </div>
         </div>
 
-        <div class="grid-2">
+        <div class="split-2">
           <div class="field">
             <label for="buildingName">Bina Adı</label>
             <input id="buildingName" placeholder="Örn: Yıldız Apartmanı" />
@@ -572,47 +540,49 @@
             <select id="buildingGroup"></select>
           </div>
         </div>
+
         <div class="field">
           <label for="buildingAddress">Adres</label>
-          <textarea id="buildingAddress" placeholder="Açık adres girin"></textarea>
+          <textarea id="buildingAddress" placeholder="Açık adres"></textarea>
         </div>
-        <div class="row">
-          <button id="saveBuildingBtn" class="btn-success" type="button">Bina Ekle</button>
-          <button id="cancelBuildingEdit" type="button" class="secondary hidden">İptal</button>
+
+        <div class="actions">
+          <button id="saveBuildingBtn" class="btn-primary" type="button">Bina Ekle</button>
+          <button id="cancelBuildingEdit" class="btn-edit hidden" type="button">İptal</button>
         </div>
-        <div id="buildingsList" class="list mt-14"></div>
+        <div id="buildingsList" class="mt-10"></div>
       </div>
 
       <div id="workersTab" class="card tab-panel hidden">
-        <h2>Elemanlar</h2>
-        <div class="grid-2">
+        <h2 class="section-title">Eleman Yönetimi</h2>
+        <div class="split-2">
           <div class="field">
             <label for="workerName">Ad Soyad</label>
             <input id="workerName" placeholder="Ad Soyad" />
           </div>
           <div class="field">
             <label for="workerUsername">Kullanıcı Adı</label>
-            <input id="workerUsername" autocomplete="off" placeholder="kullanici_adi" />
+            <input id="workerUsername" placeholder="kullanici_adi" autocomplete="off" />
           </div>
         </div>
         <div class="field">
           <label for="workerPassword">Şifre</label>
           <div class="password-wrap">
-            <input id="workerPassword" type="password" autocomplete="new-password" placeholder="••••••••" />
+            <input id="workerPassword" type="password" placeholder="Yeni şifre (düzenlemede boş bırakılabilir)" autocomplete="new-password" />
             <button type="button" class="toggle-pass" data-target="workerPassword">Göster</button>
           </div>
         </div>
-        <div class="row">
-          <button id="saveWorkerBtn" type="button">Eleman Ekle</button>
-          <button id="cancelWorkerEdit" type="button" class="secondary hidden">İptal</button>
+
+        <div class="actions">
+          <button id="saveWorkerBtn" class="btn-primary" type="button">Eleman Ekle</button>
+          <button id="cancelWorkerEdit" class="btn-edit hidden" type="button">İptal</button>
         </div>
-        <p class="muted mt-8">Not: Admin kullanıcısı silinemez.</p>
-        <div id="workersList" class="list mt-14"></div>
+        <p class="muted mt-8">Not: Düzenlerken şifreyi boş bırakabilirsiniz, eski şifre korunur.</p>
+        <div id="workersList" class="mt-10"></div>
       </div>
 
       <div id="settingsTab" class="card tab-panel hidden">
-        <h2>Ayarlar</h2>
-        <h3>Admin Şifresi Değiştir</h3>
+        <h2 class="section-title">Admin Şifre Değiştirme</h2>
         <div class="field">
           <label for="currentAdminPassword">Mevcut Şifre</label>
           <div class="password-wrap">
@@ -634,47 +604,46 @@
             <button type="button" class="toggle-pass" data-target="confirmAdminPassword">Göster</button>
           </div>
         </div>
-        <button id="changeAdminPasswordBtn" type="button">Şifreyi Güncelle</button>
+        <button id="changeAdminPasswordBtn" class="btn-primary" type="button">Şifreyi Güncelle</button>
       </div>
     </div>
   </section>
 
-  <!-- WORKER VIEW -->
   <section id="workerView" class="hidden">
-    <div class="topbar">
-      <div class="topbar-left">
-        <span class="topbar-icon">🛗</span>
-        <div>
-          <div class="topbar-title">Ufuk Bakım</div>
-          <div class="topbar-sub" id="workerWelcome"></div>
-        </div>
+    <header class="app-header">
+      <div class="logo" aria-label="ufuk asansör logosu">
+        <div class="logo-square"><span class="n2">02</span><span class="uf">UFUK</span></div>
+        <div class="logo-text"><span class="ufuk">ufuk</span> <span class="asansor">asansör</span></div>
       </div>
-      <button id="logoutWorker" class="topbar-btn" type="button">Çıkış</button>
-    </div>
+      <div class="header-right">
+        <button id="logoutWorker" class="logout-btn" type="button">Çıkış</button>
+      </div>
+    </header>
 
     <div class="container">
-      <!-- Search box (always visible in worker panel) -->
-      <div class="search-wrap">
-        <span class="search-icon">🔍</span>
-        <input id="buildingSearch" type="search" placeholder="Bina adı veya adres ara..." autocomplete="off" />
-        <button type="button" class="search-clear hidden" id="searchClearBtn" aria-label="Aramayı temizle">✕</button>
+      <div class="card mb-12">
+        <p id="workerWelcome" class="muted text-14"></p>
       </div>
 
-      <!-- Search results panel -->
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input id="buildingSearch" type="search" placeholder="Bina ara..." autocomplete="off" />
+        <button type="button" id="searchClearBtn" class="search-clear hidden" aria-label="Aramayı temizle">×</button>
+      </div>
+
       <div id="searchResultsPanel" class="hidden">
+        <p class="search-result-head">Arama Sonuçları</p>
         <div id="searchResultsList"></div>
       </div>
 
-      <!-- Groups panel -->
       <div id="workerGroupsPanel">
         <div id="workerGroupsList" class="group-grid"></div>
       </div>
 
-      <!-- Buildings panel (when a group is selected) -->
       <div id="workerBuildingsPanel" class="hidden">
-        <div class="back-row">
-          <button id="backToGroupsBtn" class="secondary back-btn" type="button">← Geri</button>
-          <span id="workerSelectedGroup" class="pill back-pill"></span>
+        <div class="back-wrap">
+          <button id="backToGroupsBtn" class="btn-edit" type="button">← Gruplara Dön</button>
+          <span id="workerSelectedGroup" class="group-pill"></span>
         </div>
         <div id="workerBuildingsList"></div>
       </div>
@@ -694,13 +663,42 @@
     };
 
     let idCounter = 0;
-    const uid = () => {
-      if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
-        return crypto.randomUUID();
-      }
+
+    function uid() {
+      if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") return crypto.randomUUID();
       idCounter += 1;
       return `${Date.now().toString(36)}-${idCounter.toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
-    };
+    }
+
+    function $(id) { return document.getElementById(id); }
+
+    function showToast(message, type = "success") {
+      const area = $("toastArea");
+      const toast = document.createElement("div");
+      toast.className = `toast ${type}`;
+      toast.textContent = message;
+      area.appendChild(toast);
+      requestAnimationFrame(() => toast.classList.add("show"));
+      setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => toast.remove(), 200);
+      }, 2400);
+    }
+
+    function clearInputs(...ids) {
+      ids.forEach((id) => {
+        const el = $(id);
+        if (el) el.value = "";
+      });
+    }
+
+    function mapsUrl(address) {
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+    }
+
+    function saveData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
+    }
 
     function loadData() {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -719,8 +717,7 @@
           { id: uid(), groupId: g1.id, name: "Mavi Konak", address: "Caferağa Mah. Moda Cad. No:22 Kadıköy/İstanbul" },
           { id: uid(), groupId: g1.id, name: "Yıldız Apartmanı", address: "Koşuyolu Mah. Lambacı Sok. No:14 Kadıköy/İstanbul" },
           { id: uid(), groupId: g2.id, name: "İnci Plaza", address: "Mecidiyeköy Mah. Büyükdere Cad. No:91 Şişli/İstanbul" },
-          { id: uid(), groupId: g2.id, name: "Güneş Sitesi", address: "Gayrettepe Mah. Yıldız Posta Cad. No:37 Beşiktaş/İstanbul" },
-          { id: uid(), groupId: g2.id, name: "Sahil Apart", address: "Muratreis Mah. Cumhuriyet Cad. No:58 Üsküdar/İstanbul" }
+          { id: uid(), groupId: g2.id, name: "Güneş Sitesi", address: "Gayrettepe Mah. Yıldız Posta Cad. No:37 Beşiktaş/İstanbul" }
         ],
         workers: [
           { id: uid(), fullName: "Örnek Eleman", username: "eleman1", password: "1234" }
@@ -730,117 +727,18 @@
       saveData();
     }
 
-    function saveData() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
-    }
-
-    function $(id) { return document.getElementById(id); }
-
-    function clearInputs(...ids) {
-      ids.forEach((id) => { $(id).value = ""; });
-    }
-
     function show(viewId) {
       ["loginView", "adminView", "workerView"].forEach((id) => $(id).classList.add("hidden"));
       $(viewId).classList.remove("hidden");
     }
 
-    function buildActionButton(text, className, onClick) {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.textContent = text;
-      if (className) button.className = className;
-      button.addEventListener("click", onClick);
-      return button;
+    function buildEmpty(text) {
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.innerHTML = `<span class="icon">📭</span>${text}`;
+      return empty;
     }
 
-    function mapsUrl(address) {
-      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
-    }
-
-    /* ── Building card builder (shared between search results and group view) ── */
-    function buildBuildingCard(building, groupName, showGroupPill) {
-      const card = document.createElement("div");
-      card.className = "building-card";
-
-      const header = document.createElement("div");
-      header.className = "building-card-header";
-
-      const nameEl = document.createElement("div");
-      nameEl.className = "building-card-name";
-      nameEl.textContent = `🏢 ${building.name}`;
-
-      header.appendChild(nameEl);
-
-      if (showGroupPill && groupName) {
-        const pill = document.createElement("span");
-        pill.className = "pill";
-        pill.textContent = groupName;
-        header.appendChild(pill);
-      }
-
-      const addrEl = document.createElement("div");
-      addrEl.className = "building-card-addr";
-      addrEl.innerHTML = `<span class="building-card-addr-icon">📍</span><span>${building.address}</span>`;
-
-      const mapBtn = buildActionButton("🗺️ Haritada Aç", "btn-success", () => {
-        window.open(mapsUrl(building.address), "_blank", "noopener");
-      });
-
-      card.append(header, addrEl, mapBtn);
-      return card;
-    }
-
-    /* ── Search ──────────────────────────────────────────────────────────────── */
-    function handleSearch() {
-      const query = $("buildingSearch").value.trim().toLowerCase();
-      const clearBtn = $("searchClearBtn");
-
-      clearBtn.classList.toggle("hidden", query === "");
-
-      if (query === "") {
-        $("searchResultsPanel").classList.add("hidden");
-        $("workerGroupsPanel").classList.remove("hidden");
-        $("workerBuildingsPanel").classList.add("hidden");
-        state.selectedWorkerGroupId = null;
-        return;
-      }
-
-      $("workerGroupsPanel").classList.add("hidden");
-      $("workerBuildingsPanel").classList.add("hidden");
-      $("searchResultsPanel").classList.remove("hidden");
-
-      const matches = state.data.buildings.filter((b) =>
-        b.name.toLowerCase().includes(query) || b.address.toLowerCase().includes(query)
-      );
-
-      const wrap = $("searchResultsList");
-      wrap.innerHTML = "";
-
-      if (matches.length === 0) {
-        const msg = document.createElement("div");
-        msg.className = "no-results";
-        msg.textContent = "Bina bulunamadı 🔍";
-        wrap.appendChild(msg);
-        return;
-      }
-
-      matches.forEach((building) => {
-        const group = state.data.groups.find((g) => g.id === building.groupId);
-        wrap.appendChild(buildBuildingCard(building, group ? group.name : null, true));
-      });
-    }
-
-    function clearSearch() {
-      $("buildingSearch").value = "";
-      $("searchClearBtn").classList.add("hidden");
-      $("searchResultsPanel").classList.add("hidden");
-      $("workerGroupsPanel").classList.remove("hidden");
-      $("workerBuildingsPanel").classList.add("hidden");
-      state.selectedWorkerGroupId = null;
-    }
-
-    /* ── Render ──────────────────────────────────────────────────────────────── */
     function renderGroupSelects() {
       const groupSelect = $("buildingGroup");
       const filterSelect = $("buildingFilter");
@@ -850,10 +748,10 @@
       groupSelect.innerHTML = "";
       filterSelect.innerHTML = "";
 
-      const filterAll = document.createElement("option");
-      filterAll.value = "all";
-      filterAll.textContent = "Tüm Gruplar";
-      filterSelect.appendChild(filterAll);
+      const allOpt = document.createElement("option");
+      allOpt.value = "all";
+      allOpt.textContent = "Tüm Gruplar";
+      filterSelect.appendChild(allOpt);
 
       state.data.groups.forEach((group) => {
         const opt1 = document.createElement("option");
@@ -867,7 +765,7 @@
         filterSelect.appendChild(opt2);
       });
 
-      if (state.data.groups.length === 0) {
+      if (!state.data.groups.length) {
         const empty = document.createElement("option");
         empty.value = "";
         empty.textContent = "Önce grup ekleyin";
@@ -878,20 +776,52 @@
       filterSelect.value = Array.from(filterSelect.options).some((o) => o.value === prevFilter) ? prevFilter : "all";
     }
 
+    function buildActionButton(text, className, onClick) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = text;
+      btn.className = className;
+      btn.addEventListener("click", onClick);
+      return btn;
+    }
+
+    function buildBuildingCard(building, groupName = "", showGroup = false) {
+      const card = document.createElement("div");
+      card.className = "building-card";
+
+      const name = document.createElement("div");
+      name.className = "building-name";
+      name.textContent = building.name;
+
+      const address = document.createElement("div");
+      address.className = "building-address";
+      address.textContent = building.address;
+
+      card.appendChild(name);
+
+      if (showGroup && groupName) {
+        const pill = document.createElement("span");
+        pill.className = "group-pill";
+        pill.textContent = `Grup: ${groupName}`;
+        card.appendChild(pill);
+      }
+
+      card.appendChild(address);
+      card.appendChild(buildActionButton("Haritada Aç", "btn-danger", () => window.open(mapsUrl(building.address), "_blank", "noopener")));
+      return card;
+    }
+
     function renderGroups() {
       const wrap = $("groupsList");
       wrap.innerHTML = "";
 
-      if (state.data.groups.length === 0) {
-        const empty = document.createElement("div");
-        empty.className = "item muted";
-        empty.textContent = "Henüz grup yok.";
-        wrap.appendChild(empty);
+      if (!state.data.groups.length) {
+        wrap.appendChild(buildEmpty("Henüz kayıt yok"));
         return;
       }
 
       state.data.groups.forEach((group) => {
-        const buildingCount = state.data.buildings.filter((b) => b.groupId === group.id).length;
+        const count = state.data.buildings.filter((b) => b.groupId === group.id).length;
         const item = document.createElement("div");
         item.className = "item";
 
@@ -899,33 +829,36 @@
         title.className = "title";
         title.textContent = group.name;
 
-        const subtitle = document.createElement("p");
-        subtitle.className = "muted";
-        subtitle.textContent = `${buildingCount} bina`;
+        const sub = document.createElement("p");
+        sub.className = "muted";
+        sub.textContent = `${count} bina`;
 
-        const row = document.createElement("div");
-        row.className = "row mt-8";
-        row.appendChild(buildActionButton("Düzenle", "btn-edit", () => startEditGroup(group.id)));
-        row.appendChild(buildActionButton("Sil", "danger", () => deleteGroup(group.id)));
+        const actions = document.createElement("div");
+        actions.className = "actions";
+        actions.appendChild(buildActionButton("Düzenle", "btn-edit", () => startEditGroup(group.id)));
+        actions.appendChild(buildActionButton("Sil", "btn-danger", () => deleteGroup(group.id)));
 
-        item.append(title, subtitle, row);
+        item.append(title, sub, actions);
         wrap.appendChild(item);
       });
     }
 
     function renderBuildings() {
       renderGroupSelects();
+
       const wrap = $("buildingsList");
       wrap.innerHTML = "";
+      const groupFilter = $("buildingFilter").value;
+      const textFilter = $("buildingTextFilter").value.trim().toLowerCase();
 
-      const filter = $("buildingFilter").value;
-      const buildings = state.data.buildings.filter((b) => filter === "all" || b.groupId === filter);
+      const buildings = state.data.buildings.filter((b) => {
+        const passGroup = groupFilter === "all" || b.groupId === groupFilter;
+        const passText = !textFilter || b.name.toLowerCase().includes(textFilter) || b.address.toLowerCase().includes(textFilter);
+        return passGroup && passText;
+      });
 
-      if (buildings.length === 0) {
-        const empty = document.createElement("div");
-        empty.className = "item muted";
-        empty.textContent = "Bu filtrede bina yok.";
-        wrap.appendChild(empty);
+      if (!buildings.length) {
+        wrap.appendChild(buildEmpty("Henüz kayıt yok"));
         return;
       }
 
@@ -939,19 +872,21 @@
         title.textContent = building.name;
 
         const addr = document.createElement("p");
-        addr.textContent = `📍 ${building.address}`;
+        addr.className = "muted";
+        addr.textContent = building.address;
 
         const grp = document.createElement("p");
-        grp.className = "muted mt-4";
+        grp.className = "muted";
+        grp.style.marginTop = "4px";
         grp.textContent = `Grup: ${group ? group.name : "-"}`;
 
-        const row = document.createElement("div");
-        row.className = "row mt-8";
-        row.appendChild(buildActionButton("Haritada Aç", "secondary", () => window.open(mapsUrl(building.address), "_blank", "noopener")));
-        row.appendChild(buildActionButton("Düzenle", "btn-edit", () => startEditBuilding(building.id)));
-        row.appendChild(buildActionButton("Sil", "danger", () => deleteBuilding(building.id)));
+        const actions = document.createElement("div");
+        actions.className = "actions";
+        actions.appendChild(buildActionButton("Haritada Aç", "btn-danger", () => window.open(mapsUrl(building.address), "_blank", "noopener")));
+        actions.appendChild(buildActionButton("Düzenle", "btn-edit", () => startEditBuilding(building.id)));
+        actions.appendChild(buildActionButton("Sil", "btn-danger", () => deleteBuilding(building.id)));
 
-        item.append(title, addr, grp, row);
+        item.append(title, addr, grp, actions);
         wrap.appendChild(item);
       });
     }
@@ -960,11 +895,8 @@
       const wrap = $("workersList");
       wrap.innerHTML = "";
 
-      if (state.data.workers.length === 0) {
-        const empty = document.createElement("div");
-        empty.className = "item muted";
-        empty.textContent = "Henüz eleman yok.";
-        wrap.appendChild(empty);
+      if (!state.data.workers.length) {
+        wrap.appendChild(buildEmpty("Henüz kayıt yok"));
         return;
       }
 
@@ -980,12 +912,12 @@
         user.className = "muted";
         user.textContent = `Kullanıcı adı: ${worker.username}`;
 
-        const row = document.createElement("div");
-        row.className = "row mt-8";
-        row.appendChild(buildActionButton("Düzenle", "btn-edit", () => startEditWorker(worker.id)));
-        row.appendChild(buildActionButton("Sil", "danger", () => deleteWorker(worker.id)));
+        const actions = document.createElement("div");
+        actions.className = "actions";
+        actions.appendChild(buildActionButton("Düzenle", "btn-edit", () => startEditWorker(worker.id)));
+        actions.appendChild(buildActionButton("Sil", "btn-danger", () => deleteWorker(worker.id)));
 
-        item.append(title, user, row);
+        item.append(title, user, actions);
         wrap.appendChild(item);
       });
     }
@@ -994,11 +926,8 @@
       const wrap = $("workerGroupsList");
       wrap.innerHTML = "";
 
-      if (state.data.groups.length === 0) {
-        const empty = document.createElement("div");
-        empty.className = "muted no-results";
-        empty.textContent = "Gösterilecek grup yok.";
-        wrap.appendChild(empty);
+      if (!state.data.groups.length) {
+        wrap.appendChild(buildEmpty("Henüz kayıt yok"));
         return;
       }
 
@@ -1009,9 +938,11 @@
         card.setAttribute("role", "button");
         card.setAttribute("tabindex", "0");
         card.innerHTML = `
-          <div class="group-card-icon">🏢</div>
-          <div class="group-card-name">${group.name}</div>
-          <div class="group-card-count">${count} bina</div>
+          <div class="group-card-main">
+            <span class="group-card-icon">🏢</span>
+            <span class="group-card-name">${group.name}</span>
+          </div>
+          <span class="count-badge">${count}</span>
         `;
         card.addEventListener("click", () => openWorkerGroup(group.id));
         card.addEventListener("keydown", (e) => {
@@ -1027,21 +958,61 @@
     function renderWorkerBuildings(groupId) {
       const group = state.data.groups.find((g) => g.id === groupId);
       $("workerSelectedGroup").textContent = group ? group.name : "";
+
       const wrap = $("workerBuildingsList");
       wrap.innerHTML = "";
 
       const buildings = state.data.buildings.filter((b) => b.groupId === groupId);
-      if (buildings.length === 0) {
-        const empty = document.createElement("div");
-        empty.className = "no-results";
-        empty.textContent = "Bu grupta bina yok.";
-        wrap.appendChild(empty);
+      if (!buildings.length) {
+        wrap.appendChild(buildEmpty("Henüz kayıt yok"));
         return;
       }
 
-      buildings.forEach((building) => {
-        wrap.appendChild(buildBuildingCard(building, null, false));
+      buildings.forEach((building) => wrap.appendChild(buildBuildingCard(building)));
+    }
+
+    function handleSearch() {
+      const query = $("buildingSearch").value.trim().toLowerCase();
+      $("searchClearBtn").classList.toggle("hidden", !query);
+
+      if (!query) {
+        $("searchResultsPanel").classList.add("hidden");
+        $("workerGroupsPanel").classList.remove("hidden");
+        $("workerBuildingsPanel").classList.add("hidden");
+        state.selectedWorkerGroupId = null;
+        return;
+      }
+
+      $("workerGroupsPanel").classList.add("hidden");
+      $("workerBuildingsPanel").classList.add("hidden");
+      $("searchResultsPanel").classList.remove("hidden");
+
+      const resultWrap = $("searchResultsList");
+      resultWrap.innerHTML = "";
+
+      const matches = state.data.buildings.filter((b) => b.name.toLowerCase().includes(query) || b.address.toLowerCase().includes(query));
+
+      if (!matches.length) {
+        const noRes = document.createElement("div");
+        noRes.className = "empty";
+        noRes.innerHTML = `<span class="icon">🔎</span>Sonuç bulunamadı`;
+        resultWrap.appendChild(noRes);
+        return;
+      }
+
+      matches.forEach((building) => {
+        const group = state.data.groups.find((g) => g.id === building.groupId);
+        resultWrap.appendChild(buildBuildingCard(building, group ? group.name : "-", true));
       });
+    }
+
+    function clearSearch() {
+      $("buildingSearch").value = "";
+      state.selectedWorkerGroupId = null;
+      $("searchClearBtn").classList.add("hidden");
+      $("searchResultsPanel").classList.add("hidden");
+      $("workerBuildingsPanel").classList.add("hidden");
+      $("workerGroupsPanel").classList.remove("hidden");
     }
 
     function refreshAdminUI() {
@@ -1050,34 +1021,60 @@
       renderWorkers();
     }
 
-    function setTab(tabId) {
-      document.querySelectorAll(".tab-btn").forEach((btn) => {
-        btn.classList.toggle("active", btn.dataset.tab === tabId);
-      });
-      document.querySelectorAll(".tab-panel").forEach((panel) => {
-        panel.classList.toggle("hidden", panel.id !== tabId);
-      });
+    function resetGroupForm() {
+      state.editGroupId = null;
+      $("groupName").value = "";
+      $("saveGroupBtn").textContent = "Grup Ekle";
+      $("cancelGroupEdit").classList.add("hidden");
     }
 
-    /* ── Auth ────────────────────────────────────────────────────────────────── */
+    function resetBuildingForm() {
+      state.editBuildingId = null;
+      clearInputs("buildingName", "buildingAddress");
+      $("saveBuildingBtn").textContent = "Bina Ekle";
+      $("cancelBuildingEdit").classList.add("hidden");
+    }
+
+    function resetWorkerForm() {
+      state.editWorkerId = null;
+      clearInputs("workerName", "workerUsername", "workerPassword");
+      $("saveWorkerBtn").textContent = "Eleman Ekle";
+      $("cancelWorkerEdit").classList.add("hidden");
+    }
+
+    function resetSettingsForm() {
+      clearInputs("currentAdminPassword", "newAdminPassword", "confirmAdminPassword");
+    }
+
+    function resetAdminForms() {
+      resetGroupForm();
+      resetBuildingForm();
+      resetWorkerForm();
+      resetSettingsForm();
+    }
+
+    function setTab(tabId) {
+      resetAdminForms();
+      document.querySelectorAll(".tab-btn").forEach((btn) => btn.classList.toggle("active", btn.dataset.tab === tabId));
+      document.querySelectorAll(".tab-panel").forEach((panel) => panel.classList.toggle("hidden", panel.id !== tabId));
+    }
+
     function login() {
       const username = $("loginUsername").value.trim();
       const password = $("loginPassword").value;
-      const errorBox = $("loginError");
-      errorBox.classList.add("hidden");
 
       if (!username || !password) {
-        errorBox.textContent = "Kullanıcı adı ve şifre zorunludur.";
-        errorBox.classList.remove("hidden");
+        showToast("Kullanıcı adı ve şifre zorunludur.", "error");
         return;
       }
 
       if (username === state.data.admin.username && password === state.data.admin.password) {
         state.currentUser = { role: "admin", username, fullName: state.data.admin.fullName };
         clearInputs("loginUsername", "loginPassword");
-        show("adminView");
-        setTab("groupsTab");
         refreshAdminUI();
+        setTab("groupsTab");
+        show("adminView");
+        showToast("Admin girişi başarılı.", "success");
         return;
       }
 
@@ -1085,24 +1082,24 @@
       if (worker) {
         state.currentUser = { role: "worker", id: worker.id, username: worker.username, fullName: worker.fullName };
         clearInputs("loginUsername", "loginPassword");
-        $("workerWelcome").textContent = `Hoşgeldin, ${worker.fullName}`;
-        clearSearch();
+        $("workerWelcome").textContent = `Hoş geldin, ${worker.fullName}`;
         renderWorkerGroups();
+        clearSearch();
         show("workerView");
+        showToast("Giriş başarılı.", "success");
         return;
       }
 
-      errorBox.textContent = "Kullanıcı adı veya şifre hatalı.";
-      errorBox.classList.remove("hidden");
+      showToast("Kullanıcı adı veya şifre hatalı.", "error");
     }
 
     function logout() {
       state.currentUser = null;
       state.selectedWorkerGroupId = null;
+      clearSearch();
       show("loginView");
     }
 
-    /* ── Group CRUD ──────────────────────────────────────────────────────────── */
     function startEditGroup(id) {
       const group = state.data.groups.find((g) => g.id === id);
       if (!group) return;
@@ -1112,29 +1109,30 @@
       $("cancelGroupEdit").classList.remove("hidden");
     }
 
-    function cancelEditGroup() {
-      state.editGroupId = null;
-      $("groupName").value = "";
-      $("saveGroupBtn").textContent = "Grup Ekle";
-      $("cancelGroupEdit").classList.add("hidden");
-    }
-
     function saveGroup() {
       const name = $("groupName").value.trim();
-      if (!name) return alert("Grup adı zorunludur.");
+      if (!name) {
+        showToast("Grup adı zorunludur.", "error");
+        return;
+      }
 
       const duplicate = state.data.groups.find((g) => g.name.toLowerCase() === name.toLowerCase() && g.id !== state.editGroupId);
-      if (duplicate) return alert("Bu grup adı zaten var.");
+      if (duplicate) {
+        showToast("Bu grup adı zaten var.", "error");
+        return;
+      }
 
       if (state.editGroupId) {
-        const group = state.data.groups.find((g) => g.id === state.editGroupId);
-        if (group) group.name = name;
+        const g = state.data.groups.find((x) => x.id === state.editGroupId);
+        if (g) g.name = name;
+        showToast("Grup güncellendi.", "success");
       } else {
         state.data.groups.push({ id: uid(), name });
+        showToast("Grup eklendi.", "success");
       }
 
       saveData();
-      cancelEditGroup();
+      resetGroupForm();
       refreshAdminUI();
       renderWorkerGroups();
     }
@@ -1142,42 +1140,29 @@
     function deleteGroup(id) {
       const group = state.data.groups.find((g) => g.id === id);
       if (!group) return;
-
-      const buildingCount = state.data.buildings.filter((b) => b.groupId === id).length;
-      const confirmed = confirm(`"${group.name}" grubu silinsin mi?\nBu işlem geri alınamaz.\nBu gruptaki ${buildingCount} bina da silinecek.`);
-      if (!confirmed) return;
+      if (!confirm(`"${group.name}" grubu silinsin mi? Bu gruptaki binalar da silinecek.`)) return;
 
       state.data.groups = state.data.groups.filter((g) => g.id !== id);
       state.data.buildings = state.data.buildings.filter((b) => b.groupId !== id);
-
-      if (state.selectedWorkerGroupId === id) {
-        $("workerGroupsPanel").classList.remove("hidden");
-        $("workerBuildingsPanel").classList.add("hidden");
-        state.selectedWorkerGroupId = null;
-      }
+      if (state.selectedWorkerGroupId === id) state.selectedWorkerGroupId = null;
 
       saveData();
       refreshAdminUI();
       renderWorkerGroups();
+      clearSearch();
+      showToast("Grup ve bağlı binalar silindi.", "success");
     }
 
-    /* ── Building CRUD ───────────────────────────────────────────────────────── */
     function startEditBuilding(id) {
-      const b = state.data.buildings.find((x) => x.id === id);
-      if (!b) return;
+      const building = state.data.buildings.find((b) => b.id === id);
+      if (!building) return;
+
       state.editBuildingId = id;
-      $("buildingName").value = b.name;
-      $("buildingAddress").value = b.address;
-      $("buildingGroup").value = b.groupId;
+      $("buildingName").value = building.name;
+      $("buildingAddress").value = building.address;
+      $("buildingGroup").value = building.groupId;
       $("saveBuildingBtn").textContent = "Binayı Güncelle";
       $("cancelBuildingEdit").classList.remove("hidden");
-    }
-
-    function cancelEditBuilding() {
-      state.editBuildingId = null;
-      clearInputs("buildingName", "buildingAddress");
-      $("saveBuildingBtn").textContent = "Bina Ekle";
-      $("cancelBuildingEdit").classList.add("hidden");
     }
 
     function saveBuilding() {
@@ -1185,8 +1170,15 @@
       const address = $("buildingAddress").value.trim();
       const groupId = $("buildingGroup").value;
 
-      if (!name || !address || !groupId) return alert("Bina adı, adres ve grup zorunludur.");
-      if (!state.data.groups.find((g) => g.id === groupId)) return alert("Geçerli bir grup seçin.");
+      if (!name || !address || !groupId) {
+        showToast("Bina adı, adres ve grup zorunludur.", "error");
+        return;
+      }
+
+      if (!state.data.groups.find((g) => g.id === groupId)) {
+        showToast("Geçerli bir grup seçin.", "error");
+        return;
+      }
 
       if (state.editBuildingId) {
         const b = state.data.buildings.find((x) => x.id === state.editBuildingId);
@@ -1195,50 +1187,49 @@
           b.address = address;
           b.groupId = groupId;
         }
+        showToast("Bina güncellendi.", "success");
       } else {
         state.data.buildings.push({ id: uid(), name, address, groupId });
+        showToast("Bina eklendi.", "success");
       }
 
       saveData();
-      cancelEditBuilding();
+      resetBuildingForm();
       refreshAdminUI();
       renderWorkerGroups();
       if (state.selectedWorkerGroupId) renderWorkerBuildings(state.selectedWorkerGroupId);
+      handleSearch();
     }
 
     function deleteBuilding(id) {
-      const b = state.data.buildings.find((x) => x.id === id);
-      if (!b) return;
-      if (!confirm(`"${b.name}" binası silinsin mi?`)) return;
-      state.data.buildings = state.data.buildings.filter((x) => x.id !== id);
+      const building = state.data.buildings.find((b) => b.id === id);
+      if (!building) return;
+      if (!confirm(`"${building.name}" binası silinsin mi?`)) return;
+
+      state.data.buildings = state.data.buildings.filter((b) => b.id !== id);
       saveData();
       refreshAdminUI();
       renderWorkerGroups();
       if (state.selectedWorkerGroupId) renderWorkerBuildings(state.selectedWorkerGroupId);
+      handleSearch();
+      showToast("Bina silindi.", "success");
     }
 
-    /* ── Worker CRUD ─────────────────────────────────────────────────────────── */
     function startEditWorker(id) {
-      const w = state.data.workers.find((x) => x.id === id);
-      if (!w) return;
+      const worker = state.data.workers.find((w) => w.id === id);
+      if (!worker) return;
+
       state.editWorkerId = id;
-      $("workerName").value = w.fullName;
-      $("workerUsername").value = w.username;
-      $("workerPassword").value = w.password;
+      $("workerName").value = worker.fullName;
+      $("workerUsername").value = worker.username;
+      $("workerPassword").value = "";
       $("saveWorkerBtn").textContent = "Elemanı Güncelle";
       $("cancelWorkerEdit").classList.remove("hidden");
     }
 
-    function cancelEditWorker() {
-      state.editWorkerId = null;
-      clearInputs("workerName", "workerUsername", "workerPassword");
-      $("saveWorkerBtn").textContent = "Eleman Ekle";
-      $("cancelWorkerEdit").classList.add("hidden");
-    }
-
-    function isUsernameTaken(username, excludeWorkerId = null) {
+    function isUsernameTaken(username, excludeId = null) {
       if (username === state.data.admin.username) return true;
-      return state.data.workers.some((w) => w.username === username && w.id !== excludeWorkerId);
+      return state.data.workers.some((w) => w.username === username && w.id !== excludeId);
     }
 
     function saveWorker() {
@@ -1246,89 +1237,121 @@
       const username = $("workerUsername").value.trim();
       const password = $("workerPassword").value;
 
-      if (!fullName || !username || !password) return alert("Ad soyad, kullanıcı adı ve şifre zorunludur.");
-      if (isUsernameTaken(username, state.editWorkerId)) return alert("Bu kullanıcı adı zaten kullanılıyor.");
+      if (!fullName || !username) {
+        showToast("Ad soyad ve kullanıcı adı zorunludur.", "error");
+        return;
+      }
+
+      if (!state.editWorkerId && !password) {
+        showToast("Yeni eleman için şifre zorunludur.", "error");
+        return;
+      }
+
+      if (isUsernameTaken(username, state.editWorkerId)) {
+        showToast("Bu kullanıcı adı zaten kullanılıyor.", "error");
+        return;
+      }
 
       if (state.editWorkerId) {
         const w = state.data.workers.find((x) => x.id === state.editWorkerId);
         if (w) {
           w.fullName = fullName;
           w.username = username;
-          w.password = password;
+          if (password) w.password = password;
         }
+        showToast("Eleman güncellendi.", "success");
       } else {
         state.data.workers.push({ id: uid(), fullName, username, password });
+        showToast("Eleman eklendi.", "success");
       }
 
       saveData();
-      cancelEditWorker();
+      resetWorkerForm();
       refreshAdminUI();
     }
 
     function deleteWorker(id) {
-      const w = state.data.workers.find((x) => x.id === id);
-      if (!w) return;
-      if (!confirm(`${w.fullName} silinsin mi?`)) return;
-      state.data.workers = state.data.workers.filter((x) => x.id !== id);
+      const worker = state.data.workers.find((w) => w.id === id);
+      if (!worker) return;
+      if (!confirm(`${worker.fullName} silinsin mi?`)) return;
+
+      state.data.workers = state.data.workers.filter((w) => w.id !== id);
       saveData();
       refreshAdminUI();
+      showToast("Eleman silindi.", "success");
     }
 
-    /* ── Settings ────────────────────────────────────────────────────────────── */
     function changeAdminPassword() {
       const current = $("currentAdminPassword").value;
       const next = $("newAdminPassword").value;
       const confirmNext = $("confirmAdminPassword").value;
 
-      if (!current || !next || !confirmNext) return alert("Tüm alanları doldurun.");
-      if (current !== state.data.admin.password) return alert("Mevcut şifre yanlış.");
-      if (next.length < 4) return alert("Yeni şifre en az 4 karakter olmalı.");
-      if (next !== confirmNext) return alert("Yeni şifreler eşleşmiyor.");
+      if (!current || !next || !confirmNext) {
+        showToast("Tüm alanları doldurun.", "error");
+        return;
+      }
+
+      if (current !== state.data.admin.password) {
+        showToast("Mevcut şifre yanlış.", "error");
+        return;
+      }
+
+      if (next.length < 4) {
+        showToast("Yeni şifre en az 4 karakter olmalı.", "error");
+        return;
+      }
+
+      if (next !== confirmNext) {
+        showToast("Yeni şifreler eşleşmiyor.", "error");
+        return;
+      }
 
       state.data.admin.password = next;
       saveData();
-      clearInputs("currentAdminPassword", "newAdminPassword", "confirmAdminPassword");
-      alert("Admin şifresi güncellendi.");
+      resetSettingsForm();
+      showToast("Admin şifresi güncellendi.", "success");
     }
 
-    /* ── Worker nav ──────────────────────────────────────────────────────────── */
     function openWorkerGroup(groupId) {
       state.selectedWorkerGroupId = groupId;
       renderWorkerBuildings(groupId);
       $("workerGroupsPanel").classList.add("hidden");
-      $("workerBuildingsPanel").classList.remove("hidden");
       $("searchResultsPanel").classList.add("hidden");
+      $("workerBuildingsPanel").classList.remove("hidden");
     }
 
     function backToGroups() {
       state.selectedWorkerGroupId = null;
-      $("workerGroupsPanel").classList.remove("hidden");
       $("workerBuildingsPanel").classList.add("hidden");
-      if ($("buildingSearch").value.trim()) {
-        handleSearch();
-      }
+      $("workerGroupsPanel").classList.remove("hidden");
+      if ($("buildingSearch").value.trim()) handleSearch();
     }
 
-    /* ── Events ──────────────────────────────────────────────────────────────── */
     function bindEvents() {
-      $("loginBtn").addEventListener("click", login);
+      $("loginForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        login();
+      });
+
       $("logoutAdmin").addEventListener("click", logout);
       $("logoutWorker").addEventListener("click", logout);
+
       $("saveGroupBtn").addEventListener("click", saveGroup);
-      $("cancelGroupEdit").addEventListener("click", cancelEditGroup);
+      $("cancelGroupEdit").addEventListener("click", resetGroupForm);
+
       $("saveBuildingBtn").addEventListener("click", saveBuilding);
-      $("cancelBuildingEdit").addEventListener("click", cancelEditBuilding);
+      $("cancelBuildingEdit").addEventListener("click", resetBuildingForm);
       $("buildingFilter").addEventListener("change", renderBuildings);
+      $("buildingTextFilter").addEventListener("input", renderBuildings);
+
       $("saveWorkerBtn").addEventListener("click", saveWorker);
-      $("cancelWorkerEdit").addEventListener("click", cancelEditWorker);
+      $("cancelWorkerEdit").addEventListener("click", resetWorkerForm);
+
       $("changeAdminPasswordBtn").addEventListener("click", changeAdminPassword);
+
       $("backToGroupsBtn").addEventListener("click", backToGroups);
       $("buildingSearch").addEventListener("input", handleSearch);
       $("searchClearBtn").addEventListener("click", clearSearch);
-
-      $("loginPassword").addEventListener("keydown", (e) => {
-        if (e.key === "Enter") login();
-      });
 
       document.querySelectorAll(".tab-btn").forEach((btn) => {
         btn.addEventListener("click", () => setTab(btn.dataset.tab));
