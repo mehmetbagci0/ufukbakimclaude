@@ -220,6 +220,10 @@
     }
 
     .muted { color: var(--muted); font-size: 13px; }
+    .mt-8 { margin-top: 8px; }
+    .mt-10 { margin-top: 10px; }
+    .mb-12 { margin-bottom: 12px; }
+    .text-14 { font-size: 14px; }
 
     .item {
       border: 1px solid var(--border);
@@ -510,7 +514,7 @@
           <button id="saveGroupBtn" class="btn-primary" type="button">Grup Ekle</button>
           <button id="cancelGroupEdit" class="btn-edit hidden" type="button">İptal</button>
         </div>
-        <div id="groupsList" style="margin-top:10px;"></div>
+        <div id="groupsList" class="mt-10"></div>
       </div>
 
       <div id="buildingsTab" class="card tab-panel hidden">
@@ -546,7 +550,7 @@
           <button id="saveBuildingBtn" class="btn-primary" type="button">Bina Ekle</button>
           <button id="cancelBuildingEdit" class="btn-edit hidden" type="button">İptal</button>
         </div>
-        <div id="buildingsList" style="margin-top:10px;"></div>
+        <div id="buildingsList" class="mt-10"></div>
       </div>
 
       <div id="workersTab" class="card tab-panel hidden">
@@ -573,8 +577,8 @@
           <button id="saveWorkerBtn" class="btn-primary" type="button">Eleman Ekle</button>
           <button id="cancelWorkerEdit" class="btn-edit hidden" type="button">İptal</button>
         </div>
-        <p class="muted" style="margin-top:8px;">Not: Düzenlerken şifreyi boş bırakabilirsiniz, eski şifre korunur.</p>
-        <div id="workersList" style="margin-top:10px;"></div>
+        <p class="muted mt-8">Not: Düzenlerken şifreyi boş bırakabilirsiniz, eski şifre korunur.</p>
+        <div id="workersList" class="mt-10"></div>
       </div>
 
       <div id="settingsTab" class="card tab-panel hidden">
@@ -617,8 +621,8 @@
     </header>
 
     <div class="container">
-      <div class="card" style="margin-bottom:12px;">
-        <p id="workerWelcome" class="muted" style="font-size:14px;"></p>
+      <div class="card mb-12">
+        <p id="workerWelcome" class="muted text-14"></p>
       </div>
 
       <div class="search-wrap">
