@@ -736,12 +736,9 @@
 
     let initDone = false;
 
+    const TR_MAP = { 'ı':'i','ş':'s','ğ':'g','ü':'u','ö':'o','ç':'c','İ':'i','Ş':'s','Ğ':'g','Ü':'u','Ö':'o','Ç':'c' };
     function normalize(str) {
-      return str.toLowerCase()
-        .replace(/ı/g, 'i').replace(/ş/g, 's').replace(/ğ/g, 'g')
-        .replace(/ü/g, 'u').replace(/ö/g, 'o').replace(/ç/g, 'c')
-        .replace(/İ/g, 'i').replace(/Ş/g, 's').replace(/Ğ/g, 'g')
-        .replace(/Ü/g, 'u').replace(/Ö/g, 'o').replace(/Ç/g, 'c');
+      return str.toLowerCase().replace(/[ışğüöçİŞĞÜÖÇ]/g, c => TR_MAP[c] || c);
     }
 
     function matchesSearch(building, query) {
@@ -853,7 +850,7 @@
             return true;
           }
         }
-      } catch (e) {}
+      } catch (e) { /* Ignore malformed sessionStorage data */ }
       sessionStorage.removeItem("currentUser");
       return false;
     }
