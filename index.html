@@ -790,7 +790,7 @@
 
     function matchesSearch(building, query) {
       const words = normalize(query.trim()).split(/\s+/).filter(Boolean);
-      const haystack = normalize([building.name, building.address, building.addressNote, building.managerName, building.managerPhone].filter(Boolean).join(' '));
+      const haystack = normalize(`${building.name || ""} ${building.address || ""} ${building.addressNote || ""} ${building.managerName || ""} ${building.managerPhone || ""}`);
       return words.every(word => haystack.includes(word));
     }
 
@@ -863,8 +863,13 @@
         refreshAdminUI();
         renderGroupSelects();
       } else {
+        const worker = state.data.workers.find((w) => w.id === state.currentUser.id);
+        if (worker) {
+          state.currentUser.fullName = worker.fullName;
+          state.currentUser.username = worker.username;
+        }
         $("workerUserLabel").textContent = state.currentUser.fullName || state.currentUser.username;
-        $("workerWelcome").textContent = `Hoş geldin, ${state.currentUser.fullName} 👋`;
+        $("workerWelcome").textContent = `Hoş geldin, ${(worker && worker.fullName) || state.currentUser.fullName || state.currentUser.username} 👋`;
         renderWorkerGroups();
         if (state.selectedWorkerGroupId) renderWorkerBuildings(state.selectedWorkerGroupId);
         if ($("buildingSearch").value.trim()) handleSearch();
@@ -1027,13 +1032,16 @@
       if (building.managerName || building.managerPhone) {
         const manager = document.createElement("div");
         manager.className = "building-manager";
-        manager.innerHTML = `👤 ${building.managerName || "-"}`;
+        if (building.managerName) {
+          manager.append(`👤 ${building.managerName}`);
+        }
         if (building.managerPhone) {
+          if (building.managerName) manager.append(" • ");
           const phone = document.createElement("a");
           phone.href = `tel:${building.managerPhone}`;
           phone.className = "phone-link";
           phone.textContent = `📞 ${building.managerPhone}`;
-          manager.append(" • ", phone);
+          manager.append(phone);
         }
         card.appendChild(manager);
       }
@@ -1120,19 +1128,20 @@
 
         const note = document.createElement("p");
         note.className = "building-note";
-        note.textContent = building.addressNote || "";
+        note.textContent = building.addressNote;
         note.style.display = building.addressNote ? "block" : "none";
 
         const manager = document.createElement("p");
         manager.className = "building-manager";
         if (building.managerName || building.managerPhone) {
-          manager.innerHTML = `👤 ${building.managerName || "-"}`;
+          if (building.managerName) manager.append(`👤 ${building.managerName}`);
           if (building.managerPhone) {
+            if (building.managerName) manager.append(" • ");
             const phone = document.createElement("a");
             phone.href = `tel:${building.managerPhone}`;
             phone.className = "phone-link";
             phone.textContent = `📞 ${building.managerPhone}`;
-            manager.append(" • ", phone);
+            manager.append(phone);
           }
         } else {
           manager.style.display = "none";
