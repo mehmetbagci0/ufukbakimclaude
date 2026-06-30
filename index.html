@@ -74,7 +74,7 @@
 
     .card {
       background: var(--card);
-      border-radius: var(--radius);
+      border-radius: 14px;
       box-shadow: var(--shadow);
       border: 1px solid var(--border);
       padding: 14px;
@@ -167,14 +167,15 @@
     .btn-login {
       width: 100%;
       margin-top: 8px;
-      background: var(--accent);
+      background: linear-gradient(135deg, #ff3554, #E8112D);
       color: #fff;
       border: none;
     }
 
-    .btn-login:hover { background: #bf0d25; }
+    .btn-login:hover { background: linear-gradient(135deg, #ff3554, #cc0f28); }
 
     .header-right { display: flex; gap: 8px; align-items: center; }
+    .header-user { font-size: 12px; color: var(--muted); }
 
     .logout-btn {
       min-height: 44px;
@@ -191,6 +192,11 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 6px;
       margin-bottom: 12px;
+      padding: 8px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fff;
+      box-shadow: var(--shadow);
     }
 
     @media (min-width: 560px) {
@@ -199,11 +205,12 @@
 
     .tab-btn {
       min-height: 44px;
-      background: #E5E7EB;
+      background: transparent;
       color: #6B7280;
       border: 0;
       flex: 1 1 110px;
       font-size: 14px;
+      border-radius: 10px;
     }
 
     .tab-btn.active {
@@ -248,11 +255,11 @@
 
     .login-box {
       width: 100%;
-      max-width: 420px;
+      max-width: 400px;
       background: #fff;
-      border-radius: 14px;
+      border-radius: 20px;
       border: 1px solid var(--border);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-lg);
       padding: 18px;
     }
 
@@ -313,17 +320,20 @@
       justify-content: space-between;
       gap: 10px;
       min-height: 72px;
+      transition: background .2s ease, transform .2s ease;
     }
+    .group-card:hover { background: #f8faff; transform: translateY(-1px); }
 
     .group-card-main { display: flex; align-items: center; gap: 10px; }
     .group-card-icon { font-size: 22px; }
     .group-card-name { font-weight: 700; color: var(--primary); }
+    .group-admin-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
 
     .count-badge {
       min-width: 32px;
       height: 32px;
       border-radius: 999px;
-      background: var(--primary);
+      background: var(--accent);
       color: #fff;
       display: flex;
       align-items: center;
@@ -398,6 +408,25 @@
       font-size: 13px;
       color: var(--muted);
       margin-bottom: 8px;
+    }
+
+    .building-note {
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 8px;
+    }
+
+    .building-manager {
+      font-size: 13px;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+
+    .phone-link {
+      color: var(--primary);
+      font-weight: 700;
+      text-decoration: none;
     }
 
     .group-pill {
@@ -551,6 +580,7 @@
         <div class="logo-text"><span class="logo-ufuk">ufuk</span><span class="logo-asansor">asansör</span></div>
       </div>
       <div class="header-right">
+        <span id="adminUserLabel" class="header-user"></span>
         <button id="logoutAdmin" class="logout-btn" type="button">Çıkış</button>
       </div>
     </header>
@@ -603,6 +633,22 @@
         <div class="field">
           <label for="buildingAddress">Adres</label>
           <textarea id="buildingAddress" placeholder="Açık adres"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="buildingAddressNote">Adres Açıklaması</label>
+          <textarea id="buildingAddressNote" placeholder="Asansör konumu, giriş bilgisi vb."></textarea>
+        </div>
+
+        <div class="split-2">
+          <div class="field">
+            <label for="buildingManagerName">Yönetici Adı</label>
+            <input id="buildingManagerName" placeholder="Bina yöneticisinin adı soyadı" />
+          </div>
+          <div class="field">
+            <label for="buildingManagerPhone">Yönetici Numarası</label>
+            <input id="buildingManagerPhone" type="tel" placeholder="05XX XXX XX XX" />
+          </div>
         </div>
 
         <div class="actions">
@@ -674,6 +720,7 @@
         <div class="logo-text"><span class="logo-ufuk">ufuk</span><span class="logo-asansor">asansör</span></div>
       </div>
       <div class="header-right">
+        <span id="workerUserLabel" class="header-user"></span>
         <button id="logoutWorker" class="logout-btn" type="button">Çıkış</button>
       </div>
     </header>
@@ -743,7 +790,7 @@
 
     function matchesSearch(building, query) {
       const words = normalize(query.trim()).split(/\s+/).filter(Boolean);
-      const haystack = normalize(building.name + ' ' + building.address);
+      const haystack = normalize(`${building.name || ""} ${building.address || ""} ${building.addressNote || ""} ${building.managerName || ""} ${building.managerPhone || ""}`);
       return words.every(word => haystack.includes(word));
     }
 
@@ -767,10 +814,6 @@
         const el = $(id);
         if (el) el.value = "";
       });
-    }
-
-    function mapsUrl(address) {
-      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
     }
 
     function show(viewId) {
@@ -816,9 +859,17 @@
     function refreshIfLoggedIn() {
       if (!state.currentUser) return;
       if (state.currentUser.role === "admin") {
+        $("adminUserLabel").textContent = state.currentUser.fullName || state.currentUser.username;
         refreshAdminUI();
         renderGroupSelects();
       } else {
+        const worker = state.data.workers.find((w) => w.id === state.currentUser.id);
+        if (worker) {
+          state.currentUser.fullName = worker.fullName;
+          state.currentUser.username = worker.username;
+        }
+        $("workerUserLabel").textContent = state.currentUser.fullName || state.currentUser.username;
+        $("workerWelcome").textContent = `Hoş geldin, ${(worker && worker.fullName) || state.currentUser.fullName || state.currentUser.username} 👋`;
         renderWorkerGroups();
         if (state.selectedWorkerGroupId) renderWorkerBuildings(state.selectedWorkerGroupId);
         if ($("buildingSearch").value.trim()) handleSearch();
@@ -834,6 +885,7 @@
         if (user.role === "admin") {
           if (state.data.admin && user.username.toLowerCase() === state.data.admin.username.toLowerCase()) {
             state.currentUser = { role: "admin", username: state.data.admin.username, fullName: state.data.admin.fullName };
+            $("adminUserLabel").textContent = state.currentUser.fullName || state.currentUser.username;
             refreshAdminUI();
             setTab("groupsTab");
             show("adminView");
@@ -843,7 +895,8 @@
           const worker = state.data.workers.find((w) => w.id === user.id);
           if (worker) {
             state.currentUser = { role: "worker", id: worker.id, username: worker.username, fullName: worker.fullName };
-            $("workerWelcome").textContent = `Hoş geldin, ${worker.fullName}`;
+            $("workerUserLabel").textContent = state.currentUser.fullName || state.currentUser.username;
+            $("workerWelcome").textContent = `Hoş geldin, ${worker.fullName} 👋`;
             renderWorkerGroups();
             clearSearch();
             show("workerView");
@@ -853,6 +906,16 @@
       } catch (e) { /* Ignore malformed sessionStorage data */ }
       sessionStorage.removeItem("currentUser");
       return false;
+    }
+
+    function openAddressOnMap(address) {
+      const a = document.createElement("a");
+      a.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
 
     // Start Firebase realtime listener
@@ -959,14 +1022,32 @@
 
       card.appendChild(address);
 
+      if (building.addressNote) {
+        const note = document.createElement("div");
+        note.className = "building-note";
+        note.textContent = building.addressNote;
+        card.appendChild(note);
+      }
+
+      if (building.managerName || building.managerPhone) {
+        const manager = document.createElement("div");
+        manager.className = "building-manager";
+        if (building.managerName) {
+          manager.append(`👤 ${building.managerName}`);
+        }
+        if (building.managerPhone) {
+          if (building.managerName) manager.append(" • ");
+          const phone = document.createElement("a");
+          phone.href = `tel:${building.managerPhone}`;
+          phone.className = "phone-link";
+          phone.textContent = `📞 ${building.managerPhone}`;
+          manager.append(phone);
+        }
+        card.appendChild(manager);
+      }
+
       const mapBtn = buildActionButton("🗺️ Haritada Aç", "btn-map", () => {
-        const a = document.createElement("a");
-        a.href = mapsUrl(building.address);
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        openAddressOnMap(building.address);
       });
       card.appendChild(mapBtn);
       return card;
@@ -986,9 +1067,18 @@
         const item = document.createElement("div");
         item.className = "item";
 
+        const head = document.createElement("div");
+        head.className = "group-admin-head";
+
         const title = document.createElement("div");
         title.className = "title";
         title.textContent = group.name;
+        head.appendChild(title);
+
+        const badge = document.createElement("span");
+        badge.className = "count-badge";
+        badge.textContent = count;
+        head.appendChild(badge);
 
         const sub = document.createElement("p");
         sub.className = "muted";
@@ -999,7 +1089,7 @@
         actions.appendChild(buildActionButton("Düzenle", "btn-edit", () => startEditGroup(group.id)));
         actions.appendChild(buildActionButton("Sil", "btn-danger", () => deleteGroup(group.id)));
 
-        item.append(title, sub, actions);
+        item.append(head, sub, actions);
         wrap.appendChild(item);
       });
     }
@@ -1036,6 +1126,27 @@
         addr.className = "muted";
         addr.textContent = building.address;
 
+        const note = document.createElement("p");
+        note.className = "building-note";
+        note.textContent = building.addressNote;
+        note.style.display = building.addressNote ? "block" : "none";
+
+        const manager = document.createElement("p");
+        manager.className = "building-manager";
+        if (building.managerName || building.managerPhone) {
+          if (building.managerName) manager.append(`👤 ${building.managerName}`);
+          if (building.managerPhone) {
+            if (building.managerName) manager.append(" • ");
+            const phone = document.createElement("a");
+            phone.href = `tel:${building.managerPhone}`;
+            phone.className = "phone-link";
+            phone.textContent = `📞 ${building.managerPhone}`;
+            manager.append(phone);
+          }
+        } else {
+          manager.style.display = "none";
+        }
+
         const grp = document.createElement("p");
         grp.className = "muted";
         grp.style.marginTop = "4px";
@@ -1044,18 +1155,12 @@
         const actions = document.createElement("div");
         actions.className = "actions";
         actions.appendChild(buildActionButton("🗺️ Haritada Aç", "btn-map", () => {
-          const a = document.createElement("a");
-          a.href = mapsUrl(building.address);
-          a.target = "_blank";
-          a.rel = "noopener noreferrer";
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
+          openAddressOnMap(building.address);
         }));
         actions.appendChild(buildActionButton("Düzenle", "btn-edit", () => startEditBuilding(building.id)));
         actions.appendChild(buildActionButton("Sil", "btn-danger", () => deleteBuilding(building.id)));
 
-        item.append(title, addr, grp, actions);
+        item.append(title, addr, note, manager, grp, actions);
         wrap.appendChild(item);
       });
     }
@@ -1199,7 +1304,7 @@
 
     function resetBuildingForm() {
       state.editBuildingId = null;
-      clearInputs("buildingName", "buildingAddress");
+      clearInputs("buildingName", "buildingAddress", "buildingAddressNote", "buildingManagerName", "buildingManagerPhone");
       $("saveBuildingBtn").textContent = "Bina Ekle";
       $("cancelBuildingEdit").classList.add("hidden");
     }
@@ -1241,6 +1346,7 @@
         state.currentUser = { role: "admin", username: state.data.admin.username, fullName: state.data.admin.fullName };
         sessionStorage.setItem("currentUser", JSON.stringify(state.currentUser));
         clearInputs("loginUsername", "loginPassword");
+        $("adminUserLabel").textContent = state.currentUser.fullName || state.currentUser.username;
         refreshAdminUI();
         setTab("groupsTab");
         show("adminView");
@@ -1253,7 +1359,8 @@
         state.currentUser = { role: "worker", id: worker.id, username: worker.username, fullName: worker.fullName };
         sessionStorage.setItem("currentUser", JSON.stringify(state.currentUser));
         clearInputs("loginUsername", "loginPassword");
-        $("workerWelcome").textContent = `Hoş geldin, ${worker.fullName}`;
+        $("workerUserLabel").textContent = state.currentUser.fullName || state.currentUser.username;
+        $("workerWelcome").textContent = `Hoş geldin, ${worker.fullName} 👋`;
         renderWorkerGroups();
         clearSearch();
         show("workerView");
@@ -1268,6 +1375,9 @@
       state.currentUser = null;
       state.selectedWorkerGroupId = null;
       sessionStorage.removeItem("currentUser");
+      $("adminUserLabel").textContent = "";
+      $("workerUserLabel").textContent = "";
+      $("workerWelcome").textContent = "";
       clearSearch();
       show("loginView");
     }
@@ -1328,6 +1438,9 @@
       state.editBuildingId = id;
       $("buildingName").value = building.name;
       $("buildingAddress").value = building.address;
+      $("buildingAddressNote").value = building.addressNote || "";
+      $("buildingManagerName").value = building.managerName || "";
+      $("buildingManagerPhone").value = building.managerPhone || "";
       $("buildingGroup").value = building.groupId;
       $("saveBuildingBtn").textContent = "Binayı Güncelle";
       $("cancelBuildingEdit").classList.remove("hidden");
@@ -1336,6 +1449,9 @@
     function saveBuilding() {
       const name = $("buildingName").value.trim();
       const address = $("buildingAddress").value.trim();
+      const addressNote = $("buildingAddressNote").value.trim();
+      const managerName = $("buildingManagerName").value.trim();
+      const managerPhone = $("buildingManagerPhone").value.trim();
       const groupId = $("buildingGroup").value;
 
       if (!name || !address || !groupId) {
@@ -1349,10 +1465,10 @@
       }
 
       if (state.editBuildingId) {
-        db.ref("buildings/" + state.editBuildingId).update({ name, address, groupId });
+        db.ref("buildings/" + state.editBuildingId).update({ name, address, addressNote, managerName, managerPhone, groupId });
         showToast("Bina güncellendi.", "success");
       } else {
-        db.ref("buildings").push({ name, address, groupId });
+        db.ref("buildings").push({ name, address, addressNote, managerName, managerPhone, groupId });
         showToast("Bina eklendi.", "success");
       }
 
