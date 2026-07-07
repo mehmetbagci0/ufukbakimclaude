@@ -616,7 +616,7 @@
           </div>
         </div>
         <div class="field">
-          <label for="newAdminPassword">Yeni Şifre (en az 6 karakter)</label>
+          <label for="newAdminPassword">Yeni Şifre (en az 8 karakter)</label>
           <div class="password-wrap">
             <input id="newAdminPassword" type="password" autocomplete="new-password" maxlength="128" />
             <button type="button" class="toggle-pass" data-target="newAdminPassword">Göster</button>
@@ -872,7 +872,7 @@
           before:     before  || null,
           after:      after   || null
         });
-      } catch (e) { /* audit log yazma hatası sessizce geç */ }
+      } catch (e) { console.error("[audit] Denetim günlüğü yazılamadı:", e); }
     }
 
     // ═══ VERİ MODELI ═══
@@ -1105,7 +1105,9 @@
       }
 
       if (building.address) {
-        card.appendChild(buildBtn("🗺️ Haritada Aç", "btn-map", () => openAddressOnMap(building.address)));
+        const mapBtn = buildBtn("🗺️ Haritada Aç", "btn-map", () => openAddressOnMap(building.address));
+        mapBtn.setAttribute("aria-label", `${building.name || ""} adresini Google Haritalar'da aç (yeni sekme)`);
+        card.appendChild(mapBtn);
       }
       return card;
     }
@@ -1421,13 +1423,12 @@
         return;
       }
 
-      // Başarısız
+      // Başarısız — genel hata mesajı (deneme sayısı açıklanmaz)
       recordFailedAttempt();
-      const remaining = rateLimit.attempts >= RL_MAX ? Math.ceil(RL_LOCK / 1000) : RL_MAX - rateLimit.attempts;
-      if (rateLimit.attempts >= RL_MAX) {
-        showToast("Hesap geçici olarak kilitlendi.", "error");
+      if (rateLimit.lockedUntil > Date.now()) {
+        showToast("Hesap geçici olarak kilitlendi. Lütfen bekleyin.", "error");
       } else {
-        showToast(`Kullanıcı adı veya şifre hatalı. (${remaining} hak kaldı)`, "error");
+        showToast("Kullanıcı adı veya şifre hatalı.", "error");
       }
     }
 
@@ -1648,7 +1649,7 @@
 
       if (!current || !next || !confirmNext) { showToast("Tüm alanları doldurun.", "error"); return; }
       if (current !== state.data.admin.password) { showToast("Mevcut şifre yanlış.", "error"); return; }
-      if (next.length < 6) { showToast("Yeni şifre en az 6 karakter olmalıdır.", "error"); return; }
+      if (next.length < 8) { showToast("Yeni şifre en az 8 karakter olmalıdır.", "error"); return; }
       if (next !== confirmNext) { showToast("Yeni şifreler eşleşmiyor.", "error"); return; }
 
       db.ref("admin").update({ password: next, updatedAt: Date.now() });
