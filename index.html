@@ -8,25 +8,25 @@
     :root {
       --primary: #1B2B5E;
       --accent: #E8112D;
-      --bg: #F0F2F8;
+      --bg: #EEF0F8;
       --card: #FFFFFF;
       --text: #1a1a2e;
       --muted: #6B7280;
-      --border: #E5E7EB;
+      --border: #E2E5EE;
       --success: #10B981;
       --warning: #F59E0B;
       --radius: 12px;
-      --shadow: 0 2px 8px rgba(27,43,94,0.10);
-      --shadow-lg: 0 8px 24px rgba(27,43,94,0.14);
+      --shadow: 0 1px 4px rgba(27,43,94,0.08), 0 2px 8px rgba(27,43,94,0.06);
+      --shadow-lg: 0 4px 20px rgba(27,43,94,0.14), 0 1px 4px rgba(27,43,94,0.08);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: system-ui, -apple-system, sans-serif;
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.4;
+      line-height: 1.5;
       min-height: 100dvh;
     }
 
@@ -39,35 +39,37 @@
       z-index: 100;
       background: #fff;
       border-bottom: 1px solid var(--border);
-      padding: 10px 14px;
+      padding: 10px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 10px;
+      box-shadow: 0 1px 3px rgba(27,43,94,0.07);
     }
 
     .logo { display: flex; align-items: center; gap: 10px; }
     .logo-badge {
-      background: #E8112D;
+      background: linear-gradient(135deg, #E8112D, #bf0d25);
       color: white;
-      width: 44px; height: 44px;
-      border-radius: 8px;
+      width: 42px; height: 42px;
+      border-radius: 10px;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       line-height: 1;
       flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(232,17,45,0.30);
     }
-    .logo-num { font-size: 19px; font-weight: 900; }
-    .logo-sub { font-size: 8px; font-weight: 700; letter-spacing: 1px; }
-    .logo-text { display: flex; align-items: baseline; gap: 4px; }
-    .logo-ufuk { font-size: 22px; font-weight: 900; color: #1B2B5E; }
-    .logo-asansor { font-size: 22px; font-weight: 900; color: #E8112D; }
+    .logo-num { font-size: 18px; font-weight: 900; }
+    .logo-sub { font-size: 7.5px; font-weight: 700; letter-spacing: 1px; }
+    .logo-text { display: flex; align-items: baseline; gap: 3px; }
+    .logo-ufuk { font-size: 21px; font-weight: 900; color: #1B2B5E; letter-spacing: -.3px; }
+    .logo-asansor { font-size: 21px; font-weight: 900; color: #E8112D; letter-spacing: -.3px; }
 
     /* ── Connection badge ── */
     .conn-badge {
       font-size: 11px;
       font-weight: 700;
-      padding: 3px 8px;
+      padding: 3px 9px;
       border-radius: 999px;
       letter-spacing: .3px;
     }
@@ -80,33 +82,38 @@
 
     .card {
       background: var(--card);
-      border-radius: 14px;
+      border-radius: 16px;
       box-shadow: var(--shadow);
       border: 1px solid var(--border);
-      padding: 14px;
-      margin-bottom: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
     }
 
-    .section-title { font-size: 18px; margin-bottom: 10px; color: var(--primary); font-weight: 700; }
+    .section-title {
+      font-size: 17px; margin-bottom: 14px;
+      color: var(--primary); font-weight: 800;
+      letter-spacing: -.2px;
+    }
 
-    .field { margin-bottom: 10px; }
+    .field { margin-bottom: 12px; }
 
-    label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #374151; }
 
     input, select, textarea {
       width: 100%;
-      min-height: 48px;
-      border: 1px solid var(--border);
+      min-height: 46px;
+      border: 1.5px solid var(--border);
       border-radius: 10px;
       padding: 10px 12px;
-      font-size: 16px;
+      font-size: 15px;
       background: #fff;
       color: var(--text);
       outline: none;
+      transition: border-color .15s, box-shadow .15s;
     }
 
     select {
-      font-size: 16px; font-weight: 500;
+      font-size: 15px; font-weight: 500;
       background-image: linear-gradient(45deg, transparent 50%, var(--primary) 50%),
                         linear-gradient(135deg, var(--primary) 50%, transparent 50%);
       background-position: calc(100% - 18px) calc(50% - 2px), calc(100% - 12px) calc(50% - 2px);
@@ -120,102 +127,134 @@
 
     input:focus, select:focus, textarea:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(27,43,94,0.12);
+      box-shadow: 0 0 0 3px rgba(27,43,94,0.10);
     }
 
     input:disabled, select:disabled, textarea:disabled, button:disabled {
-      opacity: .55; cursor: not-allowed;
+      opacity: .50; cursor: not-allowed;
     }
 
-    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 
     button {
-      min-height: 48px;
+      min-height: 46px;
       border-radius: 10px;
-      border: 1px solid transparent;
-      padding: 10px 14px;
-      font-size: 15px;
+      border: 1.5px solid transparent;
+      padding: 10px 16px;
+      font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       font-family: inherit;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 5px;
       flex: 1 1 130px;
-      transition: background .15s ease, opacity .15s ease;
+      transition: background .15s ease, opacity .15s ease, box-shadow .15s ease, transform .1s ease;
+      letter-spacing: .1px;
     }
+    button:active:not(:disabled) { transform: scale(0.98); }
 
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-primary:hover:not(:disabled) { background: #132148; }
+    .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 2px 6px rgba(27,43,94,0.22); }
+    .btn-primary:hover:not(:disabled) { background: #142250; box-shadow: 0 3px 10px rgba(27,43,94,0.28); }
 
-    .btn-danger  { background: var(--accent); color: #fff; }
-    .btn-danger:hover:not(:disabled) { background: #bf0d25; }
+    .btn-danger  { background: var(--accent); color: #fff; box-shadow: 0 2px 6px rgba(232,17,45,0.22); }
+    .btn-danger:hover:not(:disabled) { background: #bf0d25; box-shadow: 0 3px 10px rgba(232,17,45,0.28); }
 
-    .btn-success { background: var(--success); color: #fff; }
+    .btn-success { background: var(--success); color: #fff; box-shadow: 0 2px 6px rgba(16,185,129,0.22); }
     .btn-success:hover:not(:disabled) { background: #059669; }
 
     .btn-warn { background: var(--warning); color: #fff; }
     .btn-warn:hover:not(:disabled) { background: #d97706; }
 
     .btn-edit {
-      background: #fff; color: #4b5563;
-      border-color: #9ca3af;
+      background: #fff; color: #374151;
+      border-color: #d1d5db;
+      box-shadow: none;
     }
-    .btn-edit:hover:not(:disabled) { background: #f9fafb; }
+    .btn-edit:hover:not(:disabled) { background: #f3f4f6; border-color: #9ca3af; }
 
     .btn-link { background: #fff; color: var(--primary); border-color: var(--primary); }
 
     .btn-login {
-      width: 100%; margin-top: 8px;
-      background: linear-gradient(135deg,#ff3554,#E8112D);
+      width: 100%; margin-top: 10px;
+      background: linear-gradient(135deg, #E8112D, #bf0d25);
       color: #fff; border: none;
+      box-shadow: 0 3px 10px rgba(232,17,45,0.30);
+      font-size: 15px; min-height: 50px;
     }
     .btn-login:hover:not(:disabled) { background: linear-gradient(135deg,#ff3554,#cc0f28); }
 
-    .btn-map { background: #10B981; color: #fff; border: none; }
-    .btn-map:hover:not(:disabled) { background: #059669; }
+    .btn-map {
+      background: #fff; color: var(--success);
+      border-color: var(--success);
+      box-shadow: none; flex: 0 0 auto;
+    }
+    .btn-map:hover:not(:disabled) { background: #f0fdf9; }
 
-    .btn-restore { background: var(--primary); color: #fff; border: none; }
-    .btn-restore:hover:not(:disabled) { background: #132148; }
+    .btn-restore {
+      background: #fff; color: var(--primary);
+      border-color: var(--primary);
+      box-shadow: none;
+      flex: 0 0 auto; min-height: 38px;
+      padding: 7px 14px; font-size: 13px;
+    }
+    .btn-restore:hover:not(:disabled) { background: #f0f3fb; }
+
+    .btn-remove-photo {
+      background: #fff; color: var(--accent);
+      border-color: var(--accent);
+      box-shadow: none; min-height: 38px;
+      padding: 7px 14px; font-size: 13px; flex: 0 0 auto;
+    }
+    .btn-remove-photo:hover:not(:disabled) { background: #fff5f5; }
 
     .header-right { display: flex; gap: 8px; align-items: center; }
     .header-user { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
 
     .logout-btn {
-      min-height: 40px;
-      padding: 6px 12px;
+      min-height: 38px;
+      padding: 6px 14px;
       background: #fff;
       color: var(--primary);
-      border: 1px solid var(--primary);
+      border: 1.5px solid var(--primary);
       width: auto; flex: 0 0 auto;
       font-size: 13px;
     }
+    .logout-btn:hover:not(:disabled) { background: #f0f3fb; }
 
     /* ── Tabs ── */
     .tabs {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 6px;
-      margin-bottom: 12px;
-      padding: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 14px;
+      padding: 5px;
       border-radius: 14px;
-      border: 1px solid var(--border);
-      background: #fff;
-      box-shadow: var(--shadow);
+      background: #e8eaf2;
+      border: none;
+      box-shadow: none;
     }
-
-    @media (min-width: 560px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
-    @media (min-width: 820px) { .tabs { grid-template-columns: repeat(5, 1fr); } }
 
     .tab-btn {
-      min-height: 44px;
+      flex: 1 1 80px;
+      min-height: 40px;
       background: transparent;
       color: #6B7280;
-      border: 0; flex: 1 1 100px;
+      border: 0;
       font-size: 13px;
       border-radius: 10px;
+      font-weight: 600;
+      transition: background .15s, color .15s;
     }
-    .tab-btn.active { background: var(--primary); color: #fff; border: 0; }
+    .tab-btn.active {
+      background: #fff;
+      color: var(--primary);
+      border: 0;
+      box-shadow: 0 1px 4px rgba(27,43,94,0.14);
+      font-weight: 700;
+    }
+    .tab-btn:hover:not(.active) { background: rgba(255,255,255,0.5); color: var(--primary); }
 
     /* ── Utility ── */
     .muted  { color: var(--muted); font-size: 13px; }
@@ -226,21 +265,36 @@
 
     .item {
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px;
+      border-radius: 12px;
+      padding: 14px;
       margin-bottom: 8px;
       background: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transition: box-shadow .15s;
     }
-    .item .title { font-weight: 700; font-size: 16px; color: var(--primary); }
+    .item:hover { box-shadow: var(--shadow); }
+    .item .title { font-weight: 700; font-size: 15px; color: var(--primary); margin-bottom: 4px; }
+    .item-row { display: flex; align-items: flex-start; gap: 10px; }
+    .item-thumb {
+      width: 64px; height: 48px;
+      object-fit: cover;
+      border-radius: 8px;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+    .item-body { flex: 1; min-width: 0; }
 
     .empty {
       text-align: center;
-      padding: 24px 10px;
+      padding: 28px 10px;
       color: var(--muted);
-      border: 1px dashed var(--border);
-      border-radius: 10px;
+      border: 1.5px dashed #d1d5db;
+      border-radius: 12px;
+      background: #fafbff;
     }
-    .empty .icon { font-size: 26px; margin-bottom: 6px; display: block; }
+    .empty .icon { font-size: 28px; margin-bottom: 8px; display: block; }
 
     /* ── Login ── */
     #loginView {
@@ -248,7 +302,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 14px;
+      padding: 16px;
+      background: linear-gradient(160deg, #eef0f8 0%, #dde1f0 100%);
     }
     .login-box {
       width: 100%; max-width: 400px;
@@ -256,23 +311,29 @@
       border-radius: 20px;
       border: 1px solid var(--border);
       box-shadow: var(--shadow-lg);
-      padding: 20px;
+      padding: 28px 24px;
     }
     .login-logo-wrap {
       display: flex; flex-direction: column;
       align-items: center; gap: 10px;
-      margin-bottom: 16px; text-align: center;
+      margin-bottom: 24px; text-align: center;
     }
-    .login-msg { color: var(--muted); font-size: 14px; }
+    .login-title {
+      font-size: 13px; font-weight: 700;
+      color: var(--primary); letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+    .login-msg { color: var(--muted); font-size: 13px; margin-top: 2px; }
 
     .password-wrap { display: flex; gap: 8px; }
     .password-wrap input { flex: 1; }
     .toggle-pass {
-      min-height: 48px; width: auto; flex: 0 0 auto;
-      background: #fff; color: var(--primary);
-      border: 1px solid var(--primary);
+      min-height: 46px; width: auto; flex: 0 0 auto;
+      background: #f3f4f6; color: var(--primary);
+      border: 1.5px solid var(--border);
       padding: 10px 12px; font-size: 13px;
     }
+    .toggle-pass:hover { background: #e9eefb; }
 
     /* ── Grid layouts ── */
     .toolbar-grid { display: grid; gap: 8px; grid-template-columns: 1fr; }
@@ -287,9 +348,9 @@
 
     .group-card {
       border: 1px solid var(--border);
-      border-left: 5px solid var(--primary);
+      border-left: 4px solid var(--primary);
       border-radius: 12px;
-      padding: 14px;
+      padding: 14px 16px;
       background: #fff;
       box-shadow: var(--shadow);
       cursor: pointer;
@@ -297,27 +358,27 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      min-height: 72px;
-      transition: background .2s ease, transform .2s ease;
+      min-height: 70px;
+      transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
     }
-    .group-card:hover { background: #f8faff; transform: translateY(-1px); }
+    .group-card:hover { background: #f5f8ff; box-shadow: var(--shadow-lg); transform: translateY(-1px); }
     .group-card-main { display: flex; align-items: center; gap: 10px; }
     .group-card-icon { font-size: 22px; }
-    .group-card-name { font-weight: 700; color: var(--primary); }
-    .group-admin-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+    .group-card-name { font-weight: 700; color: var(--primary); font-size: 15px; }
+    .group-admin-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
 
     .count-badge {
-      min-width: 32px; height: 32px;
+      min-width: 30px; height: 30px;
       border-radius: 999px;
       background: var(--accent); color: #fff;
       display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 700;
+      font-size: 12px; font-weight: 700;
       padding: 0 8px; flex-shrink: 0;
     }
 
     /* ── Search ── */
-    .search-wrap { position: relative; margin-bottom: 12px; }
-    .search-wrap input { min-height: 54px; padding-left: 42px; padding-right: 40px; font-size: 17px; }
+    .search-wrap { position: relative; margin-bottom: 14px; }
+    .search-wrap input { min-height: 52px; padding-left: 44px; padding-right: 40px; font-size: 16px; border-radius: 12px; }
     .search-icon {
       position: absolute; left: 14px; top: 50%;
       transform: translateY(-50%);
@@ -332,17 +393,23 @@
     }
     .search-result-head { color: var(--primary); font-weight: 700; margin-bottom: 8px; font-size: 15px; }
 
-    /* ── Building card ── */
+    /* ── Building card (worker view) ── */
     .building-card {
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
+      border-radius: 14px;
+      overflow: hidden;
       background: #fff;
       box-shadow: var(--shadow);
       margin-bottom: 10px;
     }
-    .building-name { font-size: 17px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
-    .building-address { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    .building-card-photo {
+      width: 100%; height: 170px;
+      object-fit: cover;
+      display: block;
+    }
+    .building-card-body { padding: 12px 14px 14px; }
+    .building-name { font-size: 16px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+    .building-address { font-size: 13px; color: var(--muted); margin-bottom: 6px; line-height: 1.4; }
     .building-note { font-size: 13px; color: var(--muted); font-style: italic; margin-bottom: 6px; }
     .building-manager { font-size: 13px; color: #374151; margin-bottom: 8px; }
     .phone-link { color: var(--primary); font-weight: 700; text-decoration: none; }
@@ -351,28 +418,102 @@
       display: inline-block;
       background: #e9eefb; color: var(--primary);
       border-radius: 999px;
-      font-size: 12px; font-weight: 700;
-      padding: 3px 10px; margin-bottom: 6px;
+      font-size: 11px; font-weight: 700;
+      padding: 3px 10px; margin-bottom: 8px;
     }
 
-    .back-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    .back-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
 
-    /* ── Archive ── */
-    .archive-section { margin-bottom: 18px; }
+    /* ── Edit mode banner ── */
+    .edit-banner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #e9eefb, #dce5f7);
+      border: 1.5px solid #c0cef0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .edit-banner-icon { font-size: 20px; flex-shrink: 0; }
+    .edit-banner-text { flex: 1; line-height: 1.4; }
+    .edit-banner-text small { display: block; font-weight: 400; font-size: 12px; color: #5869a8; margin-top: 1px; }
+
+    /* ── Photo upload ── */
+    .photo-field-label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px; }
+    .photo-upload-area {
+      border: 2px dashed #c9d2e8;
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      background: #f7f8fd;
+      color: var(--muted);
+      font-size: 13px;
+      transition: border-color .2s, background .2s;
+    }
+    .photo-upload-area:hover { border-color: var(--primary); background: #f0f3fb; }
+    .photo-upload-area input[type=file] { display: none; }
+    .photo-preview-wrap { margin-top: 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .photo-preview {
+      max-width: 100%; max-height: 180px;
+      border-radius: 10px; border: 1px solid var(--border);
+      object-fit: contain; display: block;
+    }
+    .photo-size-hint { font-size: 11px; color: var(--muted); }
+
+    /* ── Archive redesign ── */
+    .archive-section { margin-bottom: 0; }
+    .archive-section-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px;
+      background: linear-gradient(135deg, #f0f3fb, #e9eefb);
+      border: 1px solid #d4dcf5;
+      border-radius: 12px 12px 0 0;
+      margin-top: 14px;
+    }
+    .archive-section-header:first-child { margin-top: 0; }
+    .archive-section-icon { font-size: 18px; }
     .archive-section-title {
-      font-size: 15px; font-weight: 700; color: var(--primary);
-      padding: 6px 0; border-bottom: 2px solid var(--border);
-      margin-bottom: 10px;
+      font-size: 14px; font-weight: 800; color: var(--primary);
+      flex: 1;
+    }
+    .archive-section-count {
+      background: var(--primary); color: #fff;
+      border-radius: 999px; font-size: 11px; font-weight: 700;
+      padding: 2px 9px; min-width: 26px; text-align: center;
+    }
+    .archive-section-body {
+      border: 1px solid #d4dcf5; border-top: 0;
+      border-radius: 0 0 12px 12px;
+      background: #f9faff;
+      margin-bottom: 0;
+      overflow: hidden;
     }
     .archive-item {
-      border: 1px dashed #d1d5db;
-      border-radius: 10px;
-      padding: 10px 12px;
-      margin-bottom: 8px;
-      background: #fafafa;
-      opacity: .85;
+      border-bottom: 1px solid #e5e9f7;
+      padding: 12px 14px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: background .15s;
     }
-    .archive-meta { font-size: 11px; color: #9ca3af; margin-top: 4px; }
+    .archive-item:last-child { border-bottom: 0; }
+    .archive-item:hover { background: #f7f9ff; }
+    .archive-item-icon { font-size: 22px; flex-shrink: 0; }
+    .archive-item-body { flex: 1; min-width: 0; }
+    .archive-item-name { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 3px; }
+    .archive-meta { font-size: 11px; color: #9ca3af; line-height: 1.5; }
+    .archive-meta strong { color: #6b7280; font-weight: 600; }
+    .archive-search-wrap { position: relative; margin-bottom: 0; padding: 10px 14px; background: #f0f2fc; border: 1px solid #d4dcf5; border-top: 0; }
+    .archive-search-wrap input { min-height: 38px; font-size: 14px; padding: 8px 12px 8px 36px; background: #fff; border-radius: 8px; }
+    .archive-search-icon { position: absolute; left: 24px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--muted); pointer-events: none; }
 
     /* ── Toast ── */
     .toast-area {
@@ -446,7 +587,8 @@
           <div class="logo-badge"><span class="logo-num">02</span><span class="logo-sub">UFUK</span></div>
           <div class="logo-text"><span class="logo-ufuk">ufuk</span><span class="logo-asansor">asansör</span></div>
         </div>
-        <p class="login-msg">Bakım Takip Sistemi</p>
+        <p class="login-title">Bakım Takip Sistemi</p>
+        <p class="login-msg">Lütfen hesabınızla giriş yapın</p>
       </div>
 
       <form id="loginForm" novalidate>
@@ -507,6 +649,16 @@
       <!-- Binalar -->
       <div id="buildingsTab" class="card tab-panel hidden">
         <h2 class="section-title">Bina Yönetimi</h2>
+
+        <!-- Düzenleme modu banner (gizli, düzenlemede görünür) -->
+        <div id="buildingEditBanner" class="edit-banner hidden">
+          <span class="edit-banner-icon">✏️</span>
+          <div class="edit-banner-text">
+            <span id="buildingEditBannerText">Bina düzenleniyor</span>
+            <small>Değişiklik yapmadan çıkmak için İptal'e basın</small>
+          </div>
+        </div>
+
         <div class="toolbar-grid">
           <div class="field">
             <label for="buildingFilter">Gruba Göre Filtre</label>
@@ -550,9 +702,25 @@
           </div>
         </div>
 
+        <!-- Fotoğraf yükleme (opsiyonel) -->
+        <div class="field">
+          <div class="photo-field-label">📷 Bina Fotoğrafı <span class="muted" style="font-weight:400;">(opsiyonel)</span></div>
+          <div class="photo-upload-area" id="photoUploadArea" onclick="$('buildingPhotoInput').click()">
+            <input type="file" id="buildingPhotoInput" accept="image/*" />
+            <span id="photoUploadHint">Fotoğraf seçmek için tıklayın</span>
+            <div id="photoPreviewWrap" class="photo-preview-wrap hidden">
+              <img id="photoPreview" class="photo-preview" alt="Önizleme" />
+              <span id="photoSizeHint" class="photo-size-hint"></span>
+            </div>
+          </div>
+          <div class="actions" id="photoActions" style="margin-top:6px;">
+            <button type="button" id="removePhotoBtn" class="btn-remove-photo hidden">🗑 Fotoğrafı Kaldır</button>
+          </div>
+        </div>
+
         <div class="actions">
           <button id="saveBuildingBtn"    class="btn-primary" type="button">Bina Ekle</button>
-          <button id="cancelBuildingEdit" class="btn-edit hidden" type="button">İptal</button>
+          <button id="cancelBuildingEdit" class="btn-edit hidden" type="button" aria-label="İptal">✕ İptal</button>
         </div>
         <div id="buildingsList" class="mt-10"></div>
       </div>
@@ -586,23 +754,9 @@
 
       <!-- Arşiv -->
       <div id="archiveTab" class="card tab-panel hidden">
-        <h2 class="section-title">Arşiv — Silinen Kayıtlar</h2>
-        <p class="muted mb-12">Silinen kayıtlar buradadır. "Geri Yükle" ile aktife alabilirsiniz.</p>
-
-        <div id="archiveContent">
-          <div class="archive-section">
-            <div class="archive-section-title">🏘️ Silinen Gruplar</div>
-            <div id="archiveGroupsList"></div>
-          </div>
-          <div class="archive-section">
-            <div class="archive-section-title">🏢 Silinen Binalar</div>
-            <div id="archiveBuildingsList"></div>
-          </div>
-          <div class="archive-section">
-            <div class="archive-section-title">👷 Silinen Elemanlar</div>
-            <div id="archiveWorkersList"></div>
-          </div>
-        </div>
+        <h2 class="section-title">🗄️ Arşiv — Silinen Kayıtlar</h2>
+        <p class="muted mb-12" style="margin-bottom:14px;">Silinen kayıtlar burada saklanır. <strong>"↩ Geri Yükle"</strong> ile aktife alabilirsiniz.</p>
+        <div id="archiveContent"></div>
       </div>
 
       <!-- Ayarlar -->
@@ -752,6 +906,13 @@
     };
 
     let initDone = false;
+    let pendingPhotoBase64 = null; // null=değişiklik yok; ""=kaldırıldı; "data:..."=yeni fotoğraf
+
+    // Fotoğraf yükleme sabitleri
+    const MAX_PHOTO_RAW_BYTES   = 10 * 1024 * 1024; // Ham dosya limiti: 10 MB
+    const MAX_IMAGE_WIDTH       = 800;               // Yeniden boyutlandırma maksimum genişliği
+    const JPEG_QUALITY          = 0.75;              // JPEG sıkıştırma kalitesi
+    const MAX_COMPRESSED_SIZE_KB = 300;              // Sıkıştırma sonrası uyarı eşiği (KB)
 
     // ═══ GİRİŞ HIZI SINIRI (Brute-force koruması) ═══
     const rateLimit = { attempts: 0, windowStart: 0, lockedUntil: 0 };
@@ -1063,30 +1224,44 @@
       const card = document.createElement("div");
       card.className = "building-card";
 
+      // Fotoğraf varsa kart üstünde göster
+      if (building.photoBase64) {
+        const img = document.createElement("img");
+        img.className = "building-card-photo";
+        img.src = building.photoBase64;
+        img.alt = (building.name || "Bina") + " fotoğrafı";
+        img.loading = "lazy";
+        card.appendChild(img);
+      }
+
+      const body = document.createElement("div");
+      body.className = "building-card-body";
+      card.appendChild(body);
+
       const name = document.createElement("div");
       name.className = "building-name";
       name.textContent = building.name;
-      card.appendChild(name);
+      body.appendChild(name);
 
       if (showGroup && groupName) {
         const pill = document.createElement("span");
         pill.className = "group-pill";
         pill.textContent = `Grup: ${groupName}`;
-        card.appendChild(pill);
+        body.appendChild(pill);
       }
 
       if (building.address) {
         const addr = document.createElement("div");
         addr.className = "building-address";
         addr.textContent = building.address;
-        card.appendChild(addr);
+        body.appendChild(addr);
       }
 
       if (building.addressNote) {
         const note = document.createElement("div");
         note.className = "building-note";
         note.textContent = building.addressNote;
-        card.appendChild(note);
+        body.appendChild(note);
       }
 
       if (building.managerName || building.managerPhone) {
@@ -1101,15 +1276,90 @@
           a.textContent = `📞 ${building.managerPhone}`;
           mgr.appendChild(a);
         }
-        card.appendChild(mgr);
+        body.appendChild(mgr);
       }
 
       if (building.address) {
         const mapBtn = buildBtn("🗺️ Haritada Aç", "btn-map", () => openAddressOnMap(building.address));
         mapBtn.setAttribute("aria-label", `${building.name || ""} adresini Google Haritalar'da aç (yeni sekme)`);
-        card.appendChild(mapBtn);
+        body.appendChild(mapBtn);
       }
       return card;
+    }
+
+    // ═══ FOTOĞRAF YÜKLEME (Canvas ile yeniden boyutlandırma) ═══
+    function base64SizeKb(base64Str) {
+      // base64 boyutundan yaklaşık bayt sayısı: length * (3/4) / 1024
+      return Math.round(base64Str.length * 0.75 / 1024);
+    }
+
+    function resizeImageToBase64(file, maxWidth, quality) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = () => reject(new Error("Dosya okunamadı."));
+        reader.onload = e => {
+          const img = new Image();
+          img.onerror = () => reject(new Error("Görsel yüklenemedi."));
+          img.onload = () => {
+            let w = img.width, h = img.height;
+            if (w > maxWidth) { h = Math.round(h * maxWidth / w); w = maxWidth; }
+            const canvas = document.createElement("canvas");
+            canvas.width = w; canvas.height = h;
+            canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL("image/jpeg", quality));
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function handlePhotoSelect(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > MAX_PHOTO_RAW_BYTES) {
+        showToast("Fotoğraf çok büyük (maksimum 10 MB).", "error");
+        e.target.value = ""; return;
+      }
+      try {
+        const base64 = await resizeImageToBase64(file, MAX_IMAGE_WIDTH, JPEG_QUALITY);
+        const sizeKb  = base64SizeKb(base64);
+        if (sizeKb > MAX_COMPRESSED_SIZE_KB) {
+          showToast(`Sıkıştırma sonrası görsel büyük (~${sizeKb} KB). Daha küçük bir fotoğraf deneyin.`, "warn");
+        }
+        pendingPhotoBase64 = base64;
+        showPhotoPreview(base64, sizeKb);
+      } catch (err) {
+        showToast("Fotoğraf işlenemedi: " + err.message, "error");
+        e.target.value = "";
+      }
+    }
+
+    function showPhotoPreview(base64, sizeKb) {
+      const previewEl  = $("photoPreview");
+      const hintEl     = $("photoSizeHint");
+      const previewWrap = $("photoPreviewWrap");
+      const uploadHint = $("photoUploadHint");
+      const removeBtn  = $("removePhotoBtn");
+      if (!previewEl) return;
+      if (base64) {
+        previewEl.src  = base64;
+        hintEl.textContent = sizeKb ? `~${sizeKb} KB` : "";
+        previewWrap.classList.remove("hidden");
+        uploadHint.style.display = "none";
+        removeBtn.classList.remove("hidden");
+      } else {
+        previewEl.src  = "";
+        previewWrap.classList.add("hidden");
+        uploadHint.style.display = "";
+        removeBtn.classList.add("hidden");
+      }
+    }
+
+    function removePhoto() {
+      pendingPhotoBase64 = ""; // boş string = fotoğraf kaldır
+      showPhotoPreview(null, 0);
+      $("buildingPhotoInput").value = "";
     }
 
     // ═══ RENDER FONKSİYONLARI ═══
@@ -1183,8 +1433,25 @@
         const g    = state.data.groups.find(g => g.id === b.groupId);
         const item = document.createElement("div"); item.className = "item";
 
-        const title = document.createElement("div"); title.className = "title"; title.textContent = b.name;
-        const addr  = document.createElement("p");  addr.className  = "muted"; addr.textContent = b.address;
+        // Fotoğraf varsa thumbnail göster
+        if (b.photoBase64) {
+          const row = document.createElement("div"); row.className = "item-row";
+          const thumb = document.createElement("img");
+          thumb.className = "item-thumb"; thumb.src = b.photoBase64;
+          thumb.alt = b.name + " fotoğrafı"; thumb.loading = "lazy";
+          const bodyDiv = document.createElement("div"); bodyDiv.className = "item-body";
+
+          const title = document.createElement("div"); title.className = "title"; title.textContent = b.name;
+          const addr  = document.createElement("p");  addr.className  = "muted"; addr.textContent = b.address;
+          bodyDiv.append(title, addr);
+          row.append(thumb, bodyDiv);
+          item.appendChild(row);
+        } else {
+          const title = document.createElement("div"); title.className = "title"; title.textContent = b.name;
+          const addr  = document.createElement("p");  addr.className  = "muted"; addr.textContent = b.address;
+          item.append(title, addr);
+        }
+
         const note  = document.createElement("p");  note.className  = "building-note";
         note.textContent = b.addressNote || ""; note.style.display = b.addressNote ? "" : "none";
 
@@ -1207,7 +1474,7 @@
         actions.appendChild(buildBtn("Düzenle", "btn-edit", () => startEditBuilding(b.id)));
         actions.appendChild(buildBtn("🗑 Sil", "btn-danger", () => deleteBuilding(b.id)));
 
-        item.append(title, addr, note, mgr, grp, actions); wrap.appendChild(item);
+        item.append(note, mgr, grp, actions); wrap.appendChild(item);
       });
     }
 
@@ -1227,34 +1494,109 @@
     }
 
     function renderArchive() {
-      renderArchiveSection($("archiveGroupsList"),   state.data.deletedGroups,   "group");
-      renderArchiveSection($("archiveBuildingsList"), state.data.deletedBuildings,"building");
-      renderArchiveSection($("archiveWorkersList"),   state.data.deletedWorkers,  "worker");
+      const wrap = $("archiveContent");
+      const prevSearch = $("archiveSearchInput") ? $("archiveSearchInput").value : "";
+      wrap.innerHTML = "";
+
+      // Arama kutusu
+      const searchSection = document.createElement("div");
+      searchSection.className = "archive-search-wrap";
+      const searchIcon = document.createElement("span");
+      searchIcon.className = "archive-search-icon"; searchIcon.textContent = "🔍";
+      const searchInput = document.createElement("input");
+      searchInput.id = "archiveSearchInput";
+      searchInput.placeholder = "Arşivde ara... (ad, silen kişi)";
+      searchInput.value = prevSearch;
+      searchInput.addEventListener("input", filterArchiveDisplay);
+      searchSection.append(searchIcon, searchInput);
+      wrap.appendChild(searchSection);
+
+      buildArchiveSectionBlock(wrap, "🏘️", "Silinen Gruplar",  state.data.deletedGroups,    "group");
+      buildArchiveSectionBlock(wrap, "🏢", "Silinen Binalar",   state.data.deletedBuildings, "building");
+      buildArchiveSectionBlock(wrap, "👷", "Silinen Elemanlar", state.data.deletedWorkers,   "worker");
+
+      if (prevSearch) { filterArchiveDisplay(); setTimeout(() => { if ($("archiveSearchInput")) $("archiveSearchInput").focus(); }, 0); }
     }
 
-    function renderArchiveSection(wrap, items, type) {
-      wrap.innerHTML = "";
-      if (!items.length) { wrap.appendChild(buildEmpty("Silinen kayıt yok")); return; }
-      items.forEach(item => {
-        const el = document.createElement("div"); el.className = "archive-item";
-
-        const nameEl = document.createElement("div");
-        nameEl.style.fontWeight = "700"; nameEl.style.color = "var(--text)";
-        nameEl.textContent = item.fullName || item.name || item.username || item.id;
-
-        const meta = document.createElement("div"); meta.className = "archive-meta";
-        const deletedAt = item.deletedAt ? new Date(item.deletedAt).toLocaleString("tr-TR") : "—";
-        meta.textContent = `Silen: ${item.deletedBy || "—"} • Tarih: ${deletedAt}`;
-
-        const btn = buildBtn("↩ Geri Yükle", "btn-restore", () => {
-          if (type === "group")    restoreGroup(item.id);
-          if (type === "building") restoreBuilding(item.id);
-          if (type === "worker")   restoreWorker(item.id);
-        });
-        btn.style.flex = "0 0 auto"; btn.style.marginTop = "8px";
-
-        el.append(nameEl, meta, btn); wrap.appendChild(el);
+    function filterArchiveDisplay() {
+      const q = normalize(($("archiveSearchInput") || { value: "" }).value.trim());
+      document.querySelectorAll("[data-archive-item]").forEach(el => {
+        el.style.display = (!q || el.dataset.archiveItem.includes(q)) ? "" : "none";
       });
+      document.querySelectorAll("[data-archive-section-body]").forEach(body => {
+        const items = body.querySelectorAll("[data-archive-item]");
+        let hasVisible = false;
+        items.forEach(el => { if (el.style.display !== "none") hasVisible = true; });
+        let placeholder = body.querySelector(".archive-filter-empty");
+        if (!placeholder) {
+          placeholder = document.createElement("div");
+          placeholder.className = "empty archive-filter-empty";
+          placeholder.style.border = "none"; placeholder.style.borderRadius = "0";
+          placeholder.innerHTML = `<span class="icon">🔎</span>Arama sonucu bulunamadı`;
+          body.appendChild(placeholder);
+        }
+        placeholder.style.display = (!hasVisible && q) ? "" : "none";
+      });
+    }
+
+    function buildArchiveSectionBlock(wrap, icon, title, items, type) {
+      const header = document.createElement("div");
+      header.className = "archive-section-header";
+      header.innerHTML = `
+        <span class="archive-section-icon">${icon}</span>
+        <span class="archive-section-title">${title}</span>
+        <span class="archive-section-count">${items.length}</span>
+      `;
+      wrap.appendChild(header);
+
+      const body = document.createElement("div");
+      body.className = "archive-section-body";
+      body.dataset.archiveSectionBody = type;
+
+      if (!items.length) {
+        const empty = buildEmpty("Silinen kayıt yok");
+        empty.style.border = "none"; empty.style.borderRadius = "0";
+        body.appendChild(empty);
+      } else {
+        items.forEach(item => {
+          const searchText = normalize([
+            item.fullName || item.name || item.username || "",
+            item.deletedBy || ""
+          ].join(" "));
+
+          const el = document.createElement("div");
+          el.className = "archive-item";
+          el.dataset.archiveItem = searchText;
+
+          const iconEl = document.createElement("span");
+          iconEl.className = "archive-item-icon"; iconEl.textContent = icon;
+
+          const bodyDiv = document.createElement("div");
+          bodyDiv.className = "archive-item-body";
+
+          const nameEl = document.createElement("div");
+          nameEl.className = "archive-item-name";
+          nameEl.textContent = item.fullName || item.name || item.username || item.id;
+
+          const meta = document.createElement("div");
+          meta.className = "archive-meta";
+          const deletedAt = item.deletedAt ? new Date(item.deletedAt).toLocaleString("tr-TR") : "—";
+          meta.innerHTML = `<strong>Silen:</strong> ${item.deletedBy || "—"} &nbsp;•&nbsp; <strong>Tarih:</strong> ${deletedAt}`;
+
+          bodyDiv.append(nameEl, meta);
+
+          const btn = buildBtn("↩ Geri Yükle", "btn-restore", () => {
+            if (type === "group")    restoreGroup(item.id);
+            if (type === "building") restoreBuilding(item.id);
+            if (type === "worker")   restoreWorker(item.id);
+          });
+
+          el.append(iconEl, bodyDiv, btn);
+          body.appendChild(el);
+        });
+      }
+
+      wrap.appendChild(body);
     }
 
     function renderWorkerGroups() {
@@ -1347,9 +1689,15 @@
 
     function resetBuildingForm() {
       state.editBuildingId = null;
+      pendingPhotoBase64 = null;
       clearInputs("buildingName","buildingAddress","buildingAddressNote","buildingManagerName","buildingManagerPhone");
       $("saveBuildingBtn").textContent = "Bina Ekle";
       $("cancelBuildingEdit").classList.add("hidden");
+      // Düzenleme banner'ı gizle
+      $("buildingEditBanner").classList.add("hidden");
+      // Fotoğraf alanını sıfırla
+      $("buildingPhotoInput").value = "";
+      showPhotoPreview(null, 0);
     }
 
     function resetWorkerForm() {
@@ -1446,11 +1794,13 @@
     // ═══ GRUP CRUD ═══
     function startEditGroup(id) {
       const g = state.data.groups.find(g => g.id === id); if (!g) return;
+      // Önce sekmeye geç (resetAdminForms() çağrılır, form temizlenir)
+      setTab("groupsTab");
+      // Ardından formu doldur
       state.editGroupId = id;
       $("groupName").value = g.name;
       $("saveGroupBtn").textContent = "Grubu Güncelle";
       $("cancelGroupEdit").classList.remove("hidden");
-      setTab("groupsTab");
       $("groupName").focus();
     }
 
@@ -1503,7 +1853,11 @@
     // ═══ BİNA CRUD ═══
     function startEditBuilding(id) {
       const b = state.data.buildings.find(b => b.id === id); if (!b) return;
+      // Önce sekmeye geç (resetAdminForms() çağrılır, form temizlenir)
+      setTab("buildingsTab");
+      // Ardından formu doldur
       state.editBuildingId = id;
+      pendingPhotoBase64 = null; // mevcut fotoğrafı koru
       $("buildingName").value         = b.name          || "";
       $("buildingAddress").value      = b.address       || "";
       $("buildingAddressNote").value  = b.addressNote   || "";
@@ -1512,8 +1866,18 @@
       $("buildingGroup").value        = b.groupId;
       $("saveBuildingBtn").textContent = "Binayı Güncelle";
       $("cancelBuildingEdit").classList.remove("hidden");
-      setTab("buildingsTab");
-      $("buildingName").focus();
+      // Düzenleme banner'ı göster
+      $("buildingEditBannerText").textContent = `"${b.name}" düzenleniyor`;
+      $("buildingEditBanner").classList.remove("hidden");
+      // Mevcut fotoğraf varsa önizle
+      if (b.photoBase64) {
+        showPhotoPreview(b.photoBase64, base64SizeKb(b.photoBase64));
+      } else {
+        showPhotoPreview(null, 0);
+      }
+      // Forma scroll ve focus
+      $("buildingsTab").scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => $("buildingName").focus(), 250);
     }
 
     function saveBuilding() {
@@ -1535,17 +1899,26 @@
         showToast("Geçerli bir telefon numarası girin (örn: 05XX XXX XX XX).", "error"); return;
       }
 
+      // Fotoğraf: null=değişiklik yok (mevcut koru), ""=kaldır, "data:..."=yeni
+      const existingPhoto = state.editBuildingId
+        ? (state.data.buildings.find(b => b.id === state.editBuildingId)?.photoBase64 || "")
+        : "";
+      const photoBase64 = pendingPhotoBase64 !== null ? pendingPhotoBase64 : existingPhoto;
+
       const now     = Date.now();
-      const payload = { name, address, addressNote, managerName, managerPhone, groupId, updatedAt: now };
+      const payload = { name, address, addressNote, managerName, managerPhone, groupId, photoBase64, updatedAt: now };
 
       if (state.editBuildingId) {
         const before = state.data.buildings.find(b => b.id === state.editBuildingId);
         db.ref("buildings/" + state.editBuildingId).update(payload);
-        writeAuditLog("update", "building", state.editBuildingId, { name: before?.name, address: before?.address }, { name, address });
+        const photoChanged = pendingPhotoBase64 !== null && photoBase64 !== (before?.photoBase64 || "");
+        writeAuditLog("update", "building", state.editBuildingId,
+          { name: before?.name, address: before?.address },
+          { name, address, photoChanged });
         showToast("Bina güncellendi.", "success");
       } else {
         const ref = db.ref("buildings").push({ ...payload, isDeleted: false, createdAt: now });
-        writeAuditLog("create", "building", ref.key, null, { name, address, groupId });
+        writeAuditLog("create", "building", ref.key, null, { name, address, groupId, hasPhoto: !!photoBase64 });
         showToast("Bina eklendi.", "success");
       }
       resetBuildingForm();
@@ -1564,13 +1937,15 @@
     // ═══ ELEMAN CRUD ═══
     function startEditWorker(id) {
       const w = state.data.workers.find(w => w.id === id); if (!w) return;
+      // Önce sekmeye geç (resetAdminForms() çağrılır, form temizlenir)
+      setTab("workersTab");
+      // Ardından formu doldur
       state.editWorkerId = id;
       $("workerName").value     = w.fullName || "";
       $("workerUsername").value = w.username || "";
       $("workerPassword").value = "";
       $("saveWorkerBtn").textContent = "Elemanı Güncelle";
       $("cancelWorkerEdit").classList.remove("hidden");
-      setTab("workersTab");
       $("workerName").focus();
     }
 
@@ -1688,6 +2063,8 @@
       $("cancelBuildingEdit").addEventListener("click", resetBuildingForm);
       $("buildingFilter").addEventListener("change", renderBuildings);
       $("buildingTextFilter").addEventListener("input", renderBuildings);
+      $("buildingPhotoInput").addEventListener("change", handlePhotoSelect);
+      $("removePhotoBtn").addEventListener("click", removePhoto);
 
       $("saveWorkerBtn").addEventListener("click", saveWorker);
       $("cancelWorkerEdit").addEventListener("click", resetWorkerForm);
