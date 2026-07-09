@@ -720,7 +720,7 @@
 
         <div class="actions">
           <button id="saveBuildingBtn"    class="btn-primary" type="button">Bina Ekle</button>
-          <button id="cancelBuildingEdit" class="btn-edit hidden" type="button">✕ İptal</button>
+          <button id="cancelBuildingEdit" class="btn-edit hidden" type="button" aria-label="İptal">✕ İptal</button>
         </div>
         <div id="buildingsList" class="mt-10"></div>
       </div>
@@ -907,6 +907,12 @@
 
     let initDone = false;
     let pendingPhotoBase64 = null; // null=değişiklik yok; ""=kaldırıldı; "data:..."=yeni fotoğraf
+
+    // Fotoğraf yükleme sabitleri
+    const MAX_PHOTO_RAW_BYTES   = 10 * 1024 * 1024; // Ham dosya limiti: 10 MB
+    const MAX_IMAGE_WIDTH       = 800;               // Yeniden boyutlandırma maksimum genişliği
+    const JPEG_QUALITY          = 0.75;              // JPEG sıkıştırma kalitesi
+    const MAX_COMPRESSED_SIZE_KB = 300;              // Sıkıştırma sonrası uyarı eşiği (KB)
 
     // ═══ GİRİŞ HIZI SINIRI (Brute-force koruması) ═══
     const rateLimit = { attempts: 0, windowStart: 0, lockedUntil: 0 };
@@ -1282,6 +1288,11 @@
     }
 
     // ═══ FOTOĞRAF YÜKLEME (Canvas ile yeniden boyutlandırma) ═══
+    function base64SizeKb(base64Str) {
+      // base64 boyutundan yaklaşık bayt sayısı: length * (3/4) / 1024
+      return Math.round(base64Str.length * 0.75 / 1024);
+    }
+
     function resizeImageToBase64(file, maxWidth, quality) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -1306,14 +1317,14 @@
     async function handlePhotoSelect(e) {
       const file = e.target.files[0];
       if (!file) return;
-      if (file.size > 10 * 1024 * 1024) {
+      if (file.size > MAX_PHOTO_RAW_BYTES) {
         showToast("Fotoğraf çok büyük (maksimum 10 MB).", "error");
         e.target.value = ""; return;
       }
       try {
-        const base64 = await resizeImageToBase64(file, 800, 0.75);
-        const sizeKb  = Math.round(base64.length * 0.75 / 1024);
-        if (sizeKb > 300) {
+        const base64 = await resizeImageToBase64(file, MAX_IMAGE_WIDTH, JPEG_QUALITY);
+        const sizeKb  = base64SizeKb(base64);
+        if (sizeKb > MAX_COMPRESSED_SIZE_KB) {
           showToast(`Sıkıştırma sonrası görsel büyük (~${sizeKb} KB). Daha küçük bir fotoğraf deneyin.`, "warn");
         }
         pendingPhotoBase64 = base64;
@@ -1860,7 +1871,7 @@
       $("buildingEditBanner").classList.remove("hidden");
       // Mevcut fotoğraf varsa önizle
       if (b.photoBase64) {
-        showPhotoPreview(b.photoBase64, Math.round(b.photoBase64.length * 0.75 / 1024));
+        showPhotoPreview(b.photoBase64, base64SizeKb(b.photoBase64));
       } else {
         showPhotoPreview(null, 0);
       }
