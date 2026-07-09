@@ -14,9 +14,10 @@
       --muted: #6B7280;
       --border: #E5E7EB;
       --success: #10B981;
+      --warning: #F59E0B;
       --radius: 12px;
-      --shadow: 0 2px 8px rgba(27, 43, 94, 0.10);
-      --shadow-lg: 0 8px 24px rgba(27, 43, 94, 0.14);
+      --shadow: 0 2px 8px rgba(27,43,94,0.10);
+      --shadow-lg: 0 8px 24px rgba(27,43,94,0.14);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,6 +32,7 @@
 
     .hidden { display: none !important; }
 
+    /* ── Header ── */
     .app-header {
       position: sticky;
       top: 0;
@@ -45,32 +47,36 @@
     }
 
     .logo { display: flex; align-items: center; gap: 10px; }
-
     .logo-badge {
       background: #E8112D;
       color: white;
-      width: 48px;
-      height: 48px;
+      width: 44px; height: 44px;
       border-radius: 8px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
       line-height: 1;
+      flex-shrink: 0;
     }
-
-    .logo-num { font-size: 20px; font-weight: 900; }
-    .logo-sub { font-size: 9px; font-weight: 700; letter-spacing: 1px; }
-
+    .logo-num { font-size: 19px; font-weight: 900; }
+    .logo-sub { font-size: 8px; font-weight: 700; letter-spacing: 1px; }
     .logo-text { display: flex; align-items: baseline; gap: 4px; }
-    .logo-ufuk { font-size: 24px; font-weight: 900; color: #1B2B5E; }
-    .logo-asansor { font-size: 24px; font-weight: 900; color: #E8112D; }
+    .logo-ufuk { font-size: 22px; font-weight: 900; color: #1B2B5E; }
+    .logo-asansor { font-size: 22px; font-weight: 900; color: #E8112D; }
 
-    .container {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 14px;
+    /* ── Connection badge ── */
+    .conn-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      letter-spacing: .3px;
     }
+    .conn-online  { background: #dcfce7; color: #15803d; }
+    .conn-offline { background: #fee2e2; color: #b91c1c; animation: blink 1.2s step-start infinite; }
+    @keyframes blink { 50% { opacity: .4; } }
+
+    /* ── Layout ── */
+    .container { max-width: 980px; margin: 0 auto; padding: 14px; }
 
     .card {
       background: var(--card);
@@ -81,16 +87,11 @@
       margin-bottom: 12px;
     }
 
-    .section-title { font-size: 18px; margin-bottom: 10px; color: var(--primary); }
+    .section-title { font-size: 18px; margin-bottom: 10px; color: var(--primary); font-weight: 700; }
 
     .field { margin-bottom: 10px; }
 
-    label {
-      display: block;
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
+    label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
 
     input, select, textarea {
       width: 100%;
@@ -105,9 +106,9 @@
     }
 
     select {
-      font-size: 16px;
-      font-weight: 500;
-      background-image: linear-gradient(45deg, transparent 50%, var(--primary) 50%), linear-gradient(135deg, var(--primary) 50%, transparent 50%);
+      font-size: 16px; font-weight: 500;
+      background-image: linear-gradient(45deg, transparent 50%, var(--primary) 50%),
+                        linear-gradient(135deg, var(--primary) 50%, transparent 50%);
       background-position: calc(100% - 18px) calc(50% - 2px), calc(100% - 12px) calc(50% - 2px);
       background-size: 6px 6px, 6px 6px;
       background-repeat: no-repeat;
@@ -119,15 +120,14 @@
 
     input:focus, select:focus, textarea:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(27, 43, 94, 0.15);
+      box-shadow: 0 0 0 3px rgba(27,43,94,0.12);
     }
 
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 8px;
+    input:disabled, select:disabled, textarea:disabled, button:disabled {
+      opacity: .55; cursor: not-allowed;
     }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
 
     button {
       min-height: 48px;
@@ -142,51 +142,56 @@
       align-items: center;
       justify-content: center;
       flex: 1 1 130px;
+      transition: background .15s ease, opacity .15s ease;
     }
 
     .btn-primary { background: var(--primary); color: #fff; }
-    .btn-primary:hover { background: #132148; }
+    .btn-primary:hover:not(:disabled) { background: #132148; }
 
-    .btn-danger { background: var(--accent); color: #fff; }
-    .btn-danger:hover { background: #bf0d25; }
+    .btn-danger  { background: var(--accent); color: #fff; }
+    .btn-danger:hover:not(:disabled) { background: #bf0d25; }
+
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-success:hover:not(:disabled) { background: #059669; }
+
+    .btn-warn { background: var(--warning); color: #fff; }
+    .btn-warn:hover:not(:disabled) { background: #d97706; }
 
     .btn-edit {
-      background: #fff;
-      color: #4b5563;
+      background: #fff; color: #4b5563;
       border-color: #9ca3af;
     }
+    .btn-edit:hover:not(:disabled) { background: #f9fafb; }
 
-    .btn-edit:hover { background: #f9fafb; }
-
-    .btn-link {
-      background: #fff;
-      color: var(--primary);
-      border-color: var(--primary);
-    }
+    .btn-link { background: #fff; color: var(--primary); border-color: var(--primary); }
 
     .btn-login {
-      width: 100%;
-      margin-top: 8px;
-      background: linear-gradient(135deg, #ff3554, #E8112D);
-      color: #fff;
-      border: none;
+      width: 100%; margin-top: 8px;
+      background: linear-gradient(135deg,#ff3554,#E8112D);
+      color: #fff; border: none;
     }
+    .btn-login:hover:not(:disabled) { background: linear-gradient(135deg,#ff3554,#cc0f28); }
 
-    .btn-login:hover { background: linear-gradient(135deg, #ff3554, #cc0f28); }
+    .btn-map { background: #10B981; color: #fff; border: none; }
+    .btn-map:hover:not(:disabled) { background: #059669; }
+
+    .btn-restore { background: var(--primary); color: #fff; border: none; }
+    .btn-restore:hover:not(:disabled) { background: #132148; }
 
     .header-right { display: flex; gap: 8px; align-items: center; }
-    .header-user { font-size: 12px; color: var(--muted); }
+    .header-user { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
 
     .logout-btn {
-      min-height: 44px;
-      padding: 8px 12px;
+      min-height: 40px;
+      padding: 6px 12px;
       background: #fff;
       color: var(--primary);
       border: 1px solid var(--primary);
-      width: auto;
-      flex: 0 0 auto;
+      width: auto; flex: 0 0 auto;
+      font-size: 13px;
     }
 
+    /* ── Tabs ── */
     .tabs {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -199,30 +204,24 @@
       box-shadow: var(--shadow);
     }
 
-    @media (min-width: 560px) {
-      .tabs { grid-template-columns: repeat(4, 1fr); }
-    }
+    @media (min-width: 560px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 820px) { .tabs { grid-template-columns: repeat(5, 1fr); } }
 
     .tab-btn {
       min-height: 44px;
       background: transparent;
       color: #6B7280;
-      border: 0;
-      flex: 1 1 110px;
-      font-size: 14px;
+      border: 0; flex: 1 1 100px;
+      font-size: 13px;
       border-radius: 10px;
     }
+    .tab-btn.active { background: var(--primary); color: #fff; border: 0; }
 
-    .tab-btn.active {
-      background: var(--primary);
-      color: #fff;
-      border: 0;
-    }
-
-    .muted { color: var(--muted); font-size: 13px; }
-    .mt-8 { margin-top: 8px; }
-    .mt-10 { margin-top: 10px; }
-    .mb-12 { margin-bottom: 12px; }
+    /* ── Utility ── */
+    .muted  { color: var(--muted); font-size: 13px; }
+    .mt-8   { margin-top: 8px; }
+    .mt-10  { margin-top: 10px; }
+    .mb-12  { margin-bottom: 12px; }
     .text-14 { font-size: 14px; }
 
     .item {
@@ -232,7 +231,6 @@
       margin-bottom: 8px;
       background: #fff;
     }
-
     .item .title { font-weight: 700; font-size: 16px; color: var(--primary); }
 
     .empty {
@@ -242,9 +240,9 @@
       border: 1px dashed var(--border);
       border-radius: 10px;
     }
-
     .empty .icon { font-size: 26px; margin-bottom: 6px; display: block; }
 
+    /* ── Login ── */
     #loginView {
       min-height: 100dvh;
       display: flex;
@@ -252,64 +250,44 @@
       justify-content: center;
       padding: 14px;
     }
-
     .login-box {
-      width: 100%;
-      max-width: 400px;
+      width: 100%; max-width: 400px;
       background: #fff;
       border-radius: 20px;
       border: 1px solid var(--border);
       box-shadow: var(--shadow-lg);
-      padding: 18px;
+      padding: 20px;
     }
-
     .login-logo-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-      text-align: center;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 10px;
+      margin-bottom: 16px; text-align: center;
     }
-
     .login-msg { color: var(--muted); font-size: 14px; }
 
     .password-wrap { display: flex; gap: 8px; }
     .password-wrap input { flex: 1; }
     .toggle-pass {
-      min-height: 48px;
-      width: auto;
-      flex: 0 0 auto;
-      background: #fff;
-      color: var(--primary);
+      min-height: 48px; width: auto; flex: 0 0 auto;
+      background: #fff; color: var(--primary);
       border: 1px solid var(--primary);
-      padding: 10px 12px;
+      padding: 10px 12px; font-size: 13px;
     }
 
-    .toolbar-grid {
-      display: grid;
-      gap: 8px;
-      grid-template-columns: 1fr;
-    }
-
+    /* ── Grid layouts ── */
+    .toolbar-grid { display: grid; gap: 8px; grid-template-columns: 1fr; }
     @media (min-width: 680px) {
       .toolbar-grid { grid-template-columns: 1fr 1fr; }
       .split-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     }
 
-    .group-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-
-    @media (min-width: 620px) {
-      .group-grid { grid-template-columns: repeat(2, 1fr); }
-    }
+    /* ── Group grid ── */
+    .group-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    @media (min-width: 620px) { .group-grid { grid-template-columns: repeat(2, 1fr); } }
 
     .group-card {
       border: 1px solid var(--border);
-      border-left: 6px solid var(--primary);
+      border-left: 5px solid var(--primary);
       border-radius: 12px;
       padding: 14px;
       background: #fff;
@@ -323,71 +301,38 @@
       transition: background .2s ease, transform .2s ease;
     }
     .group-card:hover { background: #f8faff; transform: translateY(-1px); }
-
     .group-card-main { display: flex; align-items: center; gap: 10px; }
     .group-card-icon { font-size: 22px; }
     .group-card-name { font-weight: 700; color: var(--primary); }
     .group-admin-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
 
     .count-badge {
-      min-width: 32px;
-      height: 32px;
+      min-width: 32px; height: 32px;
       border-radius: 999px;
-      background: var(--accent);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 700;
-      padding: 0 8px;
-      flex: 0 0 auto;
+      background: var(--accent); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+      padding: 0 8px; flex-shrink: 0;
     }
 
-    .search-wrap {
-      position: relative;
-      margin-bottom: 12px;
-    }
-
-    .search-wrap input {
-      min-height: 54px;
-      padding-left: 42px;
-      padding-right: 40px;
-      font-size: 17px;
-    }
-
+    /* ── Search ── */
+    .search-wrap { position: relative; margin-bottom: 12px; }
+    .search-wrap input { min-height: 54px; padding-left: 42px; padding-right: 40px; font-size: 17px; }
     .search-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
+      position: absolute; left: 14px; top: 50%;
       transform: translateY(-50%);
-      font-size: 18px;
-      color: var(--muted);
-      pointer-events: none;
+      font-size: 18px; color: var(--muted); pointer-events: none;
     }
-
     .search-clear {
-      position: absolute;
-      right: 10px;
-      top: 50%;
+      position: absolute; right: 10px; top: 50%;
       transform: translateY(-50%);
-      border: 0;
-      background: none;
-      color: var(--muted);
-      font-size: 22px;
-      width: auto;
-      min-height: 40px;
-      flex: 0 0 auto;
-      padding: 4px 8px;
+      border: 0; background: none; color: var(--muted);
+      font-size: 22px; width: auto; min-height: 40px;
+      flex: 0 0 auto; padding: 4px 8px;
     }
+    .search-result-head { color: var(--primary); font-weight: 700; margin-bottom: 8px; font-size: 15px; }
 
-    .search-result-head {
-      color: var(--primary);
-      font-weight: 700;
-      margin-bottom: 8px;
-      font-size: 15px;
-    }
-
+    /* ── Building card ── */
     .building-card {
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -396,145 +341,92 @@
       box-shadow: var(--shadow);
       margin-bottom: 10px;
     }
-
-    .building-name {
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--primary);
-      margin-bottom: 4px;
-    }
-
-    .building-address {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .building-note {
-      font-size: 13px;
-      color: var(--muted);
-      font-style: italic;
-      margin-bottom: 8px;
-    }
-
-    .building-manager {
-      font-size: 13px;
-      color: #374151;
-      margin-bottom: 8px;
-    }
-
-    .phone-link {
-      color: var(--primary);
-      font-weight: 700;
-      text-decoration: none;
-    }
+    .building-name { font-size: 17px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+    .building-address { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    .building-note { font-size: 13px; color: var(--muted); font-style: italic; margin-bottom: 6px; }
+    .building-manager { font-size: 13px; color: #374151; margin-bottom: 8px; }
+    .phone-link { color: var(--primary); font-weight: 700; text-decoration: none; }
 
     .group-pill {
       display: inline-block;
-      background: #e9eefb;
-      color: var(--primary);
+      background: #e9eefb; color: var(--primary);
       border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      padding: 4px 10px;
-      margin-bottom: 8px;
+      font-size: 12px; font-weight: 700;
+      padding: 3px 10px; margin-bottom: 6px;
     }
 
-    .back-wrap {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .back-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+
+    /* ── Archive ── */
+    .archive-section { margin-bottom: 18px; }
+    .archive-section-title {
+      font-size: 15px; font-weight: 700; color: var(--primary);
+      padding: 6px 0; border-bottom: 2px solid var(--border);
       margin-bottom: 10px;
-      flex-wrap: wrap;
     }
-
-    .toast-area {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      z-index: 9999;
-      pointer-events: none;
-      align-items: center;
-    }
-
-    .toast {
-      min-width: 220px;
-      max-width: 90vw;
-      padding: 12px 24px;
+    .archive-item {
+      border: 1px dashed #d1d5db;
       border-radius: 10px;
-      color: #fff;
-      font-weight: 600;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.3s ease;
-      text-align: center;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      background: #fafafa;
+      opacity: .85;
     }
+    .archive-meta { font-size: 11px; color: #9ca3af; margin-top: 4px; }
 
+    /* ── Toast ── */
+    .toast-area {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column;
+      gap: 8px; z-index: 9999;
+      pointer-events: none; align-items: center;
+    }
+    .toast {
+      min-width: 220px; max-width: 90vw;
+      padding: 12px 24px; border-radius: 10px;
+      color: #fff; font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      opacity: 0; transform: translateY(20px);
+      transition: all 0.3s ease; text-align: center;
+    }
     .toast.show { opacity: 1; transform: translateY(0); }
     .toast.success { background: var(--success); }
-    .toast.error { background: var(--accent); }
-    .toast.info { background: var(--primary); }
+    .toast.error   { background: var(--accent); }
+    .toast.info    { background: var(--primary); }
+    .toast.warn    { background: var(--warning); }
 
-    .btn-map { background: #10B981; color: #fff; border: none; }
-    .btn-map:hover { background: #059669; }
-
+    /* ── Loading ── */
     #loadingView {
       min-height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 22px;
-      background: var(--bg);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 22px; background: var(--bg);
     }
-
     .loading-spinner {
-      width: 52px;
-      height: 52px;
+      width: 52px; height: 52px;
       border: 5px solid var(--border);
       border-top-color: var(--accent);
       border-radius: 50%;
       animation: spin 0.85s linear infinite;
     }
-
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    .loading-text {
-      font-size: 18px;
-      color: var(--primary);
-      font-weight: 700;
-      letter-spacing: .3px;
-    }
-
-    .loading-error {
-      color: var(--accent);
-      font-size: 15px;
-      text-align: center;
-      padding: 0 24px;
-      max-width: 320px;
-      line-height: 1.6;
-    }
-
+    .loading-text { font-size: 18px; color: var(--primary); font-weight: 700; }
+    .loading-error { color: var(--accent); font-size: 15px; text-align: center; padding: 0 24px; max-width: 320px; line-height: 1.6; }
     .btn-retry {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 28px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
+      background: var(--accent); color: #fff;
+      border: none; border-radius: 8px;
+      padding: 10px 28px; font-size: 15px; font-weight: 700; cursor: pointer;
     }
+
+    /* ── Lock screen ── */
+    .lock-msg { color: var(--accent); font-size: 14px; text-align: center; margin-top: 6px; font-weight: 600; }
   </style>
 </head>
 <body>
+
   <section id="loadingView">
-    <div class="logo" aria-label="ufuk asansör logosu">
+    <div class="logo">
       <div class="logo-badge"><span class="logo-num">02</span><span class="logo-sub">UFUK</span></div>
       <div class="logo-text"><span class="logo-ufuk">ufuk</span><span class="logo-asansor">asansör</span></div>
     </div>
@@ -546,40 +438,44 @@
 
   <div id="toastArea" class="toast-area" aria-live="polite" aria-atomic="true"></div>
 
-  <section id="loginView">
+  <!-- ═══════════════ LOGIN ═══════════════ -->
+  <section id="loginView" class="hidden">
     <div class="login-box">
       <div class="login-logo-wrap">
-        <div class="logo" aria-label="ufuk asansör logosu">
+        <div class="logo">
           <div class="logo-badge"><span class="logo-num">02</span><span class="logo-sub">UFUK</span></div>
           <div class="logo-text"><span class="logo-ufuk">ufuk</span><span class="logo-asansor">asansör</span></div>
         </div>
         <p class="login-msg">Bakım Takip Sistemi</p>
       </div>
 
-      <form id="loginForm">
+      <form id="loginForm" novalidate>
         <div class="field">
           <label for="loginUsername">Kullanıcı Adı</label>
-          <input id="loginUsername" autocomplete="username" placeholder="Kullanıcı adınız" />
+          <input id="loginUsername" autocomplete="username" placeholder="Kullanıcı adınız" maxlength="64" />
         </div>
         <div class="field">
           <label for="loginPassword">Şifre</label>
           <div class="password-wrap">
-            <input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••" />
+            <input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••" maxlength="128" />
             <button type="button" class="toggle-pass" data-target="loginPassword">Göster</button>
           </div>
         </div>
+        <p id="loginLockMsg" class="lock-msg hidden"></p>
         <button id="loginBtn" type="submit" class="btn-login">Giriş Yap</button>
       </form>
     </div>
   </section>
 
+  <!-- ═══════════════ ADMIN ═══════════════ -->
   <section id="adminView" class="hidden">
     <header class="app-header">
-      <div class="logo" aria-label="ufuk asansör logosu">
+      <div class="logo">
         <div class="logo-badge"><span class="logo-num">02</span><span class="logo-sub">UFUK</span></div>
         <div class="logo-text"><span class="logo-ufuk">ufuk</span><span class="logo-asansor">asansör</span></div>
       </div>
       <div class="header-right">
+        <span id="adminConnBadge" class="conn-badge hidden"></span>
         <span id="adminUserLabel" class="header-user"></span>
         <button id="logoutAdmin" class="logout-btn" type="button">Çıkış</button>
       </div>
@@ -587,25 +483,28 @@
 
     <div class="container">
       <div class="tabs">
-        <button class="tab-btn active" data-tab="groupsTab" type="button">🏘️ Gruplar</button>
-        <button class="tab-btn" data-tab="buildingsTab" type="button">🏢 Binalar</button>
-        <button class="tab-btn" data-tab="workersTab" type="button">👷 Elemanlar</button>
-        <button class="tab-btn" data-tab="settingsTab" type="button">⚙️ Ayarlar</button>
+        <button class="tab-btn active" data-tab="groupsTab"    type="button">🏘️ Gruplar</button>
+        <button class="tab-btn"        data-tab="buildingsTab" type="button">🏢 Binalar</button>
+        <button class="tab-btn"        data-tab="workersTab"   type="button">👷 Elemanlar</button>
+        <button class="tab-btn"        data-tab="archiveTab"   type="button">🗄️ Arşiv</button>
+        <button class="tab-btn"        data-tab="settingsTab"  type="button">⚙️ Ayarlar</button>
       </div>
 
+      <!-- Gruplar -->
       <div id="groupsTab" class="card tab-panel">
         <h2 class="section-title">Grup Yönetimi</h2>
         <div class="field">
           <label for="groupName">Grup Adı</label>
-          <input id="groupName" placeholder="Örn: 3. Bölge" />
+          <input id="groupName" placeholder="Örn: 3. Bölge" maxlength="100" />
         </div>
         <div class="actions">
-          <button id="saveGroupBtn" class="btn-primary" type="button">Grup Ekle</button>
+          <button id="saveGroupBtn"    class="btn-primary" type="button">Grup Ekle</button>
           <button id="cancelGroupEdit" class="btn-edit hidden" type="button">İptal</button>
         </div>
         <div id="groupsList" class="mt-10"></div>
       </div>
 
+      <!-- Binalar -->
       <div id="buildingsTab" class="card tab-panel hidden">
         <h2 class="section-title">Bina Yönetimi</h2>
         <div class="toolbar-grid">
@@ -615,111 +514,135 @@
           </div>
           <div class="field">
             <label for="buildingTextFilter">Metin Ara</label>
-            <input id="buildingTextFilter" placeholder="Bina adı veya adres" />
+            <input id="buildingTextFilter" placeholder="Bina adı veya adres" maxlength="200" />
           </div>
         </div>
 
         <div class="split-2">
           <div class="field">
-            <label for="buildingName">Bina Adı</label>
-            <input id="buildingName" placeholder="Örn: Yıldız Apartmanı" />
+            <label for="buildingName">Bina Adı *</label>
+            <input id="buildingName" placeholder="Örn: Yıldız Apartmanı" maxlength="150" />
           </div>
           <div class="field">
-            <label for="buildingGroup">Grup</label>
+            <label for="buildingGroup">Grup *</label>
             <select id="buildingGroup"></select>
           </div>
         </div>
 
         <div class="field">
-          <label for="buildingAddress">Adres</label>
-          <textarea id="buildingAddress" placeholder="Açık adres"></textarea>
+          <label for="buildingAddress">Adres *</label>
+          <textarea id="buildingAddress" placeholder="Açık adres" maxlength="500"></textarea>
         </div>
 
         <div class="field">
           <label for="buildingAddressNote">Adres Açıklaması</label>
-          <textarea id="buildingAddressNote" placeholder="Asansör konumu, giriş bilgisi vb."></textarea>
+          <textarea id="buildingAddressNote" placeholder="Asansör konumu, giriş bilgisi vb." maxlength="500"></textarea>
         </div>
 
         <div class="split-2">
           <div class="field">
             <label for="buildingManagerName">Yönetici Adı</label>
-            <input id="buildingManagerName" placeholder="Bina yöneticisinin adı soyadı" />
+            <input id="buildingManagerName" placeholder="Ad Soyad" maxlength="100" />
           </div>
           <div class="field">
             <label for="buildingManagerPhone">Yönetici Numarası</label>
-            <input id="buildingManagerPhone" type="tel" placeholder="05XX XXX XX XX" />
+            <input id="buildingManagerPhone" type="tel" placeholder="05XX XXX XX XX" maxlength="20" />
           </div>
         </div>
 
         <div class="actions">
-          <button id="saveBuildingBtn" class="btn-primary" type="button">Bina Ekle</button>
+          <button id="saveBuildingBtn"    class="btn-primary" type="button">Bina Ekle</button>
           <button id="cancelBuildingEdit" class="btn-edit hidden" type="button">İptal</button>
         </div>
         <div id="buildingsList" class="mt-10"></div>
       </div>
 
+      <!-- Elemanlar -->
       <div id="workersTab" class="card tab-panel hidden">
         <h2 class="section-title">Eleman Yönetimi</h2>
         <div class="split-2">
           <div class="field">
-            <label for="workerName">Ad Soyad</label>
-            <input id="workerName" placeholder="Ad Soyad" />
+            <label for="workerName">Ad Soyad *</label>
+            <input id="workerName" placeholder="Ad Soyad" maxlength="100" />
           </div>
           <div class="field">
-            <label for="workerUsername">Kullanıcı Adı</label>
-            <input id="workerUsername" placeholder="kullanici_adi" autocomplete="off" />
+            <label for="workerUsername">Kullanıcı Adı *</label>
+            <input id="workerUsername" placeholder="kullanici_adi" autocomplete="off" maxlength="50" />
           </div>
         </div>
         <div class="field">
           <label for="workerPassword">Şifre</label>
           <div class="password-wrap">
-            <input id="workerPassword" type="password" placeholder="Yeni şifre (düzenlemede boş bırakılabilir)" autocomplete="new-password" />
+            <input id="workerPassword" type="password" placeholder="Yeni şifre (düzenlemede boş = değişmez)" autocomplete="new-password" maxlength="128" />
             <button type="button" class="toggle-pass" data-target="workerPassword">Göster</button>
           </div>
         </div>
-
         <div class="actions">
-          <button id="saveWorkerBtn" class="btn-primary" type="button">Eleman Ekle</button>
+          <button id="saveWorkerBtn"    class="btn-primary" type="button">Eleman Ekle</button>
           <button id="cancelWorkerEdit" class="btn-edit hidden" type="button">İptal</button>
         </div>
         <div id="workersList" class="mt-10"></div>
       </div>
 
+      <!-- Arşiv -->
+      <div id="archiveTab" class="card tab-panel hidden">
+        <h2 class="section-title">Arşiv — Silinen Kayıtlar</h2>
+        <p class="muted mb-12">Silinen kayıtlar buradadır. "Geri Yükle" ile aktife alabilirsiniz.</p>
+
+        <div id="archiveContent">
+          <div class="archive-section">
+            <div class="archive-section-title">🏘️ Silinen Gruplar</div>
+            <div id="archiveGroupsList"></div>
+          </div>
+          <div class="archive-section">
+            <div class="archive-section-title">🏢 Silinen Binalar</div>
+            <div id="archiveBuildingsList"></div>
+          </div>
+          <div class="archive-section">
+            <div class="archive-section-title">👷 Silinen Elemanlar</div>
+            <div id="archiveWorkersList"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ayarlar -->
       <div id="settingsTab" class="card tab-panel hidden">
         <h2 class="section-title">Admin Şifre Değiştirme</h2>
         <div class="field">
           <label for="currentAdminPassword">Mevcut Şifre</label>
           <div class="password-wrap">
-            <input id="currentAdminPassword" type="password" autocomplete="current-password" />
+            <input id="currentAdminPassword" type="password" autocomplete="current-password" maxlength="128" />
             <button type="button" class="toggle-pass" data-target="currentAdminPassword">Göster</button>
           </div>
         </div>
         <div class="field">
-          <label for="newAdminPassword">Yeni Şifre</label>
+          <label for="newAdminPassword">Yeni Şifre (en az 8 karakter)</label>
           <div class="password-wrap">
-            <input id="newAdminPassword" type="password" autocomplete="new-password" />
+            <input id="newAdminPassword" type="password" autocomplete="new-password" maxlength="128" />
             <button type="button" class="toggle-pass" data-target="newAdminPassword">Göster</button>
           </div>
         </div>
         <div class="field">
           <label for="confirmAdminPassword">Yeni Şifre (Tekrar)</label>
           <div class="password-wrap">
-            <input id="confirmAdminPassword" type="password" autocomplete="new-password" />
+            <input id="confirmAdminPassword" type="password" autocomplete="new-password" maxlength="128" />
             <button type="button" class="toggle-pass" data-target="confirmAdminPassword">Göster</button>
           </div>
         </div>
-        <button id="changeAdminPasswordBtn" class="btn-primary" type="button">Şifreyi Güncelle</button>
+        <button id="changeAdminPasswordBtn" class="btn-primary" type="button" style="flex:0 0 auto;width:auto;">Şifreyi Güncelle</button>
       </div>
-    </div>
+    </div><!-- /container -->
   </section>
 
+  <!-- ═══════════════ WORKER ═══════════════ -->
   <section id="workerView" class="hidden">
     <header class="app-header">
-      <div class="logo" aria-label="ufuk asansör logosu">
+      <div class="logo">
         <div class="logo-badge"><span class="logo-num">02</span><span class="logo-sub">UFUK</span></div>
         <div class="logo-text"><span class="logo-ufuk">ufuk</span><span class="logo-asansor">asansör</span></div>
       </div>
       <div class="header-right">
+        <span id="workerConnBadge" class="conn-badge hidden"></span>
         <span id="workerUserLabel" class="header-user"></span>
         <button id="logoutWorker" class="logout-btn" type="button">Çıkış</button>
       </div>
@@ -732,7 +655,7 @@
 
       <div class="search-wrap">
         <span class="search-icon">🔍</span>
-        <input id="buildingSearch" type="search" placeholder="Bina ara..." autocomplete="off" />
+        <input id="buildingSearch" type="search" placeholder="Bina ara... (en az 2 karakter)" autocomplete="off" maxlength="200" />
         <button type="button" id="searchClearBtn" class="search-clear hidden" aria-label="Aramayı temizle">×</button>
       </div>
 
@@ -755,9 +678,51 @@
     </div>
   </section>
 
+  <!-- ═══════════════ FIREBASE SDK ═══════════════ -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
   <script>
+    /*
+     * ╔══════════════════════════════════════════════════════════════════╗
+     * ║  FIREBASE GÜVENLİK KURALLARI — ÖNERİLEN ÜRETİM KURALLARI       ║
+     * ║  (Firebase Console > Realtime Database > Rules sekmesine girin) ║
+     * ╠══════════════════════════════════════════════════════════════════╣
+     * ║  Mevcut mimari uygulama kimlik doğrulamasını veritabanında       ║
+     * ║  saklamaktadır. Aşağıdaki kurallar IP tabanlı güvenlik           ║
+     * ║  sağlamaz; Firebase Authentication entegrasyonu önerilir.       ║
+     * ║                                                                  ║
+     * ║  {                                                               ║
+     * ║    "rules": {                                                    ║
+     * ║      ".read":  false,                                            ║
+     * ║      ".write": false,                                            ║
+     * ║      "admin": {                                                  ║
+     * ║        ".read":  true,                                           ║
+     * ║        ".write": true,                                           ║
+     * ║        "$field": {                                               ║
+     * ║          ".validate": "newData.isString()"                       ║
+     * ║        }                                                         ║
+     * ║      },                                                          ║
+     * ║      "groups": {                                                 ║
+     * ║        ".read": true,                                            ║
+     * ║        "$id": {                                                  ║
+     * ║          ".write": true,                                         ║
+     * ║          "name": { ".validate": "newData.isString()" }           ║
+     * ║        }                                                         ║
+     * ║      },                                                          ║
+     * ║      "buildings": { ".read": true, ".write": true },            ║
+     * ║      "workers":   { ".read": true, ".write": true },            ║
+     * ║      "audit":     { ".read": false, ".write": true }            ║
+     * ║    }                                                             ║
+     * ║  }                                                               ║
+     * ║                                                                  ║
+     * ║  YEDEKLEME ÖNERİSİ: Firebase Console > Export JSON ile          ║
+     * ║  haftada bir manuel yedek alın veya Google Cloud Scheduler       ║
+     * ║  ile otomatik export kurulumu yapın.                             ║
+     * ╚══════════════════════════════════════════════════════════════════╝
+     */
+
+    // ═══ FIREBASE KONFIGÜRASYONU ═══
     const firebaseConfig = {
       apiKey: "AIzaSyAQpC32gQo0CpU5K1ycvN0P0j_dTqvq_x4",
       authDomain: "ufukasansor-deb86.firebaseapp.com",
@@ -772,8 +737,13 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
+    // ═══ UYGULAMA DURUMU ═══
     const state = {
-      data: { admin: null, groups: [], buildings: [], workers: [] },
+      data: {
+        admin: null,
+        groups: [], buildings: [], workers: [],
+        deletedGroups: [], deletedBuildings: [], deletedWorkers: []
+      },
       currentUser: null,
       editGroupId: null,
       editBuildingId: null,
@@ -783,102 +753,213 @@
 
     let initDone = false;
 
-    const TR_MAP = { 'ı':'i','ş':'s','ğ':'g','ü':'u','ö':'o','ç':'c','İ':'i','Ş':'s','Ğ':'g','Ü':'u','Ö':'o','Ç':'c' };
+    // ═══ GİRİŞ HIZI SINIRI (Brute-force koruması) ═══
+    const rateLimit = { attempts: 0, windowStart: 0, lockedUntil: 0 };
+    const RL_MAX      = 5;          // pencere başına maksimum deneme
+    const RL_WINDOW   = 60_000;     // 1 dakika
+    const RL_LOCK     = 120_000;    // 2 dakika kilit
+    let lockTimer     = null;
+
+    function isRateLimited() {
+      const now = Date.now();
+      if (now < rateLimit.lockedUntil) return true;
+      if (now - rateLimit.windowStart > RL_WINDOW) {
+        rateLimit.attempts = 0;
+        rateLimit.windowStart = now;
+      }
+      return false;
+    }
+
+    function recordFailedAttempt() {
+      const now = Date.now();
+      if (now - rateLimit.windowStart > RL_WINDOW) {
+        rateLimit.attempts = 0;
+        rateLimit.windowStart = now;
+      }
+      rateLimit.attempts += 1;
+      if (rateLimit.attempts >= RL_MAX) {
+        rateLimit.lockedUntil = now + RL_LOCK;
+        startLockCountdown();
+      }
+    }
+
+    function startLockCountdown() {
+      clearInterval(lockTimer);
+      lockTimer = setInterval(() => {
+        const remaining = Math.max(0, Math.ceil((rateLimit.lockedUntil - Date.now()) / 1000));
+        const msgEl = $("loginLockMsg");
+        if (remaining <= 0) {
+          clearInterval(lockTimer);
+          if (msgEl) { msgEl.textContent = ""; msgEl.classList.add("hidden"); }
+          setLoginBtnState(false);
+        } else {
+          if (msgEl) {
+            msgEl.textContent = `Çok fazla hatalı giriş. ${remaining} saniye bekleyin.`;
+            msgEl.classList.remove("hidden");
+          }
+          setLoginBtnState(true);
+        }
+      }, 1000);
+    }
+
+    function setLoginBtnState(locked) {
+      const btn = $("loginBtn");
+      if (btn) btn.disabled = locked;
+    }
+
+    // ═══ TÜRKÇE NORMALİZASYON ═══
+    const TR_MAP = {'ı':'i','ş':'s','ğ':'g','ü':'u','ö':'o','ç':'c',
+                    'İ':'i','Ş':'s','Ğ':'g','Ü':'u','Ö':'o','Ç':'c'};
     function normalize(str) {
-      return str.toLowerCase().replace(/[ışğüöçİŞĞÜÖÇ]/g, c => TR_MAP[c] || c);
+      return String(str || "").toLowerCase().replace(/[ışğüöçİŞĞÜÖÇ]/g, c => TR_MAP[c] || c);
     }
 
     function matchesSearch(building, query) {
-      const words = normalize(query.trim()).split(/\s+/).filter(Boolean);
-      const haystack = normalize(`${building.name || ""} ${building.address || ""} ${building.addressNote || ""} ${building.managerName || ""} ${building.managerPhone || ""}`);
-      return words.every(word => haystack.includes(word));
+      const words = normalize(query).split(/\s+/).filter(w => w.length >= 1);
+      if (!words.length) return false;
+      const haystack = normalize(
+        [building.name, building.address, building.addressNote, building.managerName, building.managerPhone]
+          .filter(Boolean).join(" ")
+      );
+      return words.every(w => haystack.includes(w));
     }
 
+    // ═══ TELEFON DOĞRULAMA ═══
+    function isValidPhone(phone) {
+      if (!phone) return true;
+      const p = phone.replace(/[\s\-\(\)\.]/g, '');
+      return /^(\+90|0)[5-9][0-9]{9}$/.test(p) || /^\+[0-9]{11,15}$/.test(p);
+    }
+
+    // ═══ DOM YARDIMCILARI ═══
     function $(id) { return document.getElementById(id); }
 
     function showToast(message, type = "success") {
       const area = $("toastArea");
-      const toast = document.createElement("div");
-      toast.className = `toast ${type}`;
-      toast.textContent = message;
-      area.appendChild(toast);
-      requestAnimationFrame(() => toast.classList.add("show"));
-      setTimeout(() => {
-        toast.classList.remove("show");
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
+      const t = document.createElement("div");
+      t.className = `toast ${type}`;
+      t.textContent = message;
+      area.appendChild(t);
+      requestAnimationFrame(() => t.classList.add("show"));
+      setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 300); }, 3500);
     }
 
     function clearInputs(...ids) {
-      ids.forEach((id) => {
-        const el = $(id);
-        if (el) el.value = "";
-      });
+      ids.forEach(id => { const el = $(id); if (el) el.value = ""; });
     }
 
     function show(viewId) {
-      ["loadingView", "loginView", "adminView", "workerView"].forEach((id) => {
+      ["loadingView","loginView","adminView","workerView"].forEach(id => {
         const el = $(id);
-        if (el) el.classList.add("hidden");
+        if (el) el.classList.toggle("hidden", id !== viewId);
       });
-      $(viewId).classList.remove("hidden");
     }
 
-    // Convert Firebase snapshot value to local arrays
+    function disableBtn(btn, ms = 1500) {
+      btn.disabled = true;
+      setTimeout(() => { btn.disabled = false; }, ms);
+    }
+
+    // ═══ DENETİM GÜNLÜĞÜ ═══
+    function writeAuditLog(action, entityType, entityId, before, after) {
+      try {
+        db.ref("audit").push({
+          who:        state.currentUser ? (state.currentUser.username || "?") : "system",
+          when:       Date.now(),
+          action,     // "create" | "update" | "delete" | "restore"
+          entityType, // "group" | "building" | "worker" | "admin"
+          entityId:   entityId || null,
+          before:     before  || null,
+          after:      after   || null
+        });
+      } catch (e) { console.error("[audit] Denetim günlüğü yazılamadı:", e); }
+    }
+
+    // ═══ VERİ MODELI ═══
     function snapshotToState(val) {
+      function toArr(obj) {
+        return obj ? Object.entries(obj).map(([id, v]) => ({ id, ...v })) : [];
+      }
+      const allGroups    = toArr(val.groups);
+      const allBuildings = toArr(val.buildings);
+      const allWorkers   = toArr(val.workers);
       return {
-        admin: val.admin,
-        groups: val.groups ? Object.entries(val.groups).map(([id, v]) => ({ id, ...v })) : [],
-        buildings: val.buildings ? Object.entries(val.buildings).map(([id, v]) => ({ id, ...v })) : [],
-        workers: val.workers ? Object.entries(val.workers).map(([id, v]) => ({ id, ...v })) : []
+        admin:           val.admin,
+        groups:          allGroups.filter(g => !g.isDeleted),
+        buildings:       allBuildings.filter(b => !b.isDeleted),
+        workers:         allWorkers.filter(w => !w.isDeleted),
+        deletedGroups:   allGroups.filter(g => g.isDeleted),
+        deletedBuildings: allBuildings.filter(b => b.isDeleted),
+        deletedWorkers:  allWorkers.filter(w => w.isDeleted)
       };
     }
 
-    // Write default seed data to Firebase (first run)
-    function writeDefaultData() {
-      const g1ref = db.ref("groups").push();
-      const g2ref = db.ref("groups").push();
-      const b1ref = db.ref("buildings").push();
-      const b2ref = db.ref("buildings").push();
-      const b3ref = db.ref("buildings").push();
-      const b4ref = db.ref("buildings").push();
-      const w1ref = db.ref("workers").push();
-      const updates = {};
-      updates["admin"] = { username: "admin", password: "admin123", fullName: "Patron" };
-      updates[`groups/${g1ref.key}`] = { name: "1. Bölge" };
-      updates[`groups/${g2ref.key}`] = { name: "2. Bölge" };
-      updates[`buildings/${b1ref.key}`] = { name: "Mavi Konak", address: "Caferağa Mah. Moda Cad. No:22 Kadıköy/İstanbul", groupId: g1ref.key };
-      updates[`buildings/${b2ref.key}`] = { name: "Yıldız Apartmanı", address: "Koşuyolu Mah. Lambacı Sok. No:14 Kadıköy/İstanbul", groupId: g1ref.key };
-      updates[`buildings/${b3ref.key}`] = { name: "İnci Plaza", address: "Mecidiyeköy Mah. Büyükdere Cad. No:91 Şişli/İstanbul", groupId: g2ref.key };
-      updates[`buildings/${b4ref.key}`] = { name: "Güneş Sitesi", address: "Gayrettepe Mah. Yıldız Posta Cad. No:37 Beşiktaş/İstanbul", groupId: g2ref.key };
-      updates[`workers/${w1ref.key}`] = { fullName: "Örnek Eleman", username: "eleman1", password: "1234" };
-      db.ref("/").update(updates);
-    }
-
-    // Refresh relevant UI for currently logged-in user
-    function refreshIfLoggedIn() {
-      if (!state.currentUser) return;
-      if (state.currentUser.role === "admin") {
-        $("adminUserLabel").textContent = state.currentUser.fullName || state.currentUser.username;
-        refreshAdminUI();
-        renderGroupSelects();
-      } else {
-        const worker = state.data.workers.find((w) => w.id === state.currentUser.id);
-        if (worker) {
-          state.currentUser.fullName = worker.fullName;
-          state.currentUser.username = worker.username;
-        }
-        $("workerUserLabel").textContent = state.currentUser.fullName || state.currentUser.username;
-        $("workerWelcome").textContent = `Hoş geldin, ${(worker && worker.fullName) || state.currentUser.fullName || state.currentUser.username} 👋`;
-        renderWorkerGroups();
-        if (state.selectedWorkerGroupId) renderWorkerBuildings(state.selectedWorkerGroupId);
-        if ($("buildingSearch").value.trim()) handleSearch();
+    // ═══ VERİ GÖÇÜ (eksik alanları tamamla) ═══
+    function runMigration(val) {
+      const now = Date.now();
+      const up = {};
+      function migrateCollection(obj, path) {
+        if (!obj) return;
+        Object.entries(obj).forEach(([id, v]) => {
+          if (v.isDeleted === undefined)  up[`${path}/${id}/isDeleted`]  = false;
+          if (!v.createdAt)               up[`${path}/${id}/createdAt`]  = now;
+          if (!v.updatedAt)               up[`${path}/${id}/updatedAt`]  = now;
+        });
       }
+      migrateCollection(val.groups,    "groups");
+      migrateCollection(val.buildings, "buildings");
+      migrateCollection(val.workers,   "workers");
+      if (Object.keys(up).length) db.ref("/").update(up);
     }
 
-    // Restore session from sessionStorage after Firebase data loads
+    // ═══ BAĞLANTI DURUMU ═══
+    function startConnectionMonitor() {
+      db.ref(".info/connected").on("value", snap => {
+        const online = snap.val() === true;
+        updateConnBadge("adminConnBadge", online);
+        updateConnBadge("workerConnBadge", online);
+        if (!online) showToast("İnternet bağlantısı kesildi.", "error");
+      });
+    }
+
+    function updateConnBadge(id, online) {
+      const el = $(id);
+      if (!el) return;
+      el.className = "conn-badge " + (online ? "conn-online" : "conn-offline");
+      el.textContent = online ? "🟢 Çevrimiçi" : "🔴 Çevrimdışı";
+      el.classList.remove("hidden");
+    }
+
+    // ═══ HARİTA ═══
+    function openAddressOnMap(address) {
+      if (!address) return;
+      window.open(
+        `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`,
+        '_blank', 'noopener,noreferrer'
+      );
+    }
+
+    // ═══ VARSAYILAN VERİ (İlk Çalıştırma) ═══
+    function writeDefaultData() {
+      const now = Date.now();
+      const g1 = db.ref("groups").push();
+      const g2 = db.ref("groups").push();
+      const b1 = db.ref("buildings").push();
+      const b2 = db.ref("buildings").push();
+      const w1 = db.ref("workers").push();
+      const up = {};
+      up["admin"] = { username: "admin", password: "admin123", fullName: "Patron" };
+      up[`groups/${g1.key}`] = { name: "1. Bölge", isDeleted: false, createdAt: now, updatedAt: now };
+      up[`groups/${g2.key}`] = { name: "2. Bölge", isDeleted: false, createdAt: now, updatedAt: now };
+      up[`buildings/${b1.key}`] = { name: "Mavi Konak", address: "Caferağa Mah. Moda Cad. No:22 Kadıköy/İstanbul", groupId: g1.key, addressNote: "", managerName: "", managerPhone: "", isDeleted: false, createdAt: now, updatedAt: now };
+      up[`buildings/${b2.key}`] = { name: "İnci Plaza",  address: "Mecidiyeköy Mah. Büyükdere Cad. No:91 Şişli/İstanbul",  groupId: g2.key, addressNote: "", managerName: "", managerPhone: "", isDeleted: false, createdAt: now, updatedAt: now };
+      up[`workers/${w1.key}`]  = { fullName: "Örnek Eleman", username: "eleman1", password: "1234", isDeleted: false, createdAt: now, updatedAt: now };
+      db.ref("/").update(up);
+    }
+
+    // ═══ OTURUM YÖNETİMİ ═══
     function restoreSession() {
-      const saved = sessionStorage.getItem("currentUser");
+      const saved = sessionStorage.getItem("ufuk_session");
       if (!saved) return false;
       try {
         const user = JSON.parse(saved);
@@ -892,51 +973,47 @@
             return true;
           }
         } else if (user.role === "worker") {
-          const worker = state.data.workers.find((w) => w.id === user.id);
-          if (worker) {
-            state.currentUser = { role: "worker", id: worker.id, username: worker.username, fullName: worker.fullName };
-            $("workerUserLabel").textContent = state.currentUser.fullName || state.currentUser.username;
-            $("workerWelcome").textContent = `Hoş geldin, ${worker.fullName} 👋`;
-            renderWorkerGroups();
-            clearSearch();
+          const w = state.data.workers.find(w => w.id === user.id);
+          if (w) {
+            state.currentUser = { role: "worker", id: w.id, username: w.username, fullName: w.fullName };
+            applyWorkerSession(w);
             show("workerView");
             return true;
           }
         }
-      } catch (e) { /* Ignore malformed sessionStorage data */ }
-      sessionStorage.removeItem("currentUser");
+      } catch (e) { /* bozuk veri */ }
+      sessionStorage.removeItem("ufuk_session");
       return false;
     }
 
-    function openAddressOnMap(address) {
-      const a = document.createElement("a");
-      a.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+    function applyWorkerSession(worker) {
+      $("workerUserLabel").textContent = worker.fullName || worker.username;
+      $("workerWelcome").textContent   = `Hoş geldin, ${worker.fullName || worker.username} 👋`;
+      renderWorkerGroups();
+      clearSearch();
     }
 
-    // Start Firebase realtime listener
+    function saveSession() {
+      if (state.currentUser) {
+        sessionStorage.setItem("ufuk_session", JSON.stringify(state.currentUser));
+      }
+    }
+
+    // ═══ FIREBASE DİNLEYİCİ ═══
     function startFirebaseListener() {
-      db.ref("/").on("value", (snapshot) => {
-        const val = snapshot.val();
-
-        if (!val || !val.admin) {
-          writeDefaultData();
-          return;
-        }
-
-        state.data = snapshotToState(val);
+      db.ref("/").on("value", snap => {
+        const val = snap.val();
+        if (!val || !val.admin) { writeDefaultData(); return; }
 
         if (!initDone) {
           initDone = true;
+          runMigration(val);
+          state.data = snapshotToState(val);
           bindEvents();
-          if (!restoreSession()) {
-            show("loginView");
-          }
+          startConnectionMonitor();
+          if (!restoreSession()) show("loginView");
         } else {
+          state.data = snapshotToState(val);
           refreshIfLoggedIn();
         }
       }, () => {
@@ -946,55 +1023,38 @@
       });
     }
 
-    function buildEmpty(text) {
-      const empty = document.createElement("div");
-      empty.className = "empty";
-      empty.innerHTML = `<span class="icon">📭</span>${text}`;
-      return empty;
-    }
-
-    function renderGroupSelects() {
-      const groupSelect = $("buildingGroup");
-      const filterSelect = $("buildingFilter");
-      const prevGroup = groupSelect.value;
-      const prevFilter = filterSelect.value;
-
-      groupSelect.innerHTML = "";
-      filterSelect.innerHTML = "";
-
-      const allOpt = document.createElement("option");
-      allOpt.value = "all";
-      allOpt.textContent = "Tüm Gruplar";
-      filterSelect.appendChild(allOpt);
-
-      state.data.groups.forEach((group) => {
-        const opt1 = document.createElement("option");
-        opt1.value = group.id;
-        opt1.textContent = group.name;
-        groupSelect.appendChild(opt1);
-
-        const opt2 = document.createElement("option");
-        opt2.value = group.id;
-        opt2.textContent = group.name;
-        filterSelect.appendChild(opt2);
-      });
-
-      if (!state.data.groups.length) {
-        const empty = document.createElement("option");
-        empty.value = "";
-        empty.textContent = "Önce grup ekleyin";
-        groupSelect.appendChild(empty);
+    function refreshIfLoggedIn() {
+      if (!state.currentUser) return;
+      if (state.currentUser.role === "admin") {
+        $("adminUserLabel").textContent = state.currentUser.fullName || state.currentUser.username;
+        refreshAdminUI();
+        renderGroupSelects();
+      } else {
+        const w = state.data.workers.find(w => w.id === state.currentUser.id);
+        if (w) {
+          state.currentUser.fullName  = w.fullName;
+          state.currentUser.username  = w.username;
+        }
+        $("workerUserLabel").textContent = state.currentUser.fullName || state.currentUser.username;
+        $("workerWelcome").textContent   = `Hoş geldin, ${state.currentUser.fullName || state.currentUser.username} 👋`;
+        renderWorkerGroups();
+        if (state.selectedWorkerGroupId) renderWorkerBuildings(state.selectedWorkerGroupId);
+        if ($("buildingSearch").value.trim()) handleSearch();
       }
-
-      groupSelect.value = Array.from(groupSelect.options).some((o) => o.value === prevGroup) ? prevGroup : groupSelect.value;
-      filterSelect.value = Array.from(filterSelect.options).some((o) => o.value === prevFilter) ? prevFilter : "all";
     }
 
-    function buildActionButton(text, className, onClick) {
+    // ═══ UI BLOKLARI ═══
+    function buildEmpty(text) {
+      const el = document.createElement("div");
+      el.className = "empty";
+      el.innerHTML = `<span class="icon">📭</span>${text}`;
+      return el;
+    }
+
+    function buildBtn(text, cls, onClick) {
       const btn = document.createElement("button");
-      btn.type = "button";
-      btn.textContent = text;
-      btn.className = className;
+      btn.type = "button"; btn.textContent = text;
+      btn.className = cls;
       btn.addEventListener("click", onClick);
       return btn;
     }
@@ -1006,11 +1066,6 @@
       const name = document.createElement("div");
       name.className = "building-name";
       name.textContent = building.name;
-
-      const address = document.createElement("div");
-      address.className = "building-address";
-      address.textContent = building.address;
-
       card.appendChild(name);
 
       if (showGroup && groupName) {
@@ -1020,7 +1075,12 @@
         card.appendChild(pill);
       }
 
-      card.appendChild(address);
+      if (building.address) {
+        const addr = document.createElement("div");
+        addr.className = "building-address";
+        addr.textContent = building.address;
+        card.appendChild(addr);
+      }
 
       if (building.addressNote) {
         const note = document.createElement("div");
@@ -1030,230 +1090,216 @@
       }
 
       if (building.managerName || building.managerPhone) {
-        const manager = document.createElement("div");
-        manager.className = "building-manager";
-        if (building.managerName) {
-          manager.append(`👤 ${building.managerName}`);
-        }
+        const mgr = document.createElement("div");
+        mgr.className = "building-manager";
+        if (building.managerName) mgr.append(`👤 ${building.managerName}`);
         if (building.managerPhone) {
-          if (building.managerName) manager.append(" • ");
-          const phone = document.createElement("a");
-          phone.href = `tel:${building.managerPhone}`;
-          phone.className = "phone-link";
-          phone.textContent = `📞 ${building.managerPhone}`;
-          manager.append(phone);
+          if (building.managerName) mgr.append("  •  ");
+          const a = document.createElement("a");
+          a.href = `tel:${building.managerPhone}`;
+          a.className = "phone-link";
+          a.textContent = `📞 ${building.managerPhone}`;
+          mgr.appendChild(a);
         }
-        card.appendChild(manager);
+        card.appendChild(mgr);
       }
 
-      const mapBtn = buildActionButton("🗺️ Haritada Aç", "btn-map", () => {
-        openAddressOnMap(building.address);
-      });
-      card.appendChild(mapBtn);
+      if (building.address) {
+        const mapBtn = buildBtn("🗺️ Haritada Aç", "btn-map", () => openAddressOnMap(building.address));
+        mapBtn.setAttribute("aria-label", `${building.name || ""} adresini Google Haritalar'da aç (yeni sekme)`);
+        card.appendChild(mapBtn);
+      }
       return card;
     }
 
-    function renderGroups() {
-      const wrap = $("groupsList");
-      wrap.innerHTML = "";
+    // ═══ RENDER FONKSİYONLARI ═══
+    function renderGroupSelects() {
+      const groupSel  = $("buildingGroup");
+      const filterSel = $("buildingFilter");
+      const prevGroup  = groupSel.value;
+      const prevFilter = filterSel.value;
+
+      groupSel.innerHTML = ""; filterSel.innerHTML = "";
+
+      const allOpt = document.createElement("option");
+      allOpt.value = "all"; allOpt.textContent = "Tüm Gruplar";
+      filterSel.appendChild(allOpt);
 
       if (!state.data.groups.length) {
-        wrap.appendChild(buildEmpty("Henüz kayıt yok"));
-        return;
+        const empty = document.createElement("option");
+        empty.value = ""; empty.textContent = "Önce grup ekleyin";
+        groupSel.appendChild(empty);
       }
 
-      state.data.groups.forEach((group) => {
-        const count = state.data.buildings.filter((b) => b.groupId === group.id).length;
-        const item = document.createElement("div");
-        item.className = "item";
+      state.data.groups.forEach(g => {
+        const o1 = document.createElement("option");
+        o1.value = g.id; o1.textContent = g.name; groupSel.appendChild(o1);
+        const o2 = document.createElement("option");
+        o2.value = g.id; o2.textContent = g.name; filterSel.appendChild(o2);
+      });
 
-        const head = document.createElement("div");
-        head.className = "group-admin-head";
+      if (Array.from(groupSel.options).some(o => o.value === prevGroup)) groupSel.value = prevGroup;
+      filterSel.value = Array.from(filterSel.options).some(o => o.value === prevFilter) ? prevFilter : "all";
+    }
 
-        const title = document.createElement("div");
-        title.className = "title";
-        title.textContent = group.name;
-        head.appendChild(title);
+    function renderGroups() {
+      const wrap = $("groupsList"); wrap.innerHTML = "";
+      if (!state.data.groups.length) { wrap.appendChild(buildEmpty("Henüz grup yok")); return; }
 
-        const badge = document.createElement("span");
-        badge.className = "count-badge";
-        badge.textContent = count;
-        head.appendChild(badge);
+      state.data.groups.forEach(g => {
+        const count = state.data.buildings.filter(b => b.groupId === g.id).length;
+        const item  = document.createElement("div"); item.className = "item";
 
-        const sub = document.createElement("p");
-        sub.className = "muted";
-        sub.textContent = `${count} bina`;
+        const head  = document.createElement("div"); head.className = "group-admin-head";
+        const title = document.createElement("div"); title.className = "title"; title.textContent = g.name;
+        const badge = document.createElement("span"); badge.className = "count-badge"; badge.textContent = count;
+        head.append(title, badge);
 
-        const actions = document.createElement("div");
-        actions.className = "actions";
-        actions.appendChild(buildActionButton("Düzenle", "btn-edit", () => startEditGroup(group.id)));
-        actions.appendChild(buildActionButton("Sil", "btn-danger", () => deleteGroup(group.id)));
+        const sub = document.createElement("p"); sub.className = "muted"; sub.textContent = `${count} bina`;
 
-        item.append(head, sub, actions);
-        wrap.appendChild(item);
+        const actions = document.createElement("div"); actions.className = "actions";
+        actions.appendChild(buildBtn("Düzenle", "btn-edit", () => startEditGroup(g.id)));
+        actions.appendChild(buildBtn("🗑 Sil", "btn-danger", () => deleteGroup(g.id)));
+
+        item.append(head, sub, actions); wrap.appendChild(item);
       });
     }
 
     function renderBuildings() {
       renderGroupSelects();
-
-      const wrap = $("buildingsList");
-      wrap.innerHTML = "";
+      const wrap = $("buildingsList"); wrap.innerHTML = "";
       const groupFilter = $("buildingFilter").value;
-      const textFilter = $("buildingTextFilter").value.trim();
+      const textFilter  = normalize($("buildingTextFilter").value.trim());
 
-      const buildings = state.data.buildings.filter((b) => {
+      const buildings = state.data.buildings.filter(b => {
         const passGroup = groupFilter === "all" || b.groupId === groupFilter;
-        const passText = !textFilter || matchesSearch(b, textFilter);
+        const passText  = !textFilter || matchesSearch(b, textFilter);
         return passGroup && passText;
       });
 
-      if (!buildings.length) {
-        wrap.appendChild(buildEmpty("Henüz kayıt yok"));
-        return;
-      }
+      if (!buildings.length) { wrap.appendChild(buildEmpty("Kayıt bulunamadı")); return; }
 
-      buildings.forEach((building) => {
-        const group = state.data.groups.find((g) => g.id === building.groupId);
-        const item = document.createElement("div");
-        item.className = "item";
+      buildings.forEach(b => {
+        const g    = state.data.groups.find(g => g.id === b.groupId);
+        const item = document.createElement("div"); item.className = "item";
 
-        const title = document.createElement("div");
-        title.className = "title";
-        title.textContent = building.name;
+        const title = document.createElement("div"); title.className = "title"; title.textContent = b.name;
+        const addr  = document.createElement("p");  addr.className  = "muted"; addr.textContent = b.address;
+        const note  = document.createElement("p");  note.className  = "building-note";
+        note.textContent = b.addressNote || ""; note.style.display = b.addressNote ? "" : "none";
 
-        const addr = document.createElement("p");
-        addr.className = "muted";
-        addr.textContent = building.address;
-
-        const note = document.createElement("p");
-        note.className = "building-note";
-        note.textContent = building.addressNote;
-        note.style.display = building.addressNote ? "block" : "none";
-
-        const manager = document.createElement("p");
-        manager.className = "building-manager";
-        if (building.managerName || building.managerPhone) {
-          if (building.managerName) manager.append(`👤 ${building.managerName}`);
-          if (building.managerPhone) {
-            if (building.managerName) manager.append(" • ");
-            const phone = document.createElement("a");
-            phone.href = `tel:${building.managerPhone}`;
-            phone.className = "phone-link";
-            phone.textContent = `📞 ${building.managerPhone}`;
-            manager.append(phone);
+        const mgr = document.createElement("p"); mgr.className = "building-manager";
+        if (b.managerName || b.managerPhone) {
+          if (b.managerName) mgr.append(`👤 ${b.managerName}`);
+          if (b.managerPhone) {
+            if (b.managerName) mgr.append("  •  ");
+            const a = document.createElement("a");
+            a.href = `tel:${b.managerPhone}`; a.className = "phone-link"; a.textContent = `📞 ${b.managerPhone}`;
+            mgr.appendChild(a);
           }
-        } else {
-          manager.style.display = "none";
-        }
+        } else { mgr.style.display = "none"; }
 
-        const grp = document.createElement("p");
-        grp.className = "muted";
-        grp.style.marginTop = "4px";
-        grp.textContent = `Grup: ${group ? group.name : "-"}`;
+        const grp = document.createElement("p"); grp.className = "muted"; grp.style.marginTop = "4px";
+        grp.textContent = `Grup: ${g ? g.name : "—"}`;
 
-        const actions = document.createElement("div");
-        actions.className = "actions";
-        actions.appendChild(buildActionButton("🗺️ Haritada Aç", "btn-map", () => {
-          openAddressOnMap(building.address);
-        }));
-        actions.appendChild(buildActionButton("Düzenle", "btn-edit", () => startEditBuilding(building.id)));
-        actions.appendChild(buildActionButton("Sil", "btn-danger", () => deleteBuilding(building.id)));
+        const actions = document.createElement("div"); actions.className = "actions";
+        actions.appendChild(buildBtn("🗺️ Haritada Aç", "btn-map", () => openAddressOnMap(b.address)));
+        actions.appendChild(buildBtn("Düzenle", "btn-edit", () => startEditBuilding(b.id)));
+        actions.appendChild(buildBtn("🗑 Sil", "btn-danger", () => deleteBuilding(b.id)));
 
-        item.append(title, addr, note, manager, grp, actions);
-        wrap.appendChild(item);
+        item.append(title, addr, note, mgr, grp, actions); wrap.appendChild(item);
       });
     }
 
     function renderWorkers() {
-      const wrap = $("workersList");
+      const wrap = $("workersList"); wrap.innerHTML = "";
+      if (!state.data.workers.length) { wrap.appendChild(buildEmpty("Henüz eleman yok")); return; }
+
+      state.data.workers.forEach(w => {
+        const item   = document.createElement("div"); item.className = "item";
+        const title  = document.createElement("div"); title.className = "title"; title.textContent = w.fullName;
+        const user   = document.createElement("p");   user.className  = "muted"; user.textContent = `Kullanıcı adı: ${w.username}`;
+        const actions= document.createElement("div"); actions.className = "actions";
+        actions.appendChild(buildBtn("Düzenle", "btn-edit", () => startEditWorker(w.id)));
+        actions.appendChild(buildBtn("🗑 Sil", "btn-danger", () => deleteWorker(w.id)));
+        item.append(title, user, actions); wrap.appendChild(item);
+      });
+    }
+
+    function renderArchive() {
+      renderArchiveSection($("archiveGroupsList"),   state.data.deletedGroups,   "group");
+      renderArchiveSection($("archiveBuildingsList"), state.data.deletedBuildings,"building");
+      renderArchiveSection($("archiveWorkersList"),   state.data.deletedWorkers,  "worker");
+    }
+
+    function renderArchiveSection(wrap, items, type) {
       wrap.innerHTML = "";
+      if (!items.length) { wrap.appendChild(buildEmpty("Silinen kayıt yok")); return; }
+      items.forEach(item => {
+        const el = document.createElement("div"); el.className = "archive-item";
 
-      if (!state.data.workers.length) {
-        wrap.appendChild(buildEmpty("Henüz kayıt yok"));
-        return;
-      }
+        const nameEl = document.createElement("div");
+        nameEl.style.fontWeight = "700"; nameEl.style.color = "var(--text)";
+        nameEl.textContent = item.fullName || item.name || item.username || item.id;
 
-      state.data.workers.forEach((worker) => {
-        const item = document.createElement("div");
-        item.className = "item";
+        const meta = document.createElement("div"); meta.className = "archive-meta";
+        const deletedAt = item.deletedAt ? new Date(item.deletedAt).toLocaleString("tr-TR") : "—";
+        meta.textContent = `Silen: ${item.deletedBy || "—"} • Tarih: ${deletedAt}`;
 
-        const title = document.createElement("div");
-        title.className = "title";
-        title.textContent = worker.fullName;
+        const btn = buildBtn("↩ Geri Yükle", "btn-restore", () => {
+          if (type === "group")    restoreGroup(item.id);
+          if (type === "building") restoreBuilding(item.id);
+          if (type === "worker")   restoreWorker(item.id);
+        });
+        btn.style.flex = "0 0 auto"; btn.style.marginTop = "8px";
 
-        const user = document.createElement("p");
-        user.className = "muted";
-        user.textContent = `Kullanıcı adı: ${worker.username}`;
-
-        const actions = document.createElement("div");
-        actions.className = "actions";
-        actions.appendChild(buildActionButton("Düzenle", "btn-edit", () => startEditWorker(worker.id)));
-        actions.appendChild(buildActionButton("Sil", "btn-danger", () => deleteWorker(worker.id)));
-
-        item.append(title, user, actions);
-        wrap.appendChild(item);
+        el.append(nameEl, meta, btn); wrap.appendChild(el);
       });
     }
 
     function renderWorkerGroups() {
-      const wrap = $("workerGroupsList");
-      wrap.innerHTML = "";
+      const wrap = $("workerGroupsList"); wrap.innerHTML = "";
+      if (!state.data.groups.length) { wrap.appendChild(buildEmpty("Grup bulunamadı")); return; }
 
-      if (!state.data.groups.length) {
-        wrap.appendChild(buildEmpty("Henüz kayıt yok"));
-        return;
-      }
-
-      state.data.groups.forEach((group) => {
-        const count = state.data.buildings.filter((b) => b.groupId === group.id).length;
-        const card = document.createElement("div");
+      state.data.groups.forEach(g => {
+        const count = state.data.buildings.filter(b => b.groupId === g.id).length;
+        const card  = document.createElement("div");
         card.className = "group-card";
-        card.setAttribute("role", "button");
-        card.setAttribute("tabindex", "0");
+        card.setAttribute("role", "button"); card.setAttribute("tabindex", "0");
         card.innerHTML = `
           <div class="group-card-main">
             <span class="group-card-icon">🏢</span>
-            <span class="group-card-name">${group.name}</span>
+            <span class="group-card-name">${g.name}</span>
           </div>
           <span class="count-badge">${count}</span>
         `;
-        card.addEventListener("click", () => openWorkerGroup(group.id));
-        card.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            openWorkerGroup(group.id);
-          }
+        card.addEventListener("click", () => openWorkerGroup(g.id));
+        card.addEventListener("keydown", e => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openWorkerGroup(g.id); }
         });
         wrap.appendChild(card);
       });
     }
 
     function renderWorkerBuildings(groupId) {
-      const group = state.data.groups.find((g) => g.id === groupId);
-      $("workerSelectedGroup").textContent = group ? group.name : "";
-
-      const wrap = $("workerBuildingsList");
-      wrap.innerHTML = "";
-
-      const buildings = state.data.buildings.filter((b) => b.groupId === groupId);
-      if (!buildings.length) {
-        wrap.appendChild(buildEmpty("Henüz kayıt yok"));
-        return;
-      }
-
-      buildings.forEach((building) => wrap.appendChild(buildBuildingCard(building)));
+      const g = state.data.groups.find(g => g.id === groupId);
+      $("workerSelectedGroup").textContent = g ? g.name : "";
+      const wrap = $("workerBuildingsList"); wrap.innerHTML = "";
+      const buildings = state.data.buildings.filter(b => b.groupId === groupId);
+      if (!buildings.length) { wrap.appendChild(buildEmpty("Bu grupta bina yok")); return; }
+      buildings.forEach(b => wrap.appendChild(buildBuildingCard(b)));
     }
 
+    // ═══ ARAMA ═══
     function handleSearch() {
-      const query = $("buildingSearch").value.trim();
-      $("searchClearBtn").classList.toggle("hidden", !query);
+      const rawQuery = $("buildingSearch").value.trim();
+      $("searchClearBtn").classList.toggle("hidden", !rawQuery);
 
-      if (!query) {
+      if (rawQuery.length < 2) {
         $("searchResultsPanel").classList.add("hidden");
         $("workerGroupsPanel").classList.remove("hidden");
         $("workerBuildingsPanel").classList.add("hidden");
-        state.selectedWorkerGroupId = null;
+        if (!rawQuery) state.selectedWorkerGroupId = null;
         return;
       }
 
@@ -1261,22 +1307,20 @@
       $("workerBuildingsPanel").classList.add("hidden");
       $("searchResultsPanel").classList.remove("hidden");
 
-      const resultWrap = $("searchResultsList");
-      resultWrap.innerHTML = "";
-
-      const matches = state.data.buildings.filter((b) => matchesSearch(b, query));
+      const resultWrap = $("searchResultsList"); resultWrap.innerHTML = "";
+      const matches = state.data.buildings.filter(b => matchesSearch(b, rawQuery));
 
       if (!matches.length) {
-        const noRes = document.createElement("div");
-        noRes.className = "empty";
-        noRes.innerHTML = `<span class="icon">🔎</span>Sonuç bulunamadı`;
-        resultWrap.appendChild(noRes);
+        const no = document.createElement("div");
+        no.className = "empty";
+        no.innerHTML = `<span class="icon">🔎</span>Sonuç bulunamadı`;
+        resultWrap.appendChild(no);
         return;
       }
 
-      matches.forEach((building) => {
-        const group = state.data.groups.find((g) => g.id === building.groupId);
-        resultWrap.appendChild(buildBuildingCard(building, group ? group.name : "-", true));
+      matches.forEach(b => {
+        const g = state.data.groups.find(g => g.id === b.groupId);
+        resultWrap.appendChild(buildBuildingCard(b, g ? g.name : "—", true));
       });
     }
 
@@ -1290,11 +1334,10 @@
     }
 
     function refreshAdminUI() {
-      renderGroups();
-      renderBuildings();
-      renderWorkers();
+      renderGroups(); renderBuildings(); renderWorkers(); renderArchive();
     }
 
+    // ═══ FORM SIFIRLAMA ═══
     function resetGroupForm() {
       state.editGroupId = null;
       $("groupName").value = "";
@@ -1304,36 +1347,42 @@
 
     function resetBuildingForm() {
       state.editBuildingId = null;
-      clearInputs("buildingName", "buildingAddress", "buildingAddressNote", "buildingManagerName", "buildingManagerPhone");
+      clearInputs("buildingName","buildingAddress","buildingAddressNote","buildingManagerName","buildingManagerPhone");
       $("saveBuildingBtn").textContent = "Bina Ekle";
       $("cancelBuildingEdit").classList.add("hidden");
     }
 
     function resetWorkerForm() {
       state.editWorkerId = null;
-      clearInputs("workerName", "workerUsername", "workerPassword");
+      clearInputs("workerName","workerUsername","workerPassword");
       $("saveWorkerBtn").textContent = "Eleman Ekle";
       $("cancelWorkerEdit").classList.add("hidden");
     }
 
     function resetSettingsForm() {
-      clearInputs("currentAdminPassword", "newAdminPassword", "confirmAdminPassword");
+      clearInputs("currentAdminPassword","newAdminPassword","confirmAdminPassword");
     }
 
     function resetAdminForms() {
-      resetGroupForm();
-      resetBuildingForm();
-      resetWorkerForm();
-      resetSettingsForm();
+      resetGroupForm(); resetBuildingForm(); resetWorkerForm(); resetSettingsForm();
     }
 
+    // ═══ SEKMELER ═══
     function setTab(tabId) {
       resetAdminForms();
-      document.querySelectorAll(".tab-btn").forEach((btn) => btn.classList.toggle("active", btn.dataset.tab === tabId));
-      document.querySelectorAll(".tab-panel").forEach((panel) => panel.classList.toggle("hidden", panel.id !== tabId));
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tabId));
+      document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("hidden", p.id !== tabId));
+      if (tabId === "archiveTab") renderArchive();
     }
 
+    // ═══ GİRİŞ / ÇIKIŞ ═══
     function login() {
+      if (isRateLimited()) {
+        const remaining = Math.max(0, Math.ceil((rateLimit.lockedUntil - Date.now()) / 1000));
+        showToast(`Çok fazla deneme. ${remaining}s bekleyin.`, "error");
+        return;
+      }
+
       const username = $("loginUsername").value.trim();
       const password = $("loginPassword").value;
 
@@ -1342,39 +1391,51 @@
         return;
       }
 
-      if (username.toLowerCase() === state.data.admin.username.toLowerCase() && password === state.data.admin.password) {
+      const btn = $("loginBtn"); disableBtn(btn, 1000);
+
+      // Admin kontrolü
+      if (state.data.admin &&
+          username.toLowerCase() === state.data.admin.username.toLowerCase() &&
+          password === state.data.admin.password) {
+        rateLimit.attempts = 0;
         state.currentUser = { role: "admin", username: state.data.admin.username, fullName: state.data.admin.fullName };
-        sessionStorage.setItem("currentUser", JSON.stringify(state.currentUser));
-        clearInputs("loginUsername", "loginPassword");
+        saveSession();
+        clearInputs("loginUsername","loginPassword");
         $("adminUserLabel").textContent = state.currentUser.fullName || state.currentUser.username;
-        refreshAdminUI();
-        setTab("groupsTab");
-        show("adminView");
-        showToast("Admin girişi başarılı.", "success");
+        refreshAdminUI(); setTab("groupsTab"); show("adminView");
+        showToast("Hoş geldiniz, " + (state.currentUser.fullName || state.currentUser.username) + " ✓", "success");
         return;
       }
 
-      const worker = state.data.workers.find((w) => w.username.toLowerCase() === username.toLowerCase() && w.password === password);
+      // Eleman kontrolü
+      const worker = state.data.workers.find(
+        w => w.username.toLowerCase() === username.toLowerCase() && w.password === password
+      );
       if (worker) {
+        rateLimit.attempts = 0;
         state.currentUser = { role: "worker", id: worker.id, username: worker.username, fullName: worker.fullName };
-        sessionStorage.setItem("currentUser", JSON.stringify(state.currentUser));
-        clearInputs("loginUsername", "loginPassword");
-        $("workerUserLabel").textContent = state.currentUser.fullName || state.currentUser.username;
-        $("workerWelcome").textContent = `Hoş geldin, ${worker.fullName} 👋`;
-        renderWorkerGroups();
-        clearSearch();
+        saveSession();
+        clearInputs("loginUsername","loginPassword");
+        $("workerUserLabel").textContent = worker.fullName || worker.username;
+        applyWorkerSession(worker);
         show("workerView");
-        showToast("Giriş başarılı.", "success");
+        showToast("Hoş geldin, " + (worker.fullName || worker.username) + " 👋", "success");
         return;
       }
 
-      showToast("Kullanıcı adı veya şifre hatalı.", "error");
+      // Başarısız — genel hata mesajı (deneme sayısı açıklanmaz)
+      recordFailedAttempt();
+      if (rateLimit.lockedUntil > Date.now()) {
+        showToast("Hesap geçici olarak kilitlendi. Lütfen bekleyin.", "error");
+      } else {
+        showToast("Kullanıcı adı veya şifre hatalı.", "error");
+      }
     }
 
     function logout() {
       state.currentUser = null;
       state.selectedWorkerGroupId = null;
-      sessionStorage.removeItem("currentUser");
+      sessionStorage.removeItem("ufuk_session");
       $("adminUserLabel").textContent = "";
       $("workerUserLabel").textContent = "";
       $("workerWelcome").textContent = "";
@@ -1382,197 +1443,222 @@
       show("loginView");
     }
 
+    // ═══ GRUP CRUD ═══
     function startEditGroup(id) {
-      const group = state.data.groups.find((g) => g.id === id);
-      if (!group) return;
+      const g = state.data.groups.find(g => g.id === id); if (!g) return;
       state.editGroupId = id;
-      $("groupName").value = group.name;
+      $("groupName").value = g.name;
       $("saveGroupBtn").textContent = "Grubu Güncelle";
       $("cancelGroupEdit").classList.remove("hidden");
+      setTab("groupsTab");
+      $("groupName").focus();
     }
 
     function saveGroup() {
+      const btn  = $("saveGroupBtn"); disableBtn(btn, 1200);
       const name = $("groupName").value.trim();
-      if (!name) {
-        showToast("Grup adı zorunludur.", "error");
-        return;
-      }
+      if (!name) { showToast("Grup adı zorunludur.", "error"); return; }
+      if (name.length > 100) { showToast("Grup adı en fazla 100 karakter olabilir.", "error"); return; }
 
-      const duplicate = state.data.groups.find((g) => g.name.toLowerCase() === name.toLowerCase() && g.id !== state.editGroupId);
-      if (duplicate) {
-        showToast("Bu grup adı zaten var.", "error");
-        return;
-      }
+      const dup = state.data.groups.find(g => g.name.toLowerCase() === name.toLowerCase() && g.id !== state.editGroupId);
+      if (dup) { showToast("Bu grup adı zaten var.", "error"); return; }
 
+      const now = Date.now();
       if (state.editGroupId) {
-        db.ref("groups/" + state.editGroupId).update({ name });
+        const before = state.data.groups.find(g => g.id === state.editGroupId);
+        db.ref("groups/" + state.editGroupId).update({ name, updatedAt: now });
+        writeAuditLog("update", "group", state.editGroupId, { name: before?.name }, { name });
         showToast("Grup güncellendi.", "success");
       } else {
-        db.ref("groups").push({ name });
+        const ref = db.ref("groups").push({ name, isDeleted: false, createdAt: now, updatedAt: now });
+        writeAuditLog("create", "group", ref.key, null, { name });
         showToast("Grup eklendi.", "success");
       }
-
       resetGroupForm();
     }
 
     function deleteGroup(id) {
-      const group = state.data.groups.find((g) => g.id === id);
-      if (!group) return;
-      if (!confirm(`"${group.name}" grubu silinsin mi? Bu gruptaki binalar da silinecek.`)) return;
+      const g = state.data.groups.find(g => g.id === id); if (!g) return;
+      if (!confirm(`"${g.name}" grubu arşive taşınsın mı?\nBu gruptaki binalar da arşive taşınacak.`)) return;
 
-      const updates = {};
-      updates["groups/" + id] = null;
-      state.data.buildings.filter((b) => b.groupId === id).forEach((b) => {
-        updates["buildings/" + b.id] = null;
+      const now = Date.now();
+      const who = state.currentUser?.username || "?";
+      const up = {};
+      up[`groups/${id}/isDeleted`]  = true;
+      up[`groups/${id}/deletedAt`]  = now;
+      up[`groups/${id}/deletedBy`]  = who;
+      up[`groups/${id}/updatedAt`]  = now;
+      state.data.buildings.filter(b => b.groupId === id).forEach(b => {
+        up[`buildings/${b.id}/isDeleted`] = true;
+        up[`buildings/${b.id}/deletedAt`] = now;
+        up[`buildings/${b.id}/deletedBy`] = who;
+        up[`buildings/${b.id}/updatedAt`] = now;
       });
-      db.ref("/").update(updates);
-
+      db.ref("/").update(up);
+      writeAuditLog("delete", "group", id, { name: g.name }, null);
       if (state.selectedWorkerGroupId === id) state.selectedWorkerGroupId = null;
-      showToast("Grup ve bağlı binalar silindi.", "success");
+      showToast("Grup arşive taşındı.", "info");
     }
 
+    // ═══ BİNA CRUD ═══
     function startEditBuilding(id) {
-      const building = state.data.buildings.find((b) => b.id === id);
-      if (!building) return;
-
+      const b = state.data.buildings.find(b => b.id === id); if (!b) return;
       state.editBuildingId = id;
-      $("buildingName").value = building.name;
-      $("buildingAddress").value = building.address;
-      $("buildingAddressNote").value = building.addressNote || "";
-      $("buildingManagerName").value = building.managerName || "";
-      $("buildingManagerPhone").value = building.managerPhone || "";
-      $("buildingGroup").value = building.groupId;
+      $("buildingName").value         = b.name          || "";
+      $("buildingAddress").value      = b.address       || "";
+      $("buildingAddressNote").value  = b.addressNote   || "";
+      $("buildingManagerName").value  = b.managerName   || "";
+      $("buildingManagerPhone").value = b.managerPhone  || "";
+      $("buildingGroup").value        = b.groupId;
       $("saveBuildingBtn").textContent = "Binayı Güncelle";
       $("cancelBuildingEdit").classList.remove("hidden");
+      setTab("buildingsTab");
+      $("buildingName").focus();
     }
 
     function saveBuilding() {
-      const name = $("buildingName").value.trim();
-      const address = $("buildingAddress").value.trim();
-      const addressNote = $("buildingAddressNote").value.trim();
-      const managerName = $("buildingManagerName").value.trim();
+      const btn          = $("saveBuildingBtn"); disableBtn(btn, 1200);
+      const name         = $("buildingName").value.trim();
+      const address      = $("buildingAddress").value.trim();
+      const addressNote  = $("buildingAddressNote").value.trim();
+      const managerName  = $("buildingManagerName").value.trim();
       const managerPhone = $("buildingManagerPhone").value.trim();
-      const groupId = $("buildingGroup").value;
+      const groupId      = $("buildingGroup").value;
 
       if (!name || !address || !groupId) {
-        showToast("Bina adı, adres ve grup zorunludur.", "error");
-        return;
+        showToast("Bina adı, adres ve grup zorunludur.", "error"); return;
+      }
+      if (!state.data.groups.find(g => g.id === groupId)) {
+        showToast("Geçerli bir grup seçin.", "error"); return;
+      }
+      if (managerPhone && !isValidPhone(managerPhone)) {
+        showToast("Geçerli bir telefon numarası girin (örn: 05XX XXX XX XX).", "error"); return;
       }
 
-      if (!state.data.groups.find((g) => g.id === groupId)) {
-        showToast("Geçerli bir grup seçin.", "error");
-        return;
-      }
+      const now     = Date.now();
+      const payload = { name, address, addressNote, managerName, managerPhone, groupId, updatedAt: now };
 
       if (state.editBuildingId) {
-        db.ref("buildings/" + state.editBuildingId).update({ name, address, addressNote, managerName, managerPhone, groupId });
+        const before = state.data.buildings.find(b => b.id === state.editBuildingId);
+        db.ref("buildings/" + state.editBuildingId).update(payload);
+        writeAuditLog("update", "building", state.editBuildingId, { name: before?.name, address: before?.address }, { name, address });
         showToast("Bina güncellendi.", "success");
       } else {
-        db.ref("buildings").push({ name, address, addressNote, managerName, managerPhone, groupId });
+        const ref = db.ref("buildings").push({ ...payload, isDeleted: false, createdAt: now });
+        writeAuditLog("create", "building", ref.key, null, { name, address, groupId });
         showToast("Bina eklendi.", "success");
       }
-
       resetBuildingForm();
     }
 
     function deleteBuilding(id) {
-      const building = state.data.buildings.find((b) => b.id === id);
-      if (!building) return;
-      if (!confirm(`"${building.name}" binası silinsin mi?`)) return;
+      const b = state.data.buildings.find(b => b.id === id); if (!b) return;
+      if (!confirm(`"${b.name}" binası arşive taşınsın mı?`)) return;
 
-      db.ref("buildings/" + id).remove();
-      showToast("Bina silindi.", "success");
+      const now = Date.now();
+      db.ref("buildings/" + id).update({ isDeleted: true, deletedAt: now, deletedBy: state.currentUser?.username || "?", updatedAt: now });
+      writeAuditLog("delete", "building", id, { name: b.name }, null);
+      showToast("Bina arşive taşındı.", "info");
     }
 
+    // ═══ ELEMAN CRUD ═══
     function startEditWorker(id) {
-      const worker = state.data.workers.find((w) => w.id === id);
-      if (!worker) return;
-
+      const w = state.data.workers.find(w => w.id === id); if (!w) return;
       state.editWorkerId = id;
-      $("workerName").value = worker.fullName;
-      $("workerUsername").value = worker.username;
+      $("workerName").value     = w.fullName || "";
+      $("workerUsername").value = w.username || "";
       $("workerPassword").value = "";
       $("saveWorkerBtn").textContent = "Elemanı Güncelle";
       $("cancelWorkerEdit").classList.remove("hidden");
+      setTab("workersTab");
+      $("workerName").focus();
     }
 
     function isUsernameTaken(username, excludeId = null) {
-      if (username.toLowerCase() === state.data.admin.username.toLowerCase()) return true;
-      return state.data.workers.some((w) => w.username.toLowerCase() === username.toLowerCase() && w.id !== excludeId);
+      if (state.data.admin && username.toLowerCase() === state.data.admin.username.toLowerCase()) return true;
+      return state.data.workers.some(w => w.username.toLowerCase() === username.toLowerCase() && w.id !== excludeId);
     }
 
     function saveWorker() {
+      const btn      = $("saveWorkerBtn"); disableBtn(btn, 1200);
       const fullName = $("workerName").value.trim();
       const username = $("workerUsername").value.trim();
       const password = $("workerPassword").value;
 
-      if (!fullName || !username) {
-        showToast("Ad soyad ve kullanıcı adı zorunludur.", "error");
-        return;
-      }
+      if (!fullName || !username) { showToast("Ad soyad ve kullanıcı adı zorunludur.", "error"); return; }
+      if (!state.editWorkerId && !password) { showToast("Yeni eleman için şifre zorunludur.", "error"); return; }
+      if (isUsernameTaken(username, state.editWorkerId)) { showToast("Bu kullanıcı adı zaten kullanılıyor.", "error"); return; }
 
-      if (!state.editWorkerId && !password) {
-        showToast("Yeni eleman için şifre zorunludur.", "error");
-        return;
-      }
-
-      if (isUsernameTaken(username, state.editWorkerId)) {
-        showToast("Bu kullanıcı adı zaten kullanılıyor.", "error");
-        return;
-      }
-
+      const now = Date.now();
       if (state.editWorkerId) {
-        const updates = { fullName, username };
+        const before = state.data.workers.find(w => w.id === state.editWorkerId);
+        const updates = { fullName, username, updatedAt: now };
         if (password) updates.password = password;
         db.ref("workers/" + state.editWorkerId).update(updates);
+        writeAuditLog("update", "worker", state.editWorkerId, { fullName: before?.fullName, username: before?.username }, { fullName, username });
         showToast("Eleman güncellendi.", "success");
       } else {
-        db.ref("workers").push({ fullName, username, password });
+        const ref = db.ref("workers").push({ fullName, username, password, isDeleted: false, createdAt: now, updatedAt: now });
+        writeAuditLog("create", "worker", ref.key, null, { fullName, username });
         showToast("Eleman eklendi.", "success");
       }
-
       resetWorkerForm();
     }
 
     function deleteWorker(id) {
-      const worker = state.data.workers.find((w) => w.id === id);
-      if (!worker) return;
-      if (!confirm(`${worker.fullName} silinsin mi?`)) return;
+      const w = state.data.workers.find(w => w.id === id); if (!w) return;
+      if (!confirm(`"${w.fullName}" arşive taşınsın mı?`)) return;
 
-      db.ref("workers/" + id).remove();
-      showToast("Eleman silindi.", "success");
+      const now = Date.now();
+      db.ref("workers/" + id).update({ isDeleted: true, deletedAt: now, deletedBy: state.currentUser?.username || "?", updatedAt: now });
+      writeAuditLog("delete", "worker", id, { fullName: w.fullName }, null);
+      showToast("Eleman arşive taşındı.", "info");
     }
 
+    // ═══ ARŞİV GERI YÜKLEME ═══
+    function restoreGroup(id) {
+      const g = state.data.deletedGroups.find(g => g.id === id); if (!g) return;
+      const now = Date.now();
+      db.ref("groups/" + id).update({ isDeleted: false, deletedAt: null, deletedBy: null, updatedAt: now });
+      writeAuditLog("restore", "group", id, null, { name: g.name });
+      showToast(`"${g.name}" grubu geri yüklendi.`, "success");
+    }
+
+    function restoreBuilding(id) {
+      const b = state.data.deletedBuildings.find(b => b.id === id); if (!b) return;
+      const now = Date.now();
+      db.ref("buildings/" + id).update({ isDeleted: false, deletedAt: null, deletedBy: null, updatedAt: now });
+      writeAuditLog("restore", "building", id, null, { name: b.name });
+      showToast(`"${b.name}" binası geri yüklendi.`, "success");
+    }
+
+    function restoreWorker(id) {
+      const w = state.data.deletedWorkers.find(w => w.id === id); if (!w) return;
+      const now = Date.now();
+      db.ref("workers/" + id).update({ isDeleted: false, deletedAt: null, deletedBy: null, updatedAt: now });
+      writeAuditLog("restore", "worker", id, null, { fullName: w.fullName });
+      showToast(`"${w.fullName}" geri yüklendi.`, "success");
+    }
+
+    // ═══ ADMİN ŞIFRE DEĞİŞTİRME ═══
     function changeAdminPassword() {
-      const current = $("currentAdminPassword").value;
-      const next = $("newAdminPassword").value;
+      const btn         = $("changeAdminPasswordBtn"); disableBtn(btn, 1500);
+      const current     = $("currentAdminPassword").value;
+      const next        = $("newAdminPassword").value;
       const confirmNext = $("confirmAdminPassword").value;
 
-      if (!current || !next || !confirmNext) {
-        showToast("Tüm alanları doldurun.", "error");
-        return;
-      }
+      if (!current || !next || !confirmNext) { showToast("Tüm alanları doldurun.", "error"); return; }
+      if (current !== state.data.admin.password) { showToast("Mevcut şifre yanlış.", "error"); return; }
+      if (next.length < 8) { showToast("Yeni şifre en az 8 karakter olmalıdır.", "error"); return; }
+      if (next !== confirmNext) { showToast("Yeni şifreler eşleşmiyor.", "error"); return; }
 
-      if (current !== state.data.admin.password) {
-        showToast("Mevcut şifre yanlış.", "error");
-        return;
-      }
-
-      if (next.length < 4) {
-        showToast("Yeni şifre en az 4 karakter olmalı.", "error");
-        return;
-      }
-
-      if (next !== confirmNext) {
-        showToast("Yeni şifreler eşleşmiyor.", "error");
-        return;
-      }
-
-      db.ref("admin").update({ password: next });
+      db.ref("admin").update({ password: next, updatedAt: Date.now() });
+      writeAuditLog("update", "admin", "admin", null, { passwordChanged: true });
       resetSettingsForm();
-      showToast("Admin şifresi güncellendi.", "success");
+      showToast("Şifre güncellendi.", "success");
     }
 
+    // ═══ ELEMAN GÖRÜNÜMÜ NAVİGASYON ═══
     function openWorkerGroup(groupId) {
       state.selectedWorkerGroupId = groupId;
       renderWorkerBuildings(groupId);
@@ -1585,14 +1671,12 @@
       state.selectedWorkerGroupId = null;
       $("workerBuildingsPanel").classList.add("hidden");
       $("workerGroupsPanel").classList.remove("hidden");
-      if ($("buildingSearch").value.trim()) handleSearch();
+      if ($("buildingSearch").value.trim().length >= 2) handleSearch();
     }
 
+    // ═══ OLAY BAĞLAMA ═══
     function bindEvents() {
-      $("loginForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        login();
-      });
+      $("loginForm").addEventListener("submit", e => { e.preventDefault(); login(); });
 
       $("logoutAdmin").addEventListener("click", logout);
       $("logoutWorker").addEventListener("click", logout);
@@ -1614,20 +1698,22 @@
       $("buildingSearch").addEventListener("input", handleSearch);
       $("searchClearBtn").addEventListener("click", clearSearch);
 
-      document.querySelectorAll(".tab-btn").forEach((btn) => {
-        btn.addEventListener("click", () => setTab(btn.dataset.tab));
+      document.querySelectorAll(".tab-btn").forEach(b => {
+        b.addEventListener("click", () => setTab(b.dataset.tab));
       });
 
-      document.querySelectorAll(".toggle-pass").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const input = $(btn.dataset.target);
-          const isPassword = input.type === "password";
-          input.type = isPassword ? "text" : "password";
-          btn.textContent = isPassword ? "Gizle" : "Göster";
+      document.querySelectorAll(".toggle-pass").forEach(b => {
+        b.addEventListener("click", () => {
+          const input = $(b.dataset.target);
+          if (!input) return;
+          const isPwd = input.type === "password";
+          input.type = isPwd ? "text" : "password";
+          b.textContent = isPwd ? "Gizle" : "Göster";
         });
       });
     }
 
+    // ═══ BAŞLAT ═══
     startFirebaseListener();
   </script>
 </body>
